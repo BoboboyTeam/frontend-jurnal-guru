@@ -202,8 +202,8 @@ const CMS = () => {
                     <tr className="border-b hover:bg-blue-100 bg-gray-100 ">
                       <td className="p-3 px-5">{++index}</td>
                       <td className="p-3 px-5">{item.hari}</td>
-                      <td className="p-3 px-5">{item.Kelas}</td>
-                      <td className="p-3 px-5">{item.Guru}</td>
+                      <td className="p-3 px-5">{item.kelas}</td>
+                      <td className="p-3 px-5">{item.guru.nama}</td>
                       <td className="p-3 px-5 flex justify-center">
                         <button
                           className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white"
@@ -217,13 +217,13 @@ const CMS = () => {
                             <h3 className="font-bold text-lg">Ditail</h3>
                             <tr className="border-b hover:bg-blue-100 bg-gray-100">
                               <td className="p-3 px-5">{++index}</td>
-                              <td className="p-3 px-5">{item.Hari}</td>
-                              <td className="p-3 px-5">{item.Kelas}</td>
-                              <td className="p-3 px-5">{item.Guru}</td>
+                              <td className="p-3 px-5">{item.hari}</td>
+                              <td className="p-3 px-5">{item.kelas}</td>
+                              <td className="p-3 px-5">{item.guru.nama}</td>
                               <td className="p-3 px-5">
-                                {item.Mata_Pelajaran}
+                                {item.mapel}
                               </td>
-                              <td className="p-3 px-5">{item.JP}</td>
+                              <td className="p-3 px-5">{item.jp}</td>
                             </tr>
 
                             <div className="modal-action">

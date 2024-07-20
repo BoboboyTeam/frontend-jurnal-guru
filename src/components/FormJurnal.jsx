@@ -5,8 +5,6 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-
-
 const FormJurnal = () => {
   function handleLogout() {
 

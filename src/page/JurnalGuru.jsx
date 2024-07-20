@@ -83,7 +83,7 @@ const JurnalGuru = () => {
                     <tr className="border-b hover:bg-red-100 bg-gray-100 ">
                       <td className="p-3 px-5">{++index}</td>
                       <td className="p-3 px-5">{item.createAt}</td>
-                      <td className="p-3 px-5">{item.guru}</td>
+                      <td className="p-3 px-5">{item.guru.name}</td>
                       <td className="p-3 px-5">{item.guruPengganti}</td>
                       <td className="p-3 px-5">5</td>
                       <td className="p-3 px-5 flex justify-center">
