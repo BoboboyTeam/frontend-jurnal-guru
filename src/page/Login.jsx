@@ -7,10 +7,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-
-
-
-
 const Login = () => {
   const [icon, setIcon] = useState(ic_lock_open);
   const [type, setType] = useState("password");

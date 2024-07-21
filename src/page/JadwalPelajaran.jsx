@@ -4,23 +4,19 @@ import { bin } from "react-icons-kit/icomoon/bin";
 import { plus } from "react-icons-kit/fa/plus";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
 import { externalLink } from "react-icons-kit/fa/externalLink";
+import { Icon } from "react-icons-kit";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
-import { Icon } from "react-icons-kit";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const CMS = () => {
-  const [result,setResult] = useState([])
-
+const JadwalPelajaran = () => {
+  const [result, setResult] = useState([]);
   const day = ["Semua", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const kelas = ["VII", "VIII", "IX"];
-
   const { id } = useParams();
 
-
   // -----------------------------------------------------Fetching data all
-
   async function fetchData() {
     try {
       const token = localStorage.getItem("access_token");
@@ -39,7 +35,6 @@ const CMS = () => {
   }
 
   // -----------------------------------------------------Fetching data per id
-
   async function fetchDataId() {
     try {
       const token = localStorage.getItem("access_token");
@@ -51,16 +46,12 @@ const CMS = () => {
         },
       });
       console.log(data);
-     
     } catch (error) {
       console.log(error);
     }
   }
 
-
-
   // -----------------------------------------------------DELETE
-
   function handdleDeletePopUp() {
     document.getElementById("my_modal_1").showModal();
   }
@@ -83,36 +74,17 @@ const CMS = () => {
     });
   }
 
-  // -----------------------------------------------------DITAIL
-  function handdleDitail() {
-    document.getElementById("my_modal_6").showModal();
-    fetchDataId();
-  }
-
-  function handdleEdit() {
-    document.getElementById("my_modal_5").showModal();
-  }
-
-  // -----------------------------------------------------UseEffect
   useEffect(() => {
     fetchData();
   }, []);
 
-
-
-
-
   return (
-    <div className="m-auto w-full h-screen">
+    <div className="m-auto w-full h-screen bg-blue-100 ">
       <Navbar />
-      <div className="text-gray-900 bg-white pb-10 ">
+      <div className="text-gray-900 bg-blue-100 pb-10 ">
         <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20">
-         
-         
-         
-         
-         <div className="w-[700px] mt-3  flex justify-start mr-44 gap-5  ">
-            <Link to={"/cms"}>
+          <div className="w-[700px] mt-3  flex justify-start mr-44 gap-5  ">
+            <Link to={"/jadwal"}>
               <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white ">
                 Jadwal Pelajaran
               </button>
@@ -122,9 +94,10 @@ const CMS = () => {
                 Jurnal Guru
               </button>
             </Link>
+            <div className="px-5 py-2 font-bold text-2xl ml-12 underline  bg-slate-200 rounded-sm">
+              Jadwal Pelajaran
+            </div>
           </div>
-
-          
 
           <div className="w-32 mt-3 ">
             <form action="">
@@ -142,11 +115,6 @@ const CMS = () => {
               </select>
             </form>
           </div>
-
-
-
-
-
 
           <div className="w-32 mt-3 ">
             <form action="">
@@ -175,12 +143,12 @@ const CMS = () => {
             </form>
           </div>
 
-       <Link to={"/register"}>   <button
-            className="btn  text-white bg-green-500 hover:bg-green-700 mt-3">
-            <Icon icon={plus} /> Tambah Guru
-          </button></Link>
+          <Link to={"/register"}>
+            <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3">
+              <Icon icon={plus} /> Tambah Guru
+            </button>
+          </Link>
         </div>
-
 
         <div className="px-3 py-4 flex justify-center mt-16  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
@@ -194,7 +162,6 @@ const CMS = () => {
                 <th />
               </tr>
             </thead>
-
             <tbody>
               {result.map((item, index) => {
                 return (
@@ -203,68 +170,20 @@ const CMS = () => {
                       <td className="p-3 px-5">{++index}</td>
                       <td className="p-3 px-5">{item.hari}</td>
                       <td className="p-3 px-5">{item.kelas}</td>
-                      <td className="p-3 px-5">{item.guru.nama}</td>
+                      <td className="p-3 px-5">{item.guru}</td>
                       <td className="p-3 px-5 flex justify-center">
-                        <button
-                          className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white"
-                          onClick={() => handdleDitail(item.id)}
-                        >
-                          <Icon icon={externalLink} /> Ditail
-                        </button>
-
-                        <dialog id="my_modal_6" className="modal">
-                          <div className="modal-box w-11/12 max-w-5xl">
-                            <h3 className="font-bold text-lg">Ditail</h3>
-                            <tr className="border-b hover:bg-blue-100 bg-gray-100">
-                              <td className="p-3 px-5">{++index}</td>
-                              <td className="p-3 px-5">{item.hari}</td>
-                              <td className="p-3 px-5">{item.kelas}</td>
-                              <td className="p-3 px-5">{item.guru.nama}</td>
-                              <td className="p-3 px-5">
-                                {item.mapel}
-                              </td>
-                              <td className="p-3 px-5">{item.jp}</td>
-                            </tr>
-
-                            <div className="modal-action">
-                              <form method="dialog">
-                                <button
-                                  onClick={() => handdleEdit()}
-                                  className="btn text-white bg-green-500 hover:bg-green-700 mr-2"
-                                >
-                                  <Icon icon={pencilSquareO} /> Edit
-                                </button>
-                              </form>
-                              <form method="dialog">
-                                {/* if there is a button, it will close the modal */}
-                                <button className="btn">Close</button>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
-
-                        <button
-                          className="btn text-white bg-green-500 hover:bg-green-700 mr-2"
-                          onClick={() => handdleEdit()}
-                        >
-                          <Icon icon={pencilSquareO} /> Edit
-                        </button>
-
-                        <dialog id="my_modal_5" className="modal">
-                          <div className="modal-box w-11/12 max-w-5xl">
-                            <h3 className="font-bold text-lg">Edit</h3>
-                            <p className="py-4">
-                              Click the button below to close
-                            </p>
-                            <div className="modal-action">
-                              <form method="dialog">
-                                {/* if there is a button, it will close the modal */}
-                                <button className="btn">Close</button>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
-
+                        <Link to={"/ditailJadwalPelajaran"}>
+                          {" "}
+                          <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
+                            <Icon icon={externalLink} /> Ditail
+                          </button>
+                        </Link>
+                        <Link to={"/editJadwalPelajaran"}>
+                          {" "}
+                          <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
+                            <Icon icon={pencilSquareO} /> Edit
+                          </button>
+                        </Link>
                         <button
                           className="btn bg-red-500 hover:bg-red-700 text-white"
                           onClick={() => handdleDeletePopUp()}
@@ -272,6 +191,7 @@ const CMS = () => {
                           <Icon icon={bin} />
                           Hapus
                         </button>
+
                         <dialog id="my_modal_1" className="modal">
                           <div className="modal-box">
                             <h3 className="font-bold text-lg">
@@ -289,7 +209,6 @@ const CMS = () => {
                                 </button>
                               </form>
                               <form method="dialog">
-                                {/* if there is a button, it will close the modal */}
                                 <button className="btn bg-green-500 hover:bg-green-700 text-white">
                                   Kembali
                                 </button>
@@ -310,4 +229,4 @@ const CMS = () => {
   );
 };
 
-export default CMS;
+export default JadwalPelajaran;

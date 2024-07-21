@@ -1,132 +1,34 @@
-import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
-import { Icon } from "react-icons-kit";
-import { user } from "react-icons-kit/icomoon/user";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-
-const FormJurnal = () => {
-  function handleLogout() {
-
-  }
-
-  const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  const [guru,setGuru] = useState([])
-  const kelas = ["VII", "VIII", "IX"];
-  const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-  const mataPelajaran = [
-    "Matematika",
-    "Bahasa Inggris",
-    "Bahasa Jawa",
-    "IPA",
-    "IPS",
-    "Biologi",
-  ];
-
-  const navigate = useNavigate();
-
-  async function handleLogout() {
-    localStorage.removeItem("access_token");
-    navigate("/login");
-  }
-
-  // ------------------------------------------------------Get all data
-
-  
-  const fetchData = useCallback(async()=>{
-    try {
-      const token = localStorage.getItem("access_token");
-      const { data } = await axios({
-        method: "get",
-        url: "http://localhost:3000/users/guru",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setGuru(data);
-      console.log(JSON.stringify(guru));
-      guru.map((item) => {
-        console.log(item.nama);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  },[guru])
-
-  const postJurnalGuru = useCallback(async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("access_token");
-    const form = new FormData(e.target);
-
-    // Dapetin guru dan _idnya
-    let guru_id = form.get("guru");
-    let guruPengganti_id = form.get("guruPengganti");
-    guru_id = guru.find((item) => item._id === guru_id);
-    guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
-
-    console.log(guru_id);
-
-    const formData = {
-      hari: form.get("hari"),
-      jamKe: form.get("jamKe"),
-      guru: {
-        _id: guru_id._id,
-        nama: guru_id.nama,
-      },
-      guruPengganti:
-      guruPengganti && {
-        _id: guruPengganti_id._id,
-        nama: guruPengganti_id.nama,
-      },
-      kelas: form.get("kelas"),
-      mapel: form.get("mapel"),
-      materi: form.get("materi"),
-      jp: form.get("jp"),
-    };
-    console.log(formData);
-    
-    try {
-      const { data } = await axios({
-        method: "post",
-        url: "http://localhost:3000/admin/jurnal-guru",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: JSON.stringify(formData),
-      });
-      console.log(data);
-      
-      Swal.fire({
-        icon: "success",
-        title: "Succes Adding Jurnal",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+import React from "react";
+import { Link } from "react-router-dom";
 
 
-  useEffect(()=>{
-    fetchData()
-  },[])
-
-
+const EditJadwalPelajaran = () => {
+    const guru =["Budi1","Budi2"]
+    const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const kelas = ["VII", "VIII", "IX"];
+    const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+    const mataPelajaran = [
+      "Matematika",
+      "Bahasa Inggris",
+      "Bahasa Jawa",
+      "IPA",
+      "IPS",
+      "Biologi",
+    ];
   return (
-    <>
-      <div
+    <div
         style={{
           backgroundImage:
             'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
-        <div className="flex justify-end mb-3  ">
-          <div className=" bg-yellow-600 inline-block px-2 py-2 rounded-md hover:bg-yellow-700">
-         <button onClick={handleLogout}>   <Icon size={30} icon={user}></Icon> Logout{" "}</button>
-          </div>
-        </div>
+      
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
-          <form onSubmit={postJurnalGuru}>
+            <div className="text-xl font-bold py-5 mb-4 text-center text-white">
+                Edit
+            </div>
+          <form >
             <div className="md:flex md:gap-28">
               <div>
                 <label
@@ -281,16 +183,18 @@ const FormJurnal = () => {
                 </div>
               </div>
             </div>
-            <div>
-              <button type="submit" className="text-white rounded-md border-none hover:bg-yellow-600 bg-yellow-400 bg-opacity-50 px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md" >
+            <div className="flex gap-4">
+              <button type="submit" className="text-white rounded-md border-none hover:bg-green-600 bg-green-500  px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md" >
                 Submit
               </button>
+              <Link to={"/jadwal"}><button  className="text-white rounded-md border-none hover:bg-green-600 bg-green-500  px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md" >
+                Kembali
+              </button></Link>
             </div>
           </form>
         </div>
       </div>
-    </>
-  );
-};
+  )
+}
 
-export default FormJurnal;
+export default EditJadwalPelajaran
