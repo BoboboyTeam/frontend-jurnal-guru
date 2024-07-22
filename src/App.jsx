@@ -12,9 +12,25 @@ import DitailJurnalGuru from "./page/DitailJurnalGuru";
 import DitailJadwalPelajaran from "./page/DitailJadwalPelajaran";
 import EditJadwalPelajaran from "./page/EditJadwalPelajaran";
 import EditJurnalGuru from "./page/EditJurnalGuru";
+import JurnalReform from "./page/JurnalReform";
+import JadwalReform from "./page/JadwalReform";
 
 
 const router = createBrowserRouter([
+  {
+    path:"/jurnal/:id",
+    element:<JurnalReform/>,
+  },
+  {
+    path:"/jp/edit/:id",
+    element:<JadwalReform/>,
+  },
+  {
+    path:"/jp/add",
+    element:<JadwalReform/>,
+  },
+
+
   {
     path: "/login",
     element : <Login/>
@@ -34,6 +50,7 @@ const router = createBrowserRouter([
       return null
     }
   },
+ 
   {
     path: "/jadwal",
     element : <JadwalPelajaran/>,

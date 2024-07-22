@@ -15,6 +15,7 @@ const JadwalPelajaran = () => {
   const day = ["Semua", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const kelas = ["VII", "VIII", "IX"];
   const { id } = useParams();
+  const [jadwal, setJadwal] = useState([]);
 
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
@@ -68,10 +69,28 @@ const JadwalPelajaran = () => {
         toast.onmouseleave = Swal.resumeTimer;
       },
     });
-    Toast.fire({
-      icon: "success",
-      title: "Data Terhapus",
-    });
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const response =  axios({
+        method: "delete",
+        url: "http://localhost:3000/admin/jp/" + id,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+        
+      Toast.fire({
+        icon: "success",
+        title: "Data Terhapus",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: `${error.response.data.message}`,
+      });
+    }
+
   }
 
   useEffect(() => {
@@ -102,13 +121,14 @@ const JadwalPelajaran = () => {
           <div className="w-32 mt-3 ">
             <form action="">
               <select
-                className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4"
-                id="day"
+                className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
+                id="hari"
+                name="hari"
               >
                 {day.map((item) => {
                   return (
                     <>
-                      <option value="hari">{item}</option>
+                      <option value={item}>{item}</option>
                     </>
                   );
                 })}
@@ -119,7 +139,7 @@ const JadwalPelajaran = () => {
           <div className="w-32 mt-3 ">
             <form action="">
               <select
-                className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4"
+                className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
                 id="day"
               >
                 {kelas.map((item) => {
@@ -136,7 +156,7 @@ const JadwalPelajaran = () => {
           <div className="w-80 rounded-md mt-3">
             <form action="">
               <input
-                className="w-full h-12 rounded-md px-4 outline-none border-2 border-slate-400 "
+                className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
                 type="text"
                 placeholder="Cari Nama Guru"
               />

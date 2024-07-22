@@ -5,8 +5,7 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const FormJurnal = () => {
-  function handleLogout() {}
+const FormJurnalForGuru = ({id}) => {
 
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState([]);
@@ -20,6 +19,7 @@ const FormJurnal = () => {
     "IPS",
     "Biologi",
   ];
+  const [jurnal, setJurnal] = useState({});
 
   const navigate = useNavigate();
 
@@ -50,21 +50,22 @@ const FormJurnal = () => {
     }
   });
 
-  const fetchKelas = useCallback(async () => {
+  const fetchJurnalGuru = useCallback(async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      const { data } = await axios({
-        method: "get",
-        url: "http://localhost:3000/kelas",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(data);
+        const token = localStorage.getItem("access_token");
+        const { data } = await axios({
+            method: "get",
+            url: `http://localhost:3000/guru/jp/${id}`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        setJurnal(data);
+        console.log(data);
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  });
+    });
 
   const postJurnalGuru = useCallback(async (e) => {
     e.preventDefault();
@@ -72,15 +73,14 @@ const FormJurnal = () => {
     const form = new FormData(e.target);
 
     // Dapetin guru dan _idnya
-    let guru_id = form.get("guru");
     let guruPengganti_id = form.get("guruPengganti");
-    guru_id = guru.find((item) => item._id === guru_id);
+    let guru_id = jurnal.guru ? jurnal.guru : guru.find((item) => item._id === guru_id);
     guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
     console.log(guru);
 
     const formData = {
-      hari: form.get("hari").toLowerCase(),
-      jamKe: form.get("jamKe"),
+      hari:jurnal.hari,
+      jamKe: jurnal.jamKe,
       guru: {
         _id: guru_id._id,
         nama: guru_id.nama,
@@ -89,8 +89,8 @@ const FormJurnal = () => {
         _id: guruPengganti_id._id,
         nama: guruPengganti_id.nama
         } : null,
-      kelas: form.get("kelas"),
-      mapel: form.get("mapel"),
+      kelas: jurnal.kelas,
+      mapel: jurnal.mapel,
       materi: form.get("materi"),
       jumlahJP: form.get("jumlahJP"),
     };
@@ -99,7 +99,7 @@ const FormJurnal = () => {
     try {
       const { data } = await axios({
         method: "post",
-        url: "http://localhost:3000/admin/jurnal-guru",
+        url: "http://localhost:3000/guru/jurnal-guru/"+id,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -117,6 +117,7 @@ const FormJurnal = () => {
   });
 
   useEffect(() => {
+    fetchJurnalGuru();
     fetchGuru();
   }, []);
 
@@ -149,17 +150,15 @@ const FormJurnal = () => {
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
-                  <select className="w-full" id="hari" name="hari">
-                    {day.map((item, index) => {
-                      return (
-                        <>
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        </>
-                      );
-                    })}
-                  </select>
+                <input
+                  type="text"
+                  name="hari"
+                  id="subject"
+                  value={jurnal?.hari}
+                  placeholder="Enter your subject"
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  readOnly={true}
+                />
                 </div>
 
                 <div className="mb-5">
@@ -170,17 +169,15 @@ const FormJurnal = () => {
                     Jam ke
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
-                    <select className="w-full" id="jamKe" name="jamKe">
-                      {jam.map((item, index) => {
-                        return (
-                          <>
-                            <option key={index} value={item}>
-                              {item}
-                            </option>
-                          </>
-                        );
-                      })}
-                    </select>
+                  <input
+                  type="text"
+                  name="hari"
+                  id="subject"
+                  value={jurnal?.jamKe}
+                  placeholder="Enter your subject"
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                    readOnly={true}
+                />
                   </div>
                 </div>
 
@@ -192,16 +189,15 @@ const FormJurnal = () => {
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
-                  <select className="w-full" id="guru" name="guru">
-                    <option value="">None</option>
-                    {guru.map((item) => {
-                      return (
-                        <option key={item._id} value={item._id}>
-                          {item.nama}
-                        </option>
-                      );
-                    })}
-                  </select>
+                <input
+                  type="text"
+                  name="hari"
+                  id="subject"
+                  value={jurnal?.guru?.nama}
+                  placeholder="Enter your subject"
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  readOnly={true}
+                />
                 </div>
 
                 <label
@@ -241,17 +237,15 @@ const FormJurnal = () => {
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
-                  <select className="w-full" id="kelas" name="kelas">
-                    {kelas.map((item, index) => {
-                      return (
-                        <>
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        </>
-                      );
-                    })}
-                  </select>
+                <input
+                  type="text"
+                  name="hari"
+                  id="subject"
+                  value={jurnal?.kelas}
+                  placeholder="Enter your subject"
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  readOnly={true}
+                />
                 </div>
 
                 <div className="mb-5">
@@ -262,17 +256,15 @@ const FormJurnal = () => {
                     Mata Pelajaran
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
-                    <select className="w-full" id="mapel" name="mapel">
-                      {mataPelajaran.map((item, index) => {
-                        return (
-                          <>
-                            <option key={index} value={item}>
-                              {item}
-                            </option>
-                          </>
-                        );
-                      })}
-                    </select>
+                  <input
+                  type="text"
+                  name="hari"
+                  id="subject"
+                  value={jurnal?.kelas}
+                  placeholder="Enter your subject"
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  readOnly={true}
+                />
                   </div>
                 </div>
 
@@ -290,6 +282,7 @@ const FormJurnal = () => {
                   
                   placeholder="Enter your subject"
                   className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  required={true}
                 />
                 </div>
 
@@ -306,6 +299,7 @@ const FormJurnal = () => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                    required={true}
                   />
                 </div>
               </div>
@@ -325,4 +319,4 @@ const FormJurnal = () => {
   );
 };
 
-export default FormJurnal;
+export default FormJurnalForGuru;

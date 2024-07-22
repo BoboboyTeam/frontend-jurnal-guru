@@ -5,12 +5,13 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const FormJurnal = () => {
+const FormJP = ({ id=null }) => {
   function handleLogout() {}
 
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  const [guru, setGuru] = useState([]);
-  const kelas = ["VII", "VIII", "IX"];
+  const [guru, setGuru] = useState();
+  const [kelas, setKelas] = useState([]);
+  const [jadwal, setJadwal] = useState({});
   const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   const mataPelajaran = [
     "Matematika",
@@ -66,16 +67,33 @@ const FormJurnal = () => {
     }
   });
 
-  const postJurnalGuru = useCallback(async (e) => {
+  const fetchJadwal = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const { data } = await axios({
+        method: "get",
+        url: "http://localhost:3000/admin/jp/" + id,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(data);
+      if (data != []) {
+        setJadwal(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  const postJadwal = useCallback(async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access_token");
     const form = new FormData(e.target);
 
     // Dapetin guru dan _idnya
     let guru_id = form.get("guru");
-    let guruPengganti_id = form.get("guruPengganti");
     guru_id = guru.find((item) => item._id === guru_id);
-    guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
     console.log(guru);
 
     const formData = {
@@ -85,21 +103,18 @@ const FormJurnal = () => {
         _id: guru_id._id,
         nama: guru_id.nama,
       },
-      guruPengganti: guruPengganti_id ? {
-        _id: guruPengganti_id._id,
-        nama: guruPengganti_id.nama
-        } : null,
+      guruPengganti: null,
       kelas: form.get("kelas"),
       mapel: form.get("mapel"),
-      materi: form.get("materi"),
-      jumlahJP: form.get("jumlahJP"),
+      materi: "",
+      jumlahJP: "",
     };
     console.log(formData);
 
     try {
       const { data } = await axios({
-        method: "post",
-        url: "http://localhost:3000/admin/jurnal-guru",
+        method: id ? "put" : "post",
+        url: `http://localhost:3000/admin/jp${id?`/${id}`:""}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,7 +124,7 @@ const FormJurnal = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Succes Adding Jurnal",
+        title: id ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
       });
     } catch (error) {
       console.log(error);
@@ -118,6 +133,11 @@ const FormJurnal = () => {
 
   useEffect(() => {
     fetchGuru();
+    fetchKelas();
+    if (id) {
+      fetchJadwal();
+    }
+    console.log(jadwal,"<<<<<<<<<<<<<<<<<<<");
   }, []);
 
   return (
@@ -138,7 +158,7 @@ const FormJurnal = () => {
           </div>
         </div>
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
-          <form onSubmit={postJurnalGuru}>
+          <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
               <div>
                 <label
@@ -151,13 +171,23 @@ const FormJurnal = () => {
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select className="w-full" id="hari" name="hari">
                     {day.map((item, index) => {
-                      return (
-                        <>
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        </>
-                      );
+                      if (item.toLowerCase() === jadwal?.hari) {
+                        return (
+                          <>
+                            <option key={index} value={item} default>
+                              {item}
+                            </option>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <option key={index} value={item}>
+                              {item}
+                            </option>
+                          </>
+                        );
+                      }
                     })}
                   </select>
                 </div>
@@ -172,13 +202,23 @@ const FormJurnal = () => {
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="jamKe" name="jamKe">
                       {jam.map((item, index) => {
-                        return (
-                          <>
-                            <option key={index} value={item}>
-                              {item}
-                            </option>
-                          </>
-                        );
+                        if (item === jadwal?.jamKe) {
+                          return (
+                            <>
+                              <option key={index} value={item} default>
+                                {item}
+                              </option>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <>
+                              <option key={index} value={item}>
+                                {item}
+                              </option>
+                            </>
+                          );
+                        }
                       })}
                     </select>
                   </div>
@@ -194,39 +234,24 @@ const FormJurnal = () => {
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select className="w-full" id="guru" name="guru">
                     <option value="">None</option>
-                    {guru.map((item) => {
-                      return (
-                        <option key={item._id} value={item._id}>
-                          {item.nama}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-
-                <label
-                  htmlFor="guruPengganti"
-                  className="mb-3 block text-base font-medium text-white"
-                >
-                  Guru Pengganti{" "}
-                  <span className="font-light text-sm">(Opsional)</span>
-                </label>
-
-                <div className="mb-5 bg-white p-3 rounded-md">
-                  <select
-                    className="w-full"
-                    id="guruPengganti"
-                    name="guruPengganti"
-                  >
-                    <option value="">None</option>
-                    {guru?.map((item) => {
-                      return (
-                        <>
-                          <option key={item._id} value={item._id}>
-                            {item.nama}
-                          </option>
-                        </>
-                      );
+                    {guru?.map((item, index) => {
+                      if (item._id === jadwal?.guru?._id) {
+                        return (
+                          <>
+                            <option key={index} value={item._id} default>
+                              {item.nama}
+                            </option>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <option key={index} value={item._id}>
+                              {item.nama}
+                            </option>
+                          </>
+                        );
+                      }
                     })}
                   </select>
                 </div>
@@ -243,13 +268,23 @@ const FormJurnal = () => {
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select className="w-full" id="kelas" name="kelas">
                     {kelas.map((item, index) => {
-                      return (
-                        <>
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        </>
-                      );
+                      if (item === jadwal?.kelas) {
+                        return (
+                          <>
+                            <option key={index} value={item} default>
+                              {item}
+                            </option>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <option key={index} value={item}>
+                              {item}
+                            </option>
+                          </>
+                        );
+                      }
                     })}
                   </select>
                 </div>
@@ -264,49 +299,26 @@ const FormJurnal = () => {
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="mapel" name="mapel">
                       {mataPelajaran.map((item, index) => {
-                        return (
-                          <>
-                            <option key={index} value={item}>
-                              {item}
-                            </option>
-                          </>
-                        );
+                        if (item === jadwal?.mapel) {
+                          return (
+                            <>
+                              <option key={index} value={item} default>
+                                {item}
+                              </option>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <>
+                              <option key={index} value={item}>
+                                {item}
+                              </option>
+                            </>
+                          );
+                        }
                       })}
                     </select>
                   </div>
-                </div>
-
-                <div className="mb-5">
-                  <label
-                    htmlFor="subject"
-                    className="mb-3 block text-base font-medium text-white"
-                  >
-                    Materi Pembelajaran
-                  </label>
-                  <input
-                  type="text"
-                  name="materi"
-                  id="subject"
-                  
-                  placeholder="Enter your subject"
-                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                />
-                </div>
-
-                <div className="mb-5">
-                  <label
-                    htmlFor="subject"
-                    className="mb-3 block text-base font-medium text-white"
-                  >
-                    Jumlah Jam Pelajaran
-                  </label>
-                  <input
-                    type="text"
-                    name="jumlahJP"
-                    id="subject"
-                    placeholder="Enter your subject"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                  />
                 </div>
               </div>
             </div>
@@ -325,4 +337,4 @@ const FormJurnal = () => {
   );
 };
 
-export default FormJurnal;
+export default FormJP;
