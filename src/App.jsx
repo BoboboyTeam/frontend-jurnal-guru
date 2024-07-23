@@ -12,6 +12,7 @@ import DitailJurnalGuru from "./page/DitailJurnalGuru";
 import DitailJadwalPelajaran from "./page/DitailJadwalPelajaran";
 import EditJadwalPelajaran from "./page/EditJadwalPelajaran";
 import EditJurnalGuru from "./page/EditJurnalGuru";
+import Profile from "./page/Profile";
 
 
 const router = createBrowserRouter([
@@ -99,13 +100,20 @@ const router = createBrowserRouter([
       }
       return null
     }
+  },
+  {
+    path: "/profile",
+    element : <Profile/>,
+    loader:async()=>{
+      if (!localStorage.getItem("access_token")) {
+        throw redirect("/login")
+        
+      }
+      return null
+    }
   }
 
 ])
-
-
-
-
 
 function App() {
   return (

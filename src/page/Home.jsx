@@ -1,8 +1,12 @@
 import FormJurnal from "../components/FormJurnal";
+import Navbar from "../components/Navbar";
 const Home = () => {
   return (
-    <FormJurnal/>
-  )
-}
+    <>
+      <Navbar />
+      <FormJurnal />
+    </>
+  );
+};
 
-export default Home
+export default Home;

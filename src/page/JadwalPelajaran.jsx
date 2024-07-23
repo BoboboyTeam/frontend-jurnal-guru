@@ -83,22 +83,6 @@ const JadwalPelajaran = () => {
       <Navbar />
       <div className="text-gray-900 bg-blue-100 pb-10 ">
         <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20">
-          <div className="w-[700px] mt-3  flex justify-start mr-44 gap-5  ">
-            <Link to={"/jadwal"}>
-              <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white ">
-                Jadwal Pelajaran
-              </button>
-            </Link>
-            <Link to={"/jurnal"}>
-              <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white ">
-                Jurnal Guru
-              </button>
-            </Link>
-            <div className="px-5 py-2 font-bold text-2xl ml-12 underline  bg-slate-200 rounded-sm">
-              Jadwal Pelajaran
-            </div>
-          </div>
-
           <div className="w-32 mt-3 ">
             <form action="">
               <select
@@ -170,7 +154,7 @@ const JadwalPelajaran = () => {
                       <td className="p-3 px-5">{++index}</td>
                       <td className="p-3 px-5">{item.hari}</td>
                       <td className="p-3 px-5">{item.kelas}</td>
-                      <td className="p-3 px-5">{item.guru}</td>
+                      <td className="p-3 px-5">{item.guru.name}</td>
                       <td className="p-3 px-5 flex justify-center">
                         <Link to={"/ditailJadwalPelajaran"}>
                           {" "}
