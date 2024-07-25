@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const FormJurnalForGuru = ({id=null}) => {
-
+  const role = localStorage.getItem("role");
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState([]);
   const kelas = ["VII", "VIII", "IX"];
@@ -53,9 +53,10 @@ const FormJurnalForGuru = ({id=null}) => {
   const fetchJurnalGuru = useCallback(async () => {
     try {
         const token = localStorage.getItem("access_token");
+        const role = localStorage.getItem("role");
         const { data } = await axios({
             method: "get",
-            url: `http://localhost:3000/guru/jp/${id}`,
+            url: `${process.env.BASE_URL}/${role}/jurnal-guru/${id}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -99,7 +100,7 @@ const FormJurnalForGuru = ({id=null}) => {
     try {
       const { data } = await axios({
         method: id ? "put" : "post",
-        url: process.env.BASE_URL+"/guru/jurnal-guru/"+id,
+        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id && `/${id}`}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },

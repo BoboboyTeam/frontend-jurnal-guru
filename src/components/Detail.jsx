@@ -3,17 +3,18 @@ import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Detail = ({id}) => {
+const Detail = ({id,detail}) => {
   
   const [result, setResult] = useState([]);
   const [key, setKey] = useState([]);
 
   async function fetchDataId() {
     try {
+        const role = localStorage.getItem("role");
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL + "/admin/jp/" + id,
+        url: process.env.BASE_URL + `/${role}/${detail}/` + id,
         headers: {
           Authorization: `Bearer ${token}`,
         },

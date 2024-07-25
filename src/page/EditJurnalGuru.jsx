@@ -16,7 +16,7 @@ const EditJurnalGuru = () => {
       "IPS",
       "Biologi",
     ];
-    const id = useParams()
+    const id = useParams().id
   return (
     <FormJurnal id={id}/>
   )

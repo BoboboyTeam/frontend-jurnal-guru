@@ -140,8 +140,8 @@ const JurnalGuru = () => {
                               Hapus
                             </button>
 
-                            <dialog id="my_modal_1" className="modal">
-                              <div className="modal-box">
+                            <dialog id="my_modal_1" className="modal text-[#EEEEEE]">
+                              <div className="modal-box bg-gray-800">
                                 <h3 className="font-bold text-lg">
                                   Apakah yakin ingin menghapus data ini?
                                 </h3>

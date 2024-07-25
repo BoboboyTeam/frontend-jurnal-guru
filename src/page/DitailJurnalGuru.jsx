@@ -1,13 +1,15 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import Detail from "../components/Detail";
 
 
 const DitailJurnalGuru = () => {
+  
   const id = useParams().id;
 
   return(
-    <Detail id={id}/>
+    <Detail id={id} detail={"jurnal-guru"}/>
   )
 };
 
