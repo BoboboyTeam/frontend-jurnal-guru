@@ -12,7 +12,7 @@ const JadwalReform = () => {
     }
     else{
         return (
-            <FormJP/>
+        <FormJP/>
         )
     }
 }

@@ -5,7 +5,7 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const FormJurnalForGuru = ({id}) => {
+const FormJurnalForGuru = ({id=null}) => {
 
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState([]);
@@ -35,7 +35,7 @@ const FormJurnalForGuru = ({id}) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: "http://localhost:3000/users/guru",
+        url: process.env.BASE_URL+"/users/guru",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,8 +98,8 @@ const FormJurnalForGuru = ({id}) => {
 
     try {
       const { data } = await axios({
-        method: "post",
-        url: "http://localhost:3000/guru/jurnal-guru/"+id,
+        method: id ? "put" : "post",
+        url: process.env.BASE_URL+"/guru/jurnal-guru/"+id,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,7 +109,7 @@ const FormJurnalForGuru = ({id}) => {
 
       Swal.fire({
         icon: "success",
-        title: "Succes Adding Jurnal",
+        title: id ? "Success Updating Jurnal" :"Succes Adding Jurnal",
       });
     } catch (error) {
       console.log(error);

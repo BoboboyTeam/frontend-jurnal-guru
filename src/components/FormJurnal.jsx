@@ -5,11 +5,12 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const FormJurnal = () => {
+const FormJurnal = ({id=null}) => {
   function handleLogout() {}
 
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState([]);
+  const [jurnal, setJurnal] = useState([]);
   const kelas = ["VII", "VIII", "IX"];
   const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   const mataPelajaran = [
@@ -35,7 +36,7 @@ const FormJurnal = () => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: "http://localhost:3000/users/guru",
+        url: process.env.BASE_URL+"/users/guru",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -55,12 +56,30 @@ const FormJurnal = () => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: "http://localhost:3000/kelas",
+        url: process.env.BASE_URL+"/kelas",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  
+  const fetchJurnalGuru = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const role = localStorage.getItem("role");
+      const { data } = await axios({
+        method: "get",
+        url: process.env.BASE_URL+"/"+role+"/jurnal-guru/"+id,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(data);
+      setJurnal(data);
     } catch (error) {
       console.log(error);
     }
@@ -98,8 +117,8 @@ const FormJurnal = () => {
 
     try {
       const { data } = await axios({
-        method: "post",
-        url: "http://localhost:3000/admin/jurnal-guru",
+        method: id ? "put" : "post",
+        url: process.env.BASE_URL+"/admin/jurnal-guru",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,7 +128,7 @@ const FormJurnal = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Succes Adding Jurnal",
+        title: id ? "Success Updating Jurnal" : "Succes Adding Jurnal",
       });
     } catch (error) {
       console.log(error);
@@ -118,6 +137,9 @@ const FormJurnal = () => {
 
   useEffect(() => {
     fetchGuru();
+    if (id) {
+      fetchJurnalGuru();
+    }
   }, []);
 
   return (

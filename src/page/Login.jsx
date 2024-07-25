@@ -20,7 +20,7 @@ const Login = () => {
     try {      
       const requestBody = { email, password };
       const response = await axios.post(
-        "http://localhost:3000/login",
+        process.env.BASE_URL+"/login",
         requestBody
       );
       console.log(response);

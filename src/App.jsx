@@ -15,7 +15,6 @@ import EditJurnalGuru from "./page/EditJurnalGuru";
 import JurnalReform from "./page/JurnalReform";
 import JadwalReform from "./page/JadwalReform";
 
-
 const router = createBrowserRouter([
   {
     path:"/jurnal/:id",
@@ -74,7 +73,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/ditailJadwalPelajaran",
+    path: "/ditailJadwalPelajaran/:id",
     element : <DitailJadwalPelajaran/>,
     loader:async()=>{
       if (!localStorage.getItem("access_token")) {
@@ -85,7 +84,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/ditailJurnalGuru",
+    path: "/ditailJurnalGuru/:id",
     element : <DitailJurnalGuru/>,
     loader:async()=>{
       if (!localStorage.getItem("access_token")) {
@@ -96,7 +95,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/editJadwalPelajaran",
+    path: "/editJadwalPelajaran/:id",
     element : <EditJadwalPelajaran/>,
     loader:async()=>{
       if (!localStorage.getItem("access_token")) {
@@ -107,7 +106,7 @@ const router = createBrowserRouter([
     }
   },
   {
-    path: "/editJurnalGuru",
+    path: "/editJurnalGuru/:id",
     element : <EditJurnalGuru/>,
     loader:async()=>{
       if (!localStorage.getItem("access_token")) {

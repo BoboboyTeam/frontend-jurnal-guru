@@ -15,19 +15,29 @@ const JadwalPelajaran = () => {
   const day = ["Semua", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const kelas = ["VII", "VIII", "IX"];
   const { id } = useParams();
-  const [jadwal, setJadwal] = useState([]);
 
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
     try {
       const token = localStorage.getItem("access_token");
-      const { data } = await axios({
-        method: "get",
-        url: "http://localhost:3000/admin/jp",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      const { data } =
+        localStorage.getItem("role") === "admin"
+          ? await axios({
+              method: "get",
+              url: process.env.BASE_URL + "/admin/jp",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+          : await axios({
+              method: "get",
+              url: process.env.BASE_URL + "/guru/jp",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
       console.log(data);
       setResult(data);
     } catch (error) {
@@ -41,7 +51,7 @@ const JadwalPelajaran = () => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: "http://localhost:3000/admin/jurnal-guru/" + id,
+        url: process.env.BASE_URL + "/admin/jurnal-guru/" + id,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -57,7 +67,17 @@ const JadwalPelajaran = () => {
     document.getElementById("my_modal_1").showModal();
   }
 
-  function handdleDelete() {
+  function handdleDelete(id) {
+    const token = localStorage.getItem("access_token");
+    const response = axios({
+      method: "delete",
+      url: process.env.BASE_URL + "/admin/jp/" + id,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response);
+
     const Toast = Swal.mixin({
       toast: true,
       position: "bottom-end",
@@ -72,14 +92,14 @@ const JadwalPelajaran = () => {
 
     try {
       const token = localStorage.getItem("access_token");
-      const response =  axios({
+      const response = axios({
         method: "delete",
-        url: "http://localhost:3000/admin/jp/" + id,
+        url: process.env.BASE_URL + "/admin/jp/" + id,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-        
+
       Toast.fire({
         icon: "success",
         title: "Data Terhapus",
@@ -90,7 +110,6 @@ const JadwalPelajaran = () => {
         title: `${error.response.data.message}`,
       });
     }
-
   }
 
   useEffect(() => {
@@ -124,6 +143,7 @@ const JadwalPelajaran = () => {
                 className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
                 id="hari"
                 name="hari"
+
               >
                 {day.map((item) => {
                   return (
@@ -163,11 +183,13 @@ const JadwalPelajaran = () => {
             </form>
           </div>
 
-          <Link to={"/register"}>
-            <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3">
-              <Icon icon={plus} /> Tambah Guru
-            </button>
-          </Link>
+          {localStorage.getItem("role") === "admin" && (
+            <Link to={"/jp/add"}>
+              <button className="btn w-[10rem] text-white bg-green-500 hover:bg-green-700 mt-3">
+                <Icon icon={plus} /> Tambah Jadwal
+              </button>
+            </Link>
+          )}
         </div>
 
         <div className="px-3 py-4 flex justify-center mt-16  ">
@@ -185,60 +207,66 @@ const JadwalPelajaran = () => {
             <tbody>
               {result.map((item, index) => {
                 return (
-                  <>
-                    <tr className="border-b hover:bg-blue-100 bg-gray-100 ">
-                      <td className="p-3 px-5">{++index}</td>
-                      <td className="p-3 px-5">{item.hari}</td>
-                      <td className="p-3 px-5">{item.kelas}</td>
-                      <td className="p-3 px-5">{item.guru}</td>
-                      <td className="p-3 px-5 flex justify-center">
-                        <Link to={"/ditailJadwalPelajaran"}>
-                          {" "}
-                          <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
-                            <Icon icon={externalLink} /> Ditail
-                          </button>
-                        </Link>
-                        <Link to={"/editJadwalPelajaran"}>
-                          {" "}
-                          <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
-                            <Icon icon={pencilSquareO} /> Edit
-                          </button>
-                        </Link>
-                        <button
-                          className="btn bg-red-500 hover:bg-red-700 text-white"
-                          onClick={() => handdleDeletePopUp()}
-                        >
-                          <Icon icon={bin} />
-                          Hapus
+                  <tr
+                    key={index}
+                    className="border-b hover:bg-blue-100 bg-gray-100 "
+                  >
+                    <td className="p-3 px-5">{++index}</td>
+                    <td className="p-3 px-5">{item?.hari}</td>
+                    <td className="p-3 px-5">{item?.kelas}</td>
+                    <td className="p-3 px-5">{item?.guru?.nama}</td>
+                    <td className="p-3 px-5 flex justify-center">
+                      <Link to={"/ditailJadwalPelajaran/"+item?._id}>
+                        {" "}
+                        <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
+                          <Icon icon={externalLink} /> Ditail
                         </button>
-
-                        <dialog id="my_modal_1" className="modal">
-                          <div className="modal-box">
-                            <h3 className="font-bold text-lg">
-                              Apakah yakin ingin menghapus data ini?
-                            </h3>
-                            <div className="modal-action">
-                              <form method="dialog">
-                                <button
-                                  onClick={() => {
-                                    handdleDelete();
-                                  }}
-                                  className="btn bg-red-500 hover:bg-red-700 text-white"
-                                >
-                                  Hapus
-                                </button>
-                              </form>
-                              <form method="dialog">
-                                <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                                  Kembali
-                                </button>
-                              </form>
-                            </div>
+                      </Link>
+                      {localStorage.getItem("role") === "admin" &&
+                        <>
+                          <Link to={"/editJadwalPelajaran/"+item._id}>
+                            {" "}
+                            <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
+                              <Icon icon={pencilSquareO} /> Edit
+                            </button>
+                          </Link>
+                          <button
+                            className="btn bg-red-500 hover:bg-red-700 text-white"
+                            onClick={() => handdleDeletePopUp()}
+                          >
+                            <Icon icon={bin} />
+                            Hapus
+                          </button>
+                        
+                      
+                      <dialog id="my_modal_1" className="modal">
+                        <div className="modal-box">
+                          <h3 className="font-bold text-lg">
+                            Apakah yakin ingin menghapus data ini?
+                          </h3>
+                          <div className="modal-action">
+                            <form method="dialog">
+                              <button
+                                onClick={() => {
+                                  handdleDelete(item._id);
+                                }}
+                                className="btn bg-red-500 hover:bg-red-700 text-white"
+                              >
+                                Hapus
+                              </button>
+                            </form>
+                            <form method="dialog">
+                              <button className="btn bg-green-500 hover:bg-green-700 text-white">
+                                Kembali
+                              </button>
+                            </form>
                           </div>
-                        </dialog>
-                      </td>
-                    </tr>
-                  </>
+                        </div>
+                      </dialog>
+                      </>
+              }
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
