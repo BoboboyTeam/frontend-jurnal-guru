@@ -69,7 +69,7 @@ const JurnalGuru = () => {
 
   return (
     <div className="m-auto w-full h-screen bg-green-100">
-      <Navbar />
+      
       <div className="text-gray-900  pb-10 bg-green-100 ">
         <div className="p-4  flex justify-center w-full  md:justify-end  bg-white sticky top-20 ">
           <form className="mt-3 " action="">

@@ -4,11 +4,11 @@ import Navbar from "../components/Navbar";
 const Profile = () => {
   return (
     <div className=" w-full h-screen ">
-      <Navbar />
+      
       <div class="flex flex-col pt-28">
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5 ">
           <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8  ">
-            <div className="bg-green-400 flex gap-64 p-5 rounded-md ">
+            <div className="bg-green-400 flex gap-64 p-5 rounded-md text-[#333333] ">
               <div>
                 <p className="font-bold">Nama :</p>
                 <p className="font-bold">Mata Pelaajaran :</p>

@@ -118,7 +118,7 @@ const JadwalPelajaran = () => {
 
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
-      <Navbar />
+      
       <div className="text-gray-900 bg-blue-100 pb-10 ">
         <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20">
           <div className="w-32 mt-3 ">
