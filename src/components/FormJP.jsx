@@ -14,7 +14,7 @@ const FormJP = ({ id=null }) => {
   const [guru, setGuru] = useState();
   const [kelas, setKelas] = useState([]);
   const [jadwal, setJadwal] = useState();
-  const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mataPelajaran = [
     "Matematika",
     "Bahasa Inggris",
@@ -181,7 +181,7 @@ const FormJP = ({ id=null }) => {
                   <select className="w-full" id="hari" name="hari">
             
                     {id && jadwal && day.map((item, index) => {
-                      if (item.toLowerCase() === jadwal?.hari) {
+                      if (`${item}`.toLowerCase() === jadwal?.hari) {
                         return (
                           <>
                             <option key={index} value={item} selected="selected">
@@ -224,7 +224,7 @@ const FormJP = ({ id=null }) => {
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="jamKe" name="jamKe">
                       {id && jadwal && jam.map((item, index) => {
-                      if (item.toLowerCase() === jadwal?.jamKe) {
+                      if (item === jadwal?.jamKe) {
                         return (
                           <>
                             <option key={index} value={item} selected="selected">

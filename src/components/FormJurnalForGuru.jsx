@@ -10,7 +10,7 @@ const FormJurnalForGuru = ({id=null}) => {
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState([]);
   const kelas = ["VII", "VIII", "IX"];
-  const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mataPelajaran = [
     "Matematika",
     "Bahasa Inggris",
