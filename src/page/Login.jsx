@@ -20,11 +20,13 @@ const Login = () => {
     try {      
       const requestBody = { email, password };
       const response = await axios.post(
-        "http://localhost:3000/login",
+        process.env.BASE_URL+"/login",
         requestBody
       );
       console.log(response);
       localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("nama", response.data.nama);
       Swal.fire({
         icon: "success",
         title: "Succes Login",

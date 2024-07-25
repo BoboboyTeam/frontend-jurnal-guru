@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { bin } from "react-icons-kit/icomoon/bin";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
 import { externalLink } from "react-icons-kit/fa/externalLink";
+import { plus } from "react-icons-kit/fa/plus";
 import { Icon } from "react-icons-kit";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -10,12 +11,13 @@ import Load from "../components/Load";
 
 const JurnalGuru = () => {
   const [result, setResult] = useState([]);
+  const role = localStorage.getItem("role");
   async function fetchData() {
     try {
       const token = localStorage.getItem("access_token");
       let { data } = await axios({
         method: "get",
-        url: "http://localhost:3000/admin/jurnal-guru",
+        url: `${process.env.BASE_URL}/${role}/jurnal-guru`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +34,18 @@ const JurnalGuru = () => {
     document.getElementById("my_modal_1").showModal();
   }
 
-  function handdleDelete() {
+  function handdleDelete(id) {
+    const token = localStorage.getItem("access_token");
+    const response = axios({
+      method: "delete",
+      url: `${process.env.BASE_URL}/${role}/jurnal-guru/` + id,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log(response);
+    
     const Toast = Swal.mixin({
       toast: true,
       position: "bottom-end",
@@ -66,6 +79,13 @@ const JurnalGuru = () => {
               placeholder="Cari Nama Guru"
             />
           </form>
+        {localStorage.getItem("role") === "admin" && (
+            <Link to={"/jurnal/add"}>
+              <button className="btn w-[10rem] text-white bg-green-500 hover:bg-green-700 mt-3">
+                <Icon icon={plus} /> Tambah Jurnal
+              </button>
+            </Link>
+          )}
         </div>
 
         <div className="px-3 py-4 flex justify-center mt-16  ">
@@ -87,31 +107,23 @@ const JurnalGuru = () => {
                 <tbody>
                   {result.map((item, index) => {
                     return (
-                      <>
-                        <tr className="border-b hover:bg-green-100 bg-gray-100 ">
-                          {/* <td className="p-3 px-5">{++index}</td>
-                          <td className="p-3 px-5">{item.createAt}</td>
-                          <td className="p-3 px-5">{item.guru}</td>
-                          <td className="p-3 px-5">{item.guruPengganti}</td>
-                          <td className="p-3 px-5">5</td> */}
-                          <td className="p-3 px-5">1</td>
-                          <td className="p-3 px-5">2</td>
-                          <td className="p-3 px-5">3</td>
-                          <td className="p-3 px-5">4</td>
+                     
+                        <tr key={index} className="border-b hover:bg-green-100 bg-gray-100 ">
+                          <td className="p-3 px-5">{++index}</td>
+                          <td className="p-3 px-5">{item?.createAt}</td>
+                          <td className="p-3 px-5">{item?.guru?.nama}</td>
+                          <td className="p-3 px-5">{item?.guruPengganti?.nama}</td>
                           <td className="p-3 px-5">5</td>
                           <td className="p-3 px-5 flex justify-center">
-                            <Link to={"/ditailJurnalGuru"}>
+                            <Link to={"/ditailJurnalGuru/"+item._id}>
                               <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
                                 <Icon icon={externalLink} /> Ditail
                               </button>
                             </Link>
 
-                            <Link to={"/editJurnalGuru"}>
-                              {" "}
-                              <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
-                                <Icon icon={pencilSquareO} /> Edit
-                              </button>
-                            </Link>
+                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
+                              <Icon icon={pencilSquareO} /> Edit
+                            </button></Link>
 
                             <button
                               className="btn bg-red-500 hover:bg-red-700 text-white"
@@ -121,8 +133,8 @@ const JurnalGuru = () => {
                               Hapus
                             </button>
 
-                            <dialog id="my_modal_1" className="modal">
-                              <div className="modal-box">
+                            <dialog id="my_modal_1" className="modal text-[#EEEEEE]">
+                              <div className="modal-box bg-gray-800">
                                 <h3 className="font-bold text-lg">
                                   Apakah yakin ingin menghapus data ini?
                                 </h3>
@@ -130,7 +142,7 @@ const JurnalGuru = () => {
                                   <form method="dialog">
                                     <button
                                       onClick={() => {
-                                        handdleDelete();
+                                        handdleDelete(item._id);
                                       }}
                                       className="btn bg-red-500 hover:bg-red-700 text-white"
                                     >
@@ -147,7 +159,7 @@ const JurnalGuru = () => {
                             </dialog>
                           </td>
                         </tr>
-                      </>
+                     
                     );
                   })}
                 </tbody>

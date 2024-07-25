@@ -24,7 +24,7 @@ const Register = () => {
       const token = localStorage.getItem("access_token");
       const requestBody = {nama, email, role, password};
       const { data } = await axios.post(
-        "http://localhost:3000/register",
+        process.env.BASE_URL+"/register",
         requestBody,
         {
           headers: {

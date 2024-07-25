@@ -4,12 +4,16 @@ import { Icon } from "react-icons-kit";
 import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Load from "./Load";
 
-const FormJurnal = ({ id = null }) => {
+const FormJP = ({ id=null }) => {
+  function handleLogout() {}
   const role = localStorage.getItem("role");
+
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  const [guru, setGuru] = useState([]);
-  const kelas = ["VII", "VIII", "IX"];
+  const [guru, setGuru] = useState();
+  const [kelas, setKelas] = useState([]);
+  const [jadwal, setJadwal] = useState();
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mataPelajaran = [
     "Matematika",
@@ -19,7 +23,6 @@ const FormJurnal = ({ id = null }) => {
     "IPS",
     "Biologi",
   ];
-  const [jurnal, setJurnal] = useState({});
 
   const navigate = useNavigate();
 
@@ -35,7 +38,7 @@ const FormJurnal = ({ id = null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL + "/users/guru",
+        url: process.env.BASE_URL+"/users/guru",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -50,35 +53,54 @@ const FormJurnal = ({ id = null }) => {
     }
   });
 
-  const fetchJurnalGuru = useCallback(async () => {
+  const fetchKelas = useCallback(async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const role = localStorage.getItem("role");
       const { data } = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru/${id}`,
+        url: process.env.BASE_URL+"/kelas",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setJurnal(data);
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   });
 
-  const postJurnalGuru = useCallback(async (e) => {
+
+
+  const fetchJadwal = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      console.log(process.env.BASE_URL)
+      console.log(id,"IDIDIDIIDID");
+      const { data } = await axios({
+        method: "get",
+        url: process.env.BASE_URL+"/admin/jp/" + id,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(data,"DSADADADA");
+
+      setJadwal(data);
+      console.log(jadwal, ">>>>>>>>>>JADWAL>>>>>>>>>>>>>");
+    } catch (error) {
+      console.log(error);
+    }
+  }, [id]);
+
+
+  const postJadwal = useCallback(async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access_token");
     const form = new FormData(e.target);
 
     // Dapetin guru dan _idnya
-    let guruPengganti_id = form.get("guruPengganti");
-    let guru_id = jurnal && jurnal?.guru
-      ? jurnal.guru
-      : guru.find((item) => item._id === form.get("guru"));
-    guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
+    let guru_id = form.get("guru");
+    guru_id = guru.find((item) => item._id === guru_id);
     console.log(guru);
 
     const formData = {
@@ -88,23 +110,18 @@ const FormJurnal = ({ id = null }) => {
         _id: guru_id._id,
         nama: guru_id.nama,
       },
-      guruPengganti: guruPengganti_id
-        ? {
-            _id: guruPengganti_id._id,
-            nama: guruPengganti_id.nama,
-          }
-        : null,
+      guruPengganti: null,
       kelas: form.get("kelas"),
       mapel: form.get("mapel"),
-      materi: form.get("materi"),
-      jumlahJP: form.get("jumlahJP"),
+      materi: "",
+      jumlahJP: "",
     };
-    console.log(formData);
+    console.log(formData,"FORMDATA");
 
     try {
       const { data } = await axios({
         method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id ? `/${id}`:""}`,
+        url: `${process.env.BASE_URL}/${role}/jp${id?`/${id}`:''}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -114,7 +131,7 @@ const FormJurnal = ({ id = null }) => {
 
       Swal.fire({
         icon: "success",
-        title: id ? "Success Updating Jurnal" : "Succes Adding Jurnal",
+        title: id ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
       });
     } catch (error) {
       console.log(error);
@@ -122,9 +139,15 @@ const FormJurnal = ({ id = null }) => {
   });
 
   useEffect(() => {
-    fetchJurnalGuru();
     fetchGuru();
+    fetchKelas();
+    
+    id && fetchJadwal();
+    
+    console.log(jadwal,"<<<<<<<<<<<<<<<<<<<");
   }, []);
+
+  if(id && !jadwal) return <Load/>
 
   return (
     <>
@@ -144,7 +167,7 @@ const FormJurnal = ({ id = null }) => {
           </div>
         </div>
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
-          <form onSubmit={postJurnalGuru}>
+          <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
               <div>
                 <label
@@ -156,33 +179,17 @@ const FormJurnal = ({ id = null }) => {
 
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select className="w-full" id="hari" name="hari">
-                    {id &&
-                      jurnal &&
-                      day.map((item, index) => {
-                        if (item.toLowerCase() === jurnal?.hari) {
-                          return (
-                            <>
-                              <option
-                                key={index}
-                                value={item}
-                                selected="selected"
-                              >
-                                {item}
-                              </option>
-                            </>
-                          );
-                        } else {
-                          return (
-                            <>
-                              <option key={index} value={item}>
-                                {item}
-                              </option>
-                            </>
-                          );
-                        }
-                      })}
-                    {!id &&
-                      day.map((item, index) => {
+            
+                    {id && jadwal && day.map((item, index) => {
+                      if (`${item}`.toLowerCase() === jadwal?.hari) {
+                        return (
+                          <>
+                            <option key={index} value={item} selected="selected">
+                              {item}
+                            </option>
+                          </>
+                        );
+                      } else {
                         return (
                           <>
                             <option key={index} value={item}>
@@ -190,7 +197,20 @@ const FormJurnal = ({ id = null }) => {
                             </option>
                           </>
                         );
-                      })}
+                      }
+                    })}
+                    {
+                      !id && day.map((item, index) => {
+                        return (
+                          <>
+                            <option key={index} value={item}>
+                              {item}
+                            </option>
+                          </>
+                        );
+                        })
+                    }
+
                   </select>
                 </div>
 
@@ -203,41 +223,37 @@ const FormJurnal = ({ id = null }) => {
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="jamKe" name="jamKe">
-                      {id &&
-                        jurnal &&
-                        jam.map((item, index) => {
-                          if (item === jurnal?.jamKe) {
-                            return (
-                              <>
-                                <option
-                                  key={index}
-                                  value={item}
-                                  selected="selected"
-                                >
-                                  {item}
-                                </option>
-                              </>
-                            );
-                          } else {
-                            return (
-                              <>
-                                <option key={index} value={item}>
-                                  {item}
-                                </option>
-                              </>
-                            );
-                          }
-                        })}
-                      {!id &&
-                        jam.map((item, index) => {
-                          return (
-                            <>
-                              <option key={index} value={item}>
-                                {item}
-                              </option>
-                            </>
-                          );
-                        })}
+                      {id && jadwal && jam.map((item, index) => {
+                      if (item === jadwal?.jamKe) {
+                        return (
+                          <>
+                            <option key={index} value={item} selected="selected">
+                              {item}
+                            </option>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <option key={index} value={item}>
+                              {item}
+                            </option>
+                          </>
+                        );
+                      }
+                    })}
+                    {
+                      !id && jam.map((item, index) => {
+                        return (
+                          <>
+                            <option key={index} value={item}>
+                              {item}
+                            </option>
+                          </>
+                        );
+                        })
+                    }
+
                     </select>
                   </div>
                 </div>
@@ -253,14 +269,10 @@ const FormJurnal = ({ id = null }) => {
                   <select className="w-full" id="guru" name="guru">
                     <option value="">None</option>
                     {guru?.map((item, index) => {
-                      if (item._id === jurnal?.guru?._id) {
+                      if (item._id === jadwal?.guru?._id) {
                         return (
                           <>
-                            <option
-                              key={index}
-                              value={item._id}
-                              selected="selected"
-                            >
+                            <option key={index} value={item._id} selected="selected">
                               {item.nama}
                             </option>
                           </>
@@ -277,51 +289,7 @@ const FormJurnal = ({ id = null }) => {
                     })}
                   </select>
                 </div>
-                
-                <label
-                  htmlFor="guruPengganti"
-                  className="mb-3 block text-base font-medium text-white"
-                >
-                  Guru Pengganti{" "}
-                  <span className="font-light text-sm">(Opsional)</span>
-                </label>
-
-                <div className="mb-5 bg-white p-3 rounded-md">
-                  <select
-                    className="w-full"
-                    id="guruPengganti"
-                    name="guruPengganti"
-                  >
-                    <option value="">None</option>
-                    {guru?.map((item, index) => {
-                      if (item._id === jurnal?.guruPengganti?._id) {
-                        return (
-                          <>
-                            <option
-                              key={index}
-                              value={item._id}
-                              selected="selected"
-                            >
-                              {item.nama}
-                            </option>
-                          </>
-                        );
-                      } else {
-                        return (
-                          <>
-                            <option key={index} value={item._id}>
-                              {item.nama}
-                            </option>
-                          </>
-                        );
-                      }
-                    })}
-                  </select>
-                </div>
-
               </div>
-
-              
 
               <div>
                 <label
@@ -334,14 +302,10 @@ const FormJurnal = ({ id = null }) => {
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select className="w-full" id="kelas" name="kelas">
                     {kelas.map((item, index) => {
-                      if (item === jurnal?.kelas) {
+                      if (item === jadwal?.kelas) {
                         return (
                           <>
-                            <option
-                              key={index}
-                              value={item}
-                              selected="selected"
-                            >
+                            <option key={index} value={item} selected="selected">
                               {item}
                             </option>
                           </>
@@ -369,14 +333,10 @@ const FormJurnal = ({ id = null }) => {
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="mapel" name="mapel">
                       {mataPelajaran.map((item, index) => {
-                        if (item === jurnal?.mapel) {
+                        if (item === jadwal?.mapel) {
                           return (
                             <>
-                              <option
-                                key={index}
-                                value={item}
-                                selected="selected"
-                              >
+                              <option key={index} value={item} selected="selected">
                                 {item}
                               </option>
                             </>
@@ -393,39 +353,6 @@ const FormJurnal = ({ id = null }) => {
                       })}
                     </select>
                   </div>
-                </div>
-                <div className="mb-5">
-                  <label
-                    htmlFor="subject"
-                    className="mb-3 block text-base font-medium text-white"
-                  >
-                    Materi Pembelajaran
-                  </label>
-                  <input
-                    type="text"
-                    name="materi"
-                    id="subject"
-                    placeholder="Enter your subject"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <label
-                    htmlFor="subject"
-                    className="mb-3 block text-base font-medium text-white"
-                  >
-                    Jumlah Jam Pelajaran
-                  </label>
-                  <input
-                    type="text"
-                    name="jumlahJP"
-                    id="subject"
-                    placeholder="Enter your subject"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    
-                  />
                 </div>
               </div>
             </div>
@@ -444,4 +371,4 @@ const FormJurnal = ({ id = null }) => {
   );
 };
 
-export default FormJurnal;
+export default FormJP;
