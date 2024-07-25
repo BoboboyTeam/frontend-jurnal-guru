@@ -8,7 +8,7 @@ const DitailJadwalPelajaran = () => {
   const id = useParams().id;
 
   return(
-    <Detail id={id}/>
+    <Detail id={id} detail={'jp'}/>
   )
 };
 

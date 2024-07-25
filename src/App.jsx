@@ -21,6 +21,10 @@ const router = createBrowserRouter([
     element:<JurnalReform/>,
   },
   {
+    path:"/jurnal/add",
+    element:<JurnalReform/>,
+  },
+  {
     path:"/jp/edit/:id",
     element:<JadwalReform/>,
   },

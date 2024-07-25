@@ -8,6 +8,7 @@ import Load from "./Load";
 
 const FormJP = ({ id=null }) => {
   function handleLogout() {}
+  const role = localStorage.getItem("role");
 
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState();
@@ -71,7 +72,6 @@ const FormJP = ({ id=null }) => {
 
 
   const fetchJadwal = useCallback(async () => {
-    setJadwal("AAAAAAAAAAAAAAAAAAAAAAAA")
     try {
       const token = localStorage.getItem("access_token");
       console.log(process.env.BASE_URL)
@@ -121,7 +121,7 @@ const FormJP = ({ id=null }) => {
     try {
       const { data } = await axios({
         method: id ? "put" : "post",
-        url: `http://localhost:3000/admin/jp${id&&`/${id}`}`,
+        url: `${process.env.BASE_URL}/${role}/jp${id?`/${id}`:''}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -243,7 +243,7 @@ const FormJP = ({ id=null }) => {
                       }
                     })}
                     {
-                      !id && day.map((item, index) => {
+                      !id && jam.map((item, index) => {
                         return (
                           <>
                             <option key={index} value={item}>

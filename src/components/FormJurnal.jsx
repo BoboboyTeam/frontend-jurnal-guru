@@ -5,7 +5,7 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const FormJurnalForGuru = ({ id = null }) => {
+const FormJurnal = ({ id = null }) => {
   const role = localStorage.getItem("role");
   const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const [guru, setGuru] = useState([]);
@@ -75,15 +75,15 @@ const FormJurnalForGuru = ({ id = null }) => {
 
     // Dapetin guru dan _idnya
     let guruPengganti_id = form.get("guruPengganti");
-    let guru_id = jurnal.guru
+    let guru_id = jurnal && jurnal?.guru
       ? jurnal.guru
-      : guru.find((item) => item._id === guru_id);
+      : guru.find((item) => item._id === form.get("guru"));
     guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
     console.log(guru);
 
     const formData = {
-      hari: jurnal.hari,
-      jamKe: jurnal.jamKe,
+      hari: form.get("hari").toLowerCase(),
+      jamKe: form.get("jamKe"),
       guru: {
         _id: guru_id._id,
         nama: guru_id.nama,
@@ -94,8 +94,8 @@ const FormJurnalForGuru = ({ id = null }) => {
             nama: guruPengganti_id.nama,
           }
         : null,
-      kelas: jurnal.kelas,
-      mapel: jurnal.mapel,
+      kelas: form.get("kelas"),
+      mapel: form.get("mapel"),
       materi: form.get("materi"),
       jumlahJP: form.get("jumlahJP"),
     };
@@ -104,7 +104,7 @@ const FormJurnalForGuru = ({ id = null }) => {
     try {
       const { data } = await axios({
         method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id && `/${id}`}`,
+        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id ? `/${id}`:""}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -229,7 +229,7 @@ const FormJurnalForGuru = ({ id = null }) => {
                           }
                         })}
                       {!id &&
-                        day.map((item, index) => {
+                        jam.map((item, index) => {
                           return (
                             <>
                               <option key={index} value={item}>
@@ -407,7 +407,7 @@ const FormJurnalForGuru = ({ id = null }) => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    required={true}
+                    
                   />
                 </div>
 
@@ -424,7 +424,7 @@ const FormJurnalForGuru = ({ id = null }) => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    required={true}
+                    
                   />
                 </div>
               </div>
@@ -444,4 +444,4 @@ const FormJurnalForGuru = ({ id = null }) => {
   );
 };
 
-export default FormJurnalForGuru;
+export default FormJurnal;
