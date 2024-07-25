@@ -36,21 +36,8 @@ const Detail = ({id,detail}) => {
   }, []);
   return (
     <div className="m-auto w-full h-screen ">
-      <Navbar />
-      <div className="p-4  flex justify-center w-full  md:justify-start  bg-white sticky top-20 ">
-        <div className="w-[700px] mt-3  flex justify-start gap-5  ">
-          <Link to={"/jadwal"}>
-            <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white ">
-              Jadwal Pelajaran
-            </button>
-          </Link>
-          <Link to={"/jurnal"}>
-            <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white ">
-              Jurnal Guru
-            </button>
-          </Link>
-        </div>
-      </div>
+
+    
 
       <div className="w-full   flex justify-center pt-20 text-[#333333] ">
         <div className=" h-screen p-7  rounded-md  w-full ">
