@@ -67,9 +67,9 @@ const JadwalPelajaran = () => {
     document.getElementById("my_modal_1").showModal();
   }
 
-  function handdleDelete(id) {
+  async function handdleDelete(id) {
     const token = localStorage.getItem("access_token");
-    const response = axios({
+    const response = await axios({
       method: "delete",
       url: process.env.BASE_URL + "/admin/jp/" + id,
       headers: {

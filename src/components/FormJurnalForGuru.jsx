@@ -112,6 +112,7 @@ const FormJurnalForGuru = ({id=null}) => {
         icon: "success",
         title: id ? "Success Updating Jurnal" :"Succes Adding Jurnal",
       });
+      redirect("/jurnal-guru");
     } catch (error) {
       console.log(error);
     }

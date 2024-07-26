@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { user } from "react-icons-kit/icomoon/user";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
 
@@ -133,6 +133,7 @@ const FormJP = ({ id=null }) => {
         icon: "success",
         title: id ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
       });
+      redirect("/jadwal");
     } catch (error) {
       console.log(error);
     }
