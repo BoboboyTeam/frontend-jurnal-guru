@@ -5,10 +5,10 @@ import { userCircleO } from "react-icons-kit/fa/userCircleO";
 import Icon from "react-icons-kit";
 import { ic_exit_to_app_twotone } from "react-icons-kit/md/ic_exit_to_app_twotone";
 
-
 const Navbar = () => {
+  const role = localStorage.getItem("role");
   const navigate = useNavigate();
-  
+
   function handdleDeletePopUp() {
     document.getElementById("my_modal_7").showModal();
   }
@@ -17,8 +17,6 @@ const Navbar = () => {
     localStorage.removeItem("access_token");
     navigate("/login");
   }
-
-  
 
   return (
     <div className="w-full  bg-white  h-24 flex pl-6 gap-2 border-b-2 border-slate-400 justify-center md:justify-between z-50  ">
@@ -49,6 +47,13 @@ const Navbar = () => {
               Jurnal Guru
             </button>
           </Link>
+          {role === "admin" && (
+            <Link to={"/guru"}>
+              <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white focus:bg-green-700 ">
+                Daftar Guru
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -70,9 +75,7 @@ const Navbar = () => {
 
       <dialog id="my_modal_7" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">
-            Apakah yakin ingin Logout?
-          </h3>
+          <h3 className="font-bold text-lg">Apakah yakin ingin Logout?</h3>
           <div className="modal-action">
             <form method="dialog">
               <button
