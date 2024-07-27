@@ -9,11 +9,11 @@ import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
 
-const JurnalGuru = ({isProfile=false,id=false}) => {
+const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
   const role = localStorage.getItem("role");
-  const [from, setFrom] = useState(new Date());
-  const [to, setTo] = useState(new Date());
+  const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
+  const [to, setTo] = useState(new Date().toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
 
   async function fetchData() {
@@ -31,6 +31,7 @@ const JurnalGuru = ({isProfile=false,id=false}) => {
       });
       console.log(data);
       setResult(data);
+      console.log(addons)
     } catch (error) {
       console.log(error);
     }
@@ -42,9 +43,10 @@ const JurnalGuru = ({isProfile=false,id=false}) => {
       const token = localStorage.getItem("access_token");
       console.log(from,"AAAAAAAAAAAA");
       const query = `?from=${from}&to=${to}`;
+      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date/${id ? `${id+'/'}`:'/'}${query}`
       let { data } = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${query}`,
+        url: link,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -96,26 +98,23 @@ const JurnalGuru = ({isProfile=false,id=false}) => {
 
   return (
     <div className="m-auto w-full h-screen bg-green-100">
+      <div className="text-gray-900 bg-green-100">
       
-      <div className="text-gray-900  pb-10 bg-green-100 ">
-        <div className={`p-4  flex justify-center w-full  md:justify-end  bg-white sticky top-0 `}>
-        
-        <>
-        <div className="flex justify-start gap-1 w-[80%] items-center ">
+        <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end  `}>
+        {addons && addons}
+    
+        <div className="flex justify-end gap-1 w-[80%] items-center ">
           <p className="bg-green-500 text-[#184210] font-bold p-2 rounded-xl"> 
-            From  : <input type="date" className="p-1 rounded-3xl bg-green-400" onChange={(e)=>setFrom(e.target.value)}/>
+            From  : <input type="month" className="p-1 rounded-3xl bg-green-400" onChange={(e)=>setFrom(e.target.value)} value={from}/>
           </p>
           <p className="bg-green-500 text-[#184210] font-bold p-2 rounded-xl">
-            To  :  <input type="date" className="p-1 rounded-3xl bg-green-400" onChange={(e)=>setTo(e.target.value)}/>
+            To  :  <input type="month" className="p-1 rounded-3xl bg-green-400" onChange={(e)=>setTo(e.target.value)} value={to}/>
           </p>
 
         <div className="w-[20%] self-center">
           <button className="p-3 rounded-xl bg-green-500 text-[#184210]" onClick={()=>filterByDate()}>Set Filter</button>
         </div>
         </div>
-        
-        </>
-
         
         {!isProfile &&  
         <form className="mt-3 " action="">
@@ -136,16 +135,18 @@ const JurnalGuru = ({isProfile=false,id=false}) => {
             </Link>
           )}
         </div>
-
-        <div className="px-3 py-4 flex justify-center mt-16  ">
+        
+        
+        <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-            <thead className={`${!isProfile && 'sticky top-40'} bg-green-500`}>
+            <thead className={` bg-green-500`}>
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Tanggal</th>
                 <th className="text-center p-3 px-5">Guru</th>
                 <th className="text-center p-3 px-5">Kelas</th>
                 <th className="text-center p-3 px-5">Guru Pengganti</th>
+                <th className="text-center p-3 px-5">Jam Ke</th>
                 <th className="text-center p-3 px-5">Jumlah JP</th>
                 <th className="text-center p-3 px-5"></th>
                 <th />
@@ -164,7 +165,8 @@ const JurnalGuru = ({isProfile=false,id=false}) => {
                           <td className="p-3 px-5">{item?.guru?.nama}</td>
                           <td className="p-3 px-5">{item?.kelas}</td>
                           <td className="p-3 px-5">{item?.guruPengganti?.nama}</td>
-                          <td className="p-3 px-5">5</td>
+                          <td className="p-3 px-5">{item?.jamKe}</td>
+                          <td className="p-3 px-5">{item?.jumlahJP}</td>
                           <td className="p-3 px-5 flex justify-center">
                             <Link to={"/ditailJurnalGuru/"+item._id}>
                               <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import { bin } from "react-icons-kit/icomoon/bin";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
 import { externalLink } from "react-icons-kit/fa/externalLink";
-import { plus } from "react-icons-kit/fa/plus";
 import { Icon } from "react-icons-kit";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Load from "../components/Load";
-import Calendar from "react-calendar";
 import Swal from "sweetalert2";
 
 const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
