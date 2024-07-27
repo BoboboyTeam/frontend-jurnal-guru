@@ -21,7 +21,7 @@ const Navbar = () => {
   
 
   return (
-    <div className="w-full  bg-white  h-24 fixed flex pl-6 gap-2 border-b-2 border-slate-400 justify-center md:justify-between z-50  ">
+    <div className="w-full  bg-white  h-24 flex pl-6 gap-2 border-b-2 border-slate-400 justify-center md:justify-between z-50  ">
       <div className="flex">
         <div>
           <img
@@ -37,7 +37,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="p-4  flex justify-center w-full  md:justify-start  bg-white sticky top-20 ">
+      <div className="p-4  flex justify-center w-full  md:justify-start  bg-white ">
         <div className="w-[700px] mt-3  flex justify-start gap-5  ">
           <Link to={"/jadwal"}>
             <button className="bg-green-500 hover:bg-green-700 px-5 py-2 rounded-md text-white focus:bg-green-700 ">

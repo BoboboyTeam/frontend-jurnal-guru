@@ -6,7 +6,7 @@ import Detail from "../components/Detail";
 
 const DitailJurnalGuru = () => {
   
-  const id = useParams().id;
+  const {id} = useParams();
 
   return(
     <Detail id={id} detail={"jurnal-guru"}/>

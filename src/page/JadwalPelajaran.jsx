@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import { bin } from "react-icons-kit/icomoon/bin";
 import { plus } from "react-icons-kit/fa/plus";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
@@ -8,13 +7,12 @@ import { Icon } from "react-icons-kit";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 const JadwalPelajaran = () => {
   const [result, setResult] = useState([]);
   const day = ["Semua", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   const kelas = ["VII", "VIII", "IX"];
-  const { id } = useParams();
+  const [jadwalId, setJadwalId] = useState(null);
 
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
@@ -45,39 +43,22 @@ const JadwalPelajaran = () => {
     }
   }
 
-  // -----------------------------------------------------Fetching data per id
-  async function fetchDataId() {
-    try {
-      const token = localStorage.getItem("access_token");
-      const { data } = await axios({
-        method: "get",
-        url: process.env.BASE_URL + "/admin/jurnal-guru/" + id,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // -----------------------------------------------------DELETE
-  function handdleDeletePopUp() {
+  function handdleDeletePopUp(jadwalId) {
+    setJadwalId(jadwalId);
     document.getElementById("my_modal_1").showModal();
   }
 
-  function handdleDelete(id) {
+  async function handdleDelete() {
     const token = localStorage.getItem("access_token");
-    const response = axios({
+    const link = process.env.BASE_URL + "/admin/jp/" + jadwalId
+    const response = await axios({
       method: "delete",
-      url: process.env.BASE_URL + "/admin/jp/" + id,
+      url: link,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
-
     const Toast = Swal.mixin({
       toast: true,
       position: "bottom-end",
@@ -89,12 +70,11 @@ const JadwalPelajaran = () => {
         toast.onmouseleave = Swal.resumeTimer;
       },
     });
-
     try {
       const token = localStorage.getItem("access_token");
       const response = axios({
         method: "delete",
-        url: process.env.BASE_URL + "/admin/jp/" + id,
+        url: process.env.BASE_URL + "/admin/jp/" + jadwalId,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,12 +84,14 @@ const JadwalPelajaran = () => {
         icon: "success",
         title: "Data Terhapus",
       });
+      fetchData();
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: `${error.response.data.message}`,
+        title: `${error}`,
       });
     }
+    
   }
 
   useEffect(() => {
@@ -216,7 +198,7 @@ const JadwalPelajaran = () => {
                           </Link>
                           <button
                             className="btn bg-red-500 hover:bg-red-700 text-white"
-                            onClick={() => handdleDeletePopUp()}
+                            onClick={() => handdleDeletePopUp(item._id)}
                           >
                             <Icon icon={bin} />
                             Hapus
@@ -232,7 +214,7 @@ const JadwalPelajaran = () => {
                             <form method="dialog">
                               <button
                                 onClick={() => {
-                                  handdleDelete(item._id);
+                                  handdleDelete();
                                 }}
                                 className="btn bg-red-500 hover:bg-red-700 text-white"
                               >

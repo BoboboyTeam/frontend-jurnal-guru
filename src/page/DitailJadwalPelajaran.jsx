@@ -5,7 +5,7 @@ import axios from "axios";
 import Detail from "../components/Detail";
 
 const DitailJadwalPelajaran = () => {
-  const id = useParams().id;
+  const {id} = useParams();
 
   return(
     <Detail id={id} detail={'jp'}/>
