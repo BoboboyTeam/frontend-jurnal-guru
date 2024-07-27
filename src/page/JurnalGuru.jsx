@@ -99,8 +99,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-      
-        <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end  `}>
+              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end sticky top-20 bg-white  `}>
         {addons && addons}
     
         <div className="flex justify-end gap-1 w-[80%] items-center ">
@@ -136,10 +135,14 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
           )}
         </div>
         
+
+
+
+
         
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-            <thead className={` bg-green-500`}>
+            <thead className={` bg-green-500 sticky top-40`} >
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Tanggal</th>
