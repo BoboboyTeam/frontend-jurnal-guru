@@ -22,6 +22,7 @@ const Profile = ({ id = null }) => {
       });
       setRole(id ? response.data.role : role);
       setData(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }

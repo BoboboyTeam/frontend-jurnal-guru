@@ -19,12 +19,15 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   async function fetchData() {
     try {
       const token = localStorage.getItem("access_token");
-      console.log(id);
+
       const link = id ? `${role}/filter/jurnal-guru/guru/${id}` : `${role}/jurnal-guru`;
-      console.log(`${process.env.BASE_URL}/${link}`);
+      const profileLink = isProfile && role==='guru' ? `${role}/jurnal-guru` : '';
+
+      const trueLink = role==='guru' ? profileLink : link;
+      console.log(`${process.env.BASE_URL}/${trueLink}`);
       let { data } = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${link}`,
+        url: `${process.env.BASE_URL}/${trueLink}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
