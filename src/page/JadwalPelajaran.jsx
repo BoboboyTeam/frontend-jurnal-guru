@@ -59,7 +59,6 @@ const JadwalPelajaran = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
     const Toast = Swal.mixin({
       toast: true,
       position: "bottom-end",
