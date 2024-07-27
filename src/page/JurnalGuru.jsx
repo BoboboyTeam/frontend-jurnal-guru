@@ -8,21 +8,24 @@ import { Icon } from "react-icons-kit";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Load from "../components/Load";
-import Calendar from "react-calendar";
 import Swal from "sweetalert2";
 
-const JurnalGuru = ({isProfile}) => {
+const JurnalGuru = ({isProfile=false,id=false}) => {
   const [result, setResult] = useState([]);
   const role = localStorage.getItem("role");
   const [from, setFrom] = useState(new Date());
   const [to, setTo] = useState(new Date());
+  const [idJurnal, setIdJurnal] = useState(null);
 
   async function fetchData() {
     try {
       const token = localStorage.getItem("access_token");
+      console.log(id);
+      const link = id ? `${role}/filter/jurnal-guru/guru/${id}` : `${role}/jurnal-guru`;
+      console.log(`${process.env.BASE_URL}/${link}`);
       let { data } = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru`,
+        url: `${process.env.BASE_URL}/${link}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -54,24 +57,22 @@ const JurnalGuru = ({isProfile}) => {
     }
   };
 
-  // -----------------------------------------------------DELETE
-  function handdleDeletePopUp() {
+  function handdleDeletePopUp(idJurnal) {
+    setIdJurnal(idJurnal);
     document.getElementById("my_modal_1").showModal();
   }
 
-  async function handdleDelete(id) {
+  async function handdleDelete() {
     const token = localStorage.getItem("access_token");
-    console.log(`${process.env.BASE_URL}/${role}/jurnal-guru/` + id)
+    const link = `${process.env.BASE_URL}/${role}/jurnal-guru/` + idJurnal
     const response = await axios({
       method: "delete",
-      url: `${process.env.BASE_URL}/${role}/jurnal-guru/` + id,
+      url: link,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
     console.log(response);
-    
     const Toast = Swal.mixin({
       toast: true,
       position: "bottom-end",
@@ -87,6 +88,7 @@ const JurnalGuru = ({isProfile}) => {
       icon: "success",
       title: "Data Terhapus",
     });
+    fetchData();
   }
 
   useEffect(() => {
@@ -97,7 +99,7 @@ const JurnalGuru = ({isProfile}) => {
     <div className="m-auto w-full h-screen bg-green-100">
       
       <div className="text-gray-900  pb-10 bg-green-100 ">
-        <div className={`p-4  flex justify-center w-full  md:justify-end  bg-white sticky top-20 `}>
+        <div className={`p-4  flex justify-center w-full  md:justify-end  bg-white sticky top-0 `}>
         
         <>
         <div className="flex justify-start gap-1 w-[80%] items-center ">
@@ -177,7 +179,7 @@ const JurnalGuru = ({isProfile}) => {
 
                             <button
                               className="btn bg-red-500 hover:bg-red-700 text-white"
-                              onClick={() => handdleDeletePopUp()}
+                              onClick={() => handdleDeletePopUp(item._id)}
                             >
                               <Icon icon={bin} />
                               Hapus
@@ -192,7 +194,7 @@ const JurnalGuru = ({isProfile}) => {
                                   <form method="dialog">
                                     <button
                                       onClick={() => {
-                                        handdleDelete(item._id);
+                                        handdleDelete();
                                       }}
                                       className="btn bg-red-500 hover:bg-red-700 text-white"
                                     >

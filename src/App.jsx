@@ -17,6 +17,8 @@ import JadwalReform from "./page/JadwalReform";
 import Navbar from "./components/Navbar";
 import {Outlet} from "react-router-dom";
 import Profile from "./page/Profile";
+import Guru from "./page/Guru";
+import DetailGuru from "./page/DetailGuru";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +41,14 @@ const router = createBrowserRouter([
         path: "/jp/add",
         element: <JadwalReform />,
       },
-
+      {
+        path:"/guru",
+        element:<Guru/>
+      },
+      {
+        path:"/guru/:id",
+        element:<DetailGuru/>
+      },
       {
         path: "/login",
         element: <Login />,
@@ -47,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/guru",
+        element: <Guru />,
       },
       {
         path: "/home",

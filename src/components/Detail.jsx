@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Detail = ({id,detail}) => {
+const Detail = ({id,detail,columns=null}) => {
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("access_token");
   
   const [result, setResult] = useState([]);
   const [key, setKey] = useState([]);
 
   async function fetchDataId() {
     try {
-        const role = localStorage.getItem("role");
-      const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
         url: process.env.BASE_URL + `/${role}/${detail}/` + id,
@@ -21,7 +19,7 @@ const Detail = ({id,detail}) => {
       });
       const keylog = Object.keys(data);
       console.log(data);
-      setKey(keylog);
+      setKey(columns ? columns : keylog);
       setResult(data);
       console.log(key);
     } catch (error) {

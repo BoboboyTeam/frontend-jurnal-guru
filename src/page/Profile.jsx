@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import JurnalGuru from "./JurnalGuru";
 
-const Profile = () => {
+const Profile = ({id=null}) => {
   const token = localStorage.getItem("access_token");
-  const role = localStorage.getItem("role");
+  const [role,setRole] = useState(localStorage.getItem('role'));
   const [data, setData] = useState([])
 
   const fetchData = async () => {
@@ -13,12 +13,14 @@ const Profile = () => {
     try {
       const response = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${role}/profile`,
+        url: `${process.env.BASE_URL}/${role}/${id ?`users/${id}` :'profile'}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      setRole(id ? response.data.role:role);
       setData(response.data);
+      
     }
     catch (error) {
       console.log(error);
@@ -48,7 +50,7 @@ const Profile = () => {
             </div>
             {role==="guru" &&<div class="overflow-scroll">
               
-              <JurnalGuru isProfile={true}/>
+              <JurnalGuru isProfile={true} id={data?._id}/>
             </div>}
           </div>
         </div>

@@ -21,7 +21,7 @@ const Navbar = () => {
   
 
   return (
-    <div className="w-full  bg-white  h-24 fixed flex pl-6 gap-2 border-b-2 border-slate-400 justify-center md:justify-between z-50  ">
+    <div className="w-full  bg-white  h-24 sticky top-0 flex pl-6 gap-2 border-b-2 border-slate-400 justify-center md:justify-between z-50  ">
       <div className="flex">
         <div>
           <img
