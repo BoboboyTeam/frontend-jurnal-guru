@@ -19,12 +19,17 @@ import {Outlet} from "react-router-dom";
 import Profile from "./page/Profile";
 import Guru from "./page/Guru";
 import DetailGuru from "./page/DetailGuru";
+import LandingPage from "./page/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element:<NavbarWrapper /> ,
     children: [
+      {
+        path: "/page",
+        element: <LandingPage/>,
+      },
       {
         path: "/profile",
         element: <Profile/>

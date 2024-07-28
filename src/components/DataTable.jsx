@@ -84,10 +84,12 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
     return <Load />;
   }
 
+
+
   return (
     <div className="px-3 py-4 flex justify-center mt-16  ">
-      <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-        <thead className={`${color ? color.primary : "bg-slate-600"} w-full`}>
+      <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll">
+        <thead className={`${color ? color.primary : "bg-slate-600"} w-full sticky top-24`}>
           <tr className="border-b  ">
             <th className="text-center p-3 px-5 ">No</th>
             {keylog?.map((item, index) => (
