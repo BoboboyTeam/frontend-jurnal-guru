@@ -75,9 +75,10 @@ const FormJurnal = ({ id = null }) => {
 
     // Dapetin guru dan _idnya
     let guruPengganti_id = form.get("guruPengganti");
-    let guru_id = jurnal && jurnal?.guru
-      ? jurnal.guru
-      : guru.find((item) => item._id === form.get("guru"));
+    let guru_id =
+      jurnal && jurnal?.guru
+        ? jurnal.guru
+        : guru.find((item) => item._id === form.get("guru"));
     guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
     console.log(guru);
 
@@ -104,7 +105,7 @@ const FormJurnal = ({ id = null }) => {
     try {
       const { data } = await axios({
         method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id ? `/${id}`:""}`,
+        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id ? `/${id}` : ""}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -136,14 +137,6 @@ const FormJurnal = ({ id = null }) => {
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
-        <div className="flex justify-end mb-3  ">
-          <div className=" bg-yellow-600 inline-block px-2 py-2 rounded-md hover:bg-yellow-700">
-            <button onClick={handleLogout}>
-              {" "}
-              <Icon size={30} icon={user}></Icon> Logout{" "}
-            </button>
-          </div>
-        </div>
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postJurnalGuru}>
             <div className="md:flex md:gap-28">
@@ -278,7 +271,7 @@ const FormJurnal = ({ id = null }) => {
                     })}
                   </select>
                 </div>
-                
+
                 <label
                   htmlFor="guruPengganti"
                   className="mb-3 block text-base font-medium text-white"
@@ -319,10 +312,7 @@ const FormJurnal = ({ id = null }) => {
                     })}
                   </select>
                 </div>
-
               </div>
-
-              
 
               <div>
                 <label
@@ -408,7 +398,6 @@ const FormJurnal = ({ id = null }) => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    
                   />
                 </div>
 
@@ -425,7 +414,6 @@ const FormJurnal = ({ id = null }) => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    
                   />
                 </div>
               </div>
