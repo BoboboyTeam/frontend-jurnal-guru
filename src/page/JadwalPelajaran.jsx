@@ -108,8 +108,8 @@ const JadwalPelajaran = () => {
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
       <div className="text-gray-900 bg-blue-100 pb-10 ">
-        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">   
-              
+        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 " >   
+
          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">LESSEON SCHEDULE</div>
 
           <div className="w-32 mt-3 ">
@@ -166,8 +166,8 @@ const JadwalPelajaran = () => {
           )}
         </div>
 
-        <div className="px-3  flex justify-center   ">
-          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
+        <div className="px-3  flex justify-center   " >
+          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center" >
             <thead className="sticky top-40 bg-blue-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
@@ -183,7 +183,7 @@ const JadwalPelajaran = () => {
                 return (
                   <tr
                     key={index}
-                    className="border-b hover:bg-blue-100 bg-gray-100 "
+                    className="border-b hover:bg-blue-100 bg-white "
                   >
                     <td className="p-3 px-5">{++index}</td>
                     <td className="p-3 px-5">{item?.hari}</td>
@@ -192,7 +192,7 @@ const JadwalPelajaran = () => {
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/" + item?._id}>
                         {" "}
-                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                        <button className="btn mr-3 text-sm bg-white border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
@@ -200,12 +200,12 @@ const JadwalPelajaran = () => {
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}
-                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                            <button className="btn  border-green-700 bg-white hover:bg-green-500  text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>
                           <button
-                            className="btn  border-red-700 hover:bg-red-500  text-slate-900  hover:text-white"
+                            className="btn  border-red-700 hover:bg-red-500 bg-white  text-slate-900  hover:text-white"
                             onClick={() => handdleDeletePopUp(item._id)}
                           >
                             <Icon icon={bin} />
@@ -230,7 +230,7 @@ const JadwalPelajaran = () => {
                                 </form>
                                 <form method="dialog">
                                   <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                                    Back
+                                    Cancel
                                   </button>
                                 </form>
                               </div>

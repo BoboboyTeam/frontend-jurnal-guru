@@ -159,14 +159,7 @@ const FormJP = ({ id=null }) => {
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
-        <div className="flex justify-end mb-3  ">
-          <div className=" bg-yellow-600 inline-block px-2 py-2 rounded-md hover:bg-yellow-700">
-            <button onClick={handleLogout}>
-              {" "}
-              <Icon size={30} icon={user}></Icon> Logout{" "}
-            </button>
-          </div>
-        </div>
+        
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
@@ -178,7 +171,7 @@ const FormJP = ({ id=null }) => {
                   Hari
                 </label>
 
-                <div className="mb-5 bg-white p-3 rounded-md">
+                <div className="mb-5 bg-white p-3 rounded-md w-52">
                   <select className="w-full" id="hari" name="hari">
             
                     {id && jadwal && day.map((item, index) => {
@@ -295,12 +288,12 @@ const FormJP = ({ id=null }) => {
               <div>
                 <label
                   htmlFor="kelas"
-                  className="mb-3 block text-base font-medium text-white"
+                  className="mb-3 block text-base font-medium text-white "
                 >
                   Kelas
                 </label>
 
-                <div className="mb-5 bg-white p-3 rounded-md">
+                <div className="mb-5 bg-white p-3 rounded-md  w-52">
                   <select className="w-full" id="kelas" name="kelas">
                     {kelas.map((item, index) => {
                       if (item === jadwal?.kelas) {
@@ -360,7 +353,7 @@ const FormJP = ({ id=null }) => {
             <div>
               <button
                 type="submit"
-                className="text-white rounded-md border-none hover:bg-yellow-600 bg-yellow-400 bg-opacity-50 px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                className="text-white rounded-md border-none hover:bg-green-600 bg-green-500 px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
               >
                 Submit
               </button>

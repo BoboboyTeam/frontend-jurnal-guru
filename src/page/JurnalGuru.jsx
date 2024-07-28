@@ -192,7 +192,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                   {result?.map((item, index) => {
                     return (
                      
-                        <tr key={index} className="border-b hover:bg-green-100 bg-gray-100 ">
+                        <tr key={index} className="border-b hover:bg-green-100 bg-white ">
                           <td className="p-3 px-5">{++index}</td>
                           <td className="p-3 px-5">{item?.createAt}</td>
                           <td className="p-3 px-5">{item?.guru?.nama}</td>
@@ -202,17 +202,17 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                           <td className="p-3 px-5">{item?.jumlahJP}</td>
                           <td className="p-3 px-5 flex justify-center">
                             <Link to={"/ditailJurnalGuru/"+item._id}>
-                              <button className="btn mr-3 text-smborder border-blue-700 hover:bg-blue-500 text-slate-900 hover:text-white">
+                              <button className="btn mr-3 text-smborder border-blue-700 hover:bg-blue-500 text-slate-900 bg-white hover:text-white">
                                 <Icon icon={externalLink} /> Detail
                               </button>
                             </Link>
 
-                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn border border-green-700 hover:bg-green-500 text-slate-900 mr-2  hover:text-white">
+                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn border bg-white border-green-700 hover:bg-green-500 text-slate-900 mr-2  hover:text-white">
                               <Icon icon={pencilSquareO} /> Edit
                             </button></Link>
 
                             <button
-                              className="btn border border-red-700 hover:bg-red-500 text-slate-900  hover:text-white"
+                              className="btn border border-red-700 hover:bg-red-500 text-slate-900 bg-white hover:text-white"
                               onClick={() => handdleDeletePopUp(item._id)}
                             >
                               <Icon icon={bin} />
@@ -237,7 +237,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                                   </form>
                                   <form method="dialog">
                                     <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                                      Back
+                                      Cancel
                                     </button>
                                   </form>
                                 </div>

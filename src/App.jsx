@@ -29,30 +29,67 @@ const router = createBrowserRouter([
       {
         path: "/page",
         element: <LandingPage/>,
+        
       },
       {
         path: "/profile",
-        element: <Profile/>
+        element: <Profile/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path: "/jurnal/:id",
         element: <JurnalReform />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path: "/jp/edit/:id",
         element: <JadwalReform />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path: "/jp/add",
         element: <JadwalReform />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path:"/guru",
-        element:<Guru/>
+        element:<Guru/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path:"/guru/:id",
-        element:<DetailGuru/>
+        element:<DetailGuru/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path: "/login",
@@ -61,10 +98,22 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path: "/guru",
         element: <Guru />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
       },
       {
         path: "/home",

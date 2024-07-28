@@ -87,10 +87,9 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
 
   return (
     <div className="px-3 py-4  justify-center mt-4  ">
-         <div className="text-3xl font-bold text-yellow-400  pb-6 sticky top-24 bg-white ">LIST OF TEACHER</div>
-
+         <div className="text-3xl font-bold text-yellow-400 pt-4 pb-6 sticky top-24 bg-white ">LIST OF TEACHER</div>
       <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll text-black ">
-        <thead className={`${color ? color.primary : "bg-yellow-400"} ${color?.text ? color-text : "text-slate-900"} w-full sticky top-36 `}>
+        <thead className={`${color ? color.primary : "bg-yellow-400"} ${color?.text ? color-text : "text-slate-900"} w-full sticky top-40 `}>
 
           <tr className="border-b  ">
             <th className="text-center p-3 px-5 ">No</th>
@@ -131,20 +130,20 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
 
                     <td className="p-3 px-5 flex justify-center ">
                       <Link to={`/${parentLink}/` + item._id}>
-                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 bg-white text-slate-900  hover:text-white">
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
 
                       <Link to={`/${parentLink}/edit/` + item._id}>
                         {" "}
-                        <button className="btn   border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2 ">
+                        <button className="btn   border-green-700 hover:bg-green-500 bg-white text-slate-900  hover:text-white mr-2 ">
                           <Icon icon={pencilSquareO} /> Edit
                         </button>
                       </Link>
 
                       <button
-                        className="btn border-red-700 hover:bg-red-500 text-slate-900 hover:text-white "
+                        className="btn border-red-700 hover:bg-red-500 bg-white text-slate-900 hover:text-white "
                         onClick={() => handdleDeletePopUp(item._id)}
                       >
                         <Icon icon={bin} />
