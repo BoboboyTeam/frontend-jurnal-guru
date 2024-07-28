@@ -96,7 +96,7 @@ const Navbar = () => {
             </form>
             <form method="dialog">
               <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                Batal
+                Cancel
               </button>
             </form>
           </div>

@@ -309,7 +309,7 @@ const FormJurnalForGuru = ({id=null}) => {
             <div>
               <button
                 type="submit"
-                className="text-white rounded-md border-none hover:bg-yellow-600 bg-yellow-400 bg-opacity-50 px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                className="text-white rounded-md border-none hover:bg-green-600 bg-green-500  px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
               >
                 Submit
               </button>
