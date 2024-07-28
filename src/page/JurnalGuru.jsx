@@ -130,12 +130,9 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${addons && 'sticky top-20'} bg-white sticky top-20  `}>
+              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end bg-white sticky ${isProfile ?"top-0": "top-20"}  `}>
          <div className="text-3xl font-bold text-green-500 pt-3 w-[700px] ">TEACHER JOURNAL</div>
-
-
-        {addons && addons}
-        <GajiBulanan id={id} />
+       
         <div className="flex justify-end gap-1 w-[80%] items-center ">
           <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md"> 
             From  : <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setFrom(e.target.value)} value={from}/>
@@ -171,7 +168,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
           )}
         </div>     
 
-
+        <GajiBulanan id={id} />
 
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">

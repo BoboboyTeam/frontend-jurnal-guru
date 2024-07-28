@@ -43,12 +43,16 @@ const GajiBulanan = ({ id, from }) => {
     return <h1 className="font-bold">Journal is Empty</h1>;
   }
   return (
-    <div>
+    <div className="px-10 py-2">
       <h1 className="font-bold">
         Payment {monthName ? `in ${monthName} ${year}` : "This Month"}:
       </h1>
-      <p>Total Teaching Hours: {data?.jumlahJP}</p>
-      <p>Total Payment: {data?.gaji}</p>
+      <div className="flex justify-between w-[50%]">
+        <ul className="list-disc px-16 py-2">
+            <li>Teaching Hours: {data?.jumlahJP}</li>
+            <li>Payment: {data?.gaji}</li>
+        </ul>
+      </div>
     </div>
   );
 };
