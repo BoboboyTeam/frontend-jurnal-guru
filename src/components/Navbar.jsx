@@ -41,7 +41,7 @@ const Navbar = () => {
 
 
       <div className="p-4  flex justify-center w-full  md:justify-center  pl-56 bg-blue-300">
-        <div className="w-[700px] mt-3  flex justify-start gap-10 font-bold ">
+        <div className="w-[700px] mt-3  flex justify-start gap-5 font-bold ">
           <Link to={"/jadwal"}>
             <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
             Lesson Schedule
