@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Detail = ({id,detail,columns=null}) => {
+const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("access_token");
   
   const [result, setResult] = useState([]);
   const [key, setKey] = useState([]);
+  const [columns, setColumns] = useState(columnsName ? columnsName : []);
 
   async function fetchDataId() {
     try {
@@ -19,7 +20,9 @@ const Detail = ({id,detail,columns=null}) => {
       });
       const keylog = Object.keys(data);
       console.log(data);
-      setKey(columns ? columns : keylog);
+      setColumns(columnsName ? columnsName : keylog);
+      console.log(keyColumns);
+      setKey(keyColumns ?keyColumns : keylog);
       setResult(data);
       console.log(key);
     } catch (error) {
@@ -34,9 +37,6 @@ const Detail = ({id,detail,columns=null}) => {
   }, []);
   return (
     <div className="m-auto w-full h-screen ">
-
-    
-
       <div className="w-full   flex justify-center pt-20 text-[#333333] ">
         <div className=" h-screen p-7  rounded-md  w-full ">
         
@@ -49,7 +49,7 @@ const Detail = ({id,detail,columns=null}) => {
               if(item === '_id') return null
               return (
                 <div key={index} className=" flex gap-2 pl-4 py-2 bg-blue-100">
-                  <p className="font-bold">{item.charAt(0).toUpperCase() + item.slice(1)} :</p>
+                  <p className="font-bold">{columns[index].charAt(0).toUpperCase() + columns[index].slice(1)} :</p>
                   <p>{item.includes('guru') ?  result[item]?.nama : result[item]}</p>
                 </div>
               );

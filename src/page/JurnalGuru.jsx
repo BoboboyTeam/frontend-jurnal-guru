@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
+import GajiBulanan from "../components/GajiBulanan";
 
 const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
@@ -15,6 +16,8 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
   const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
+
+
 
   async function fetchData() {
     try {
@@ -104,9 +107,9 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${!addons && 'sticky top-20'} bg-white  `}>
+              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end bg-white  `}>
         {addons && addons}
-    
+        <GajiBulanan id={id} />
         <div className="flex justify-end gap-1 w-[80%] items-center ">
           <p className="bg-green-500 text-[#184210] font-bold p-2 rounded-md"> 
             From  : <input type="month" className="p-1 rounded-md bg-green-400" onChange={(e)=>setFrom(e.target.value)} value={from}/>
@@ -149,7 +152,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
         
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-            <thead className={` bg-green-500 ${!addons && 'sticky top-40'}`} >
+            <thead className={` bg-green-500`} >
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Date</th>
