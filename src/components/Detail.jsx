@@ -34,13 +34,13 @@ const Detail = ({id,detail,columns=null}) => {
   }, []);
   return (
     <div className="m-auto w-full h-screen ">
-
-    
-
-      <div className="w-full   flex justify-center pt-20 text-[#333333] ">
-        <div className=" h-screen p-7  rounded-md  w-full ">
+      <div className="w-full   flex justify-center  text-[#333333] ">
+        <div className=" h-screen   rounded-md  w-full"  style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+        }}>
         
-          <div className="px-3 py-4  mt-4   ">
+          <div className="px-3 py-4  mt-4 sticky top-20   ">
             <div className="text-center font-bold text-xl bg-blue-300 py-2">
               <p>Detail</p>
             </div>

@@ -22,8 +22,11 @@ const Navbar = () => {
 
 
   return (
-    <div className="w-full sticky top-0  bg-blue-300  h-24 flex pl-6 gap-2 border-b-2 border-slate-100 justify-center md:justify-between z-50  ">
-      <div className="flex pt-2 gap-2">
+    <div className="w-full sticky top-0  bg-blue-300  h-24 flex pl-6 gap-2 border-b-2 border-slate-100 justify-center md:justify-between z-50  "  style={{
+      backgroundImage:
+        'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+    }} >
+      <div className="flex pt-2 gap-2" >
         <div>
           <img
             src="https://ummusshabri.sch.id/template/awal/assets/img/logo-pesri.png"
@@ -40,21 +43,21 @@ const Navbar = () => {
 
 
 
-      <div className="p-4  flex justify-center w-full  md:justify-center  pl-56 bg-blue-300">
+      <div className="p-4  flex justify-center w-full  md:justify-center  pl-56">
         <div className="w-[700px] mt-3  flex justify-start gap-5 font-bold ">
           <Link to={"/jadwal"}>
-            <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
+            <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100 ">
             Lesson Schedule
             </button>
           </Link>
           <Link to={"/jurnal"}>
-            <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
+            <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100 ">
             Teacher Journal
             </button>
           </Link>
           {role === "admin" && (
             <Link to={"/guru"}>
-              <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
+              <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
               List Of Teachers
               </button>
             </Link>

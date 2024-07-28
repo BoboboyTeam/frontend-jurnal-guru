@@ -102,19 +102,23 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${addons && 'sticky top-20'} bg-white  `}>
+            
+            
+              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${addons && 'sticky top-20'} bg-white sticky top-20  `}>
+         <div className="text-3xl font-bold text-green-500 pt-3 w-[700px] ">TEACHER JOURNAL</div>
+
         {addons && addons}
     
         <div className="flex justify-end gap-1 w-[80%] items-center ">
-          <p className="bg-green-500 text-[#184210] font-bold p-2 rounded-md"> 
-            From  : <input type="month" className="p-1 rounded-md bg-green-400" onChange={(e)=>setFrom(e.target.value)} value={from}/>
+          <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md"> 
+            From  : <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setFrom(e.target.value)} value={from}/>
           </p>
-          <p className="bg-green-500 text-[#184210] font-bold p-2 rounded-md">
-            To  :  <input type="month" className="p-1 rounded-md bg-green-400" onChange={(e)=>setTo(e.target.value)} value={to}/>
+          <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md">
+            To  :  <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setTo(e.target.value)} value={to}/>
           </p>
 
         <div className="w-[20%] self-center">
-          <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 text-[#184210]" onClick={()=>filterByDate()}>Set Filter</button>
+          <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold  text-white" onClick={()=>filterByDate()}>Set Filter</button>
         </div>
         </div>
         
@@ -138,13 +142,10 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
               </button>
             </Link>
           )}
-        </div>
-        
+        </div>     
 
 
 
-
-        
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
             <thead className={` bg-green-500 sticky top-40`} >
@@ -177,17 +178,17 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                           <td className="p-3 px-5">{item?.jumlahJP}</td>
                           <td className="p-3 px-5 flex justify-center">
                             <Link to={"/ditailJurnalGuru/"+item._id}>
-                              <button className="btn mr-3 text-smborder border-blue-700 hover:bg-blue-500 bg-blue-100 text-slate-900 hover:text-white">
+                              <button className="btn mr-3 text-smborder border-blue-700 hover:bg-blue-500 text-slate-900 hover:text-white">
                                 <Icon icon={externalLink} /> Detail
                               </button>
                             </Link>
 
-                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn border border-green-700 hover:bg-green-500 bg-green-100 text-slate-900 mr-2  hover:text-white">
+                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn border border-green-700 hover:bg-green-500 text-slate-900 mr-2  hover:text-white">
                               <Icon icon={pencilSquareO} /> Edit
                             </button></Link>
 
                             <button
-                              className="btn border border-red-700 hover:bg-red-500 bg-red-100 text-slate-900  hover:text-white"
+                              className="btn border border-red-700 hover:bg-red-500 text-slate-900  hover:text-white"
                               onClick={() => handdleDeletePopUp(item._id)}
                             >
                               <Icon icon={bin} />
