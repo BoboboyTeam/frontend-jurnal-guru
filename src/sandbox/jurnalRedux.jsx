@@ -7,12 +7,17 @@ const initialState = {
   error: null,
 };
 
-const getDataJP = async () => {
+export const fetchDataJP = createAsyncThunk(
+  "jurnalGuru/fetchDataJP",
+  async (params, thunkAPI) => {
     try {
+      const id = params?.id;
+      const month = params?.month;
+      console.log(params, "REDUX PARAMSSSSSSSS");
       const token = localStorage.getItem("access_token");
       const role = localStorage.getItem("role");
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${
-        id ? `${"/"+id }` : ""
+        id ? `${"/" + id}` : ""
       }`;
       console.log(link);
       let { data } = await axios({
@@ -22,54 +27,19 @@ const getDataJP = async () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const thisMonth = new Date().getMonth();
-      const jpData = data.dataJP[thisMonth];
+      console.log(month, "MONTH REDUX");
+      console.log(data.dataJP[6], "<<<<REDUX");
+      const jpData = data.dataJP[month];
       jpData.gaji = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
-        }).format(jpData.gaji);
-      console.log(data.dataJP[thisMonth]);
-      return (
-        (
-          <div className="w-[20rem]">
-            <h1 className="font-bold text-xl underline">Gaji Bulan ini:</h1>
-            <div className="pl-10">
-            <p className="font-semibold text-[1.1rem]">Jumlah JP: {jpData?.jumlahJP}</p>
-            <p className="font-semibold text-[1.1rem]">Total Gaji: {jpData?.gaji}</p>
-            </div>
-          </div>
-        )
-      );
+      }).format(jpData.gaji);
+      return jpData;
     } catch (error) {
       throw error;
     }
-  };
-
-export const fetchDataJP = createAsyncThunk('jurnalGuru/fetchDataJP',async(params,thunkAPI)=>{
-   try {
-    const id = params?.id
-    const month = params?.month
-    console.log(params,"REDUX PARAMSSSSSSSS")
-    const token = localStorage.getItem("access_token");
-    const role = localStorage.getItem("role");
-    const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${
-        id ? `${"/"+id }` : ""
-      }`;
-    console.log(link);
-      let { data } = await axios({
-        method: "get",
-        url: link,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(month,"MONTH REDUX")
-      console.log(data.dataJP[6],"<<<<REDUX")
-      return data.dataJP[month];
-   } catch (error) {
-    throw error;
-   }
-})
+  }
+);
 
 const jurnalGuruSlice = createSlice({
   name: "jurnalGuru",
@@ -77,6 +47,7 @@ const jurnalGuruSlice = createSlice({
   reducers: {
     // standard reducer logic, with auto-generated action types per reducer
     updateState: (state, action) => {
+      console.log(action, "REDUX PAYLOAD UPDATE STATE");
       state.data = action.payload;
     },
   },
@@ -87,10 +58,10 @@ const jurnalGuruSlice = createSlice({
       })
       .addCase(fetchDataJP.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action,"REDUX ACTION")
+        console.log(action, "REDUX ACTION");
         state.data = action.payload;
-        console.log(action.payload,"REDUX PAYLOAD")
-        console.log(state.data,"REDUX STATE")
+        console.log(action.payload, "REDUX PAYLOAD");
+        console.log(state.data, "REDUX STATE");
       })
       .addCase(fetchDataJP.rejected, (state, action) => {
         state.loading = false;
@@ -98,5 +69,8 @@ const jurnalGuruSlice = createSlice({
       });
   },
 });
+
+// Export updateState action
+export const { updateState } = jurnalGuruSlice.actions;
 
 export default jurnalGuruSlice.reducer;

@@ -9,6 +9,9 @@ import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
 import GajiBulanan from "../components/GajiBulanan";
+import { useDispatch } from "react-redux";
+// Import action
+import {updateState} from "../sandbox/jurnalRedux"
 
 const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
@@ -17,7 +20,8 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
 
-
+  // Redux
+  const dispatch = useDispatch();
 
   async function fetchData() {
     try {
@@ -58,10 +62,29 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
+      console.log(data,"JURNALAAAAAAAAAAAAAAAA");
       setResult(data.data);
+      const fromMonth = parseInt(from.split("-")[1])-1;
+      const toMonth = parseInt(to.split("-")[1])-1;
+      let newDataJP;
+      let keyDataJP = Object.keys(data.dataJP);
+      console.log(fromMonth);
+      console.log(keyDataJP.includes("6"));
+      console.log(keyDataJP.includes(fromMonth+""));
+      for(let i = fromMonth; i<=toMonth; i++){
+        
+        if(keyDataJP.includes(i.toString())){
+          
+          newDataJP = data.dataJP[i];
+          break;
+        }
+      }
+      console.log(newDataJP);
+      console.log("ASDASDAS");
+      dispatch(updateState(newDataJP));
     } catch (error) {
       console.log(error);
+      dispatch(updateState({}));
     }
   };
 
