@@ -10,7 +10,15 @@ import axios from "axios";
 
 const JadwalPelajaran = () => {
   const [result, setResult] = useState([]);
-  const day = ["Semua", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const day = [
+    "All Days",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+  ];
   const kelas = ["VII", "VIII", "IX"];
   const [jadwalId, setJadwalId] = useState(null);
 
@@ -51,7 +59,7 @@ const JadwalPelajaran = () => {
 
   async function handdleDelete() {
     const token = localStorage.getItem("access_token");
-    const link = process.env.BASE_URL + "/admin/jp/" + jadwalId
+    const link = process.env.BASE_URL + "/admin/jp/" + jadwalId;
     const response = await axios({
       method: "delete",
       url: link,
@@ -91,7 +99,6 @@ const JadwalPelajaran = () => {
         title: `${error}`,
       });
     }
-    
   }
 
   useEffect(() => {
@@ -100,16 +107,17 @@ const JadwalPelajaran = () => {
 
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
-      
       <div className="text-gray-900 bg-blue-100 pb-10 ">
-        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20">
+        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">   
+              
+         <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">LESSEON SCHEDULE</div>
+
           <div className="w-32 mt-3 ">
             <form action="">
               <select
                 className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
                 id="hari"
                 name="hari"
-
               >
                 {day.map((item) => {
                   return (
@@ -151,21 +159,21 @@ const JadwalPelajaran = () => {
 
           {localStorage.getItem("role") === "admin" && (
             <Link to={"/jp/add"}>
-              <button className="btn w-[10rem] text-white bg-green-500 hover:bg-green-700 mt-3">
-                <Icon icon={plus} /> Tambah Jadwal
+              <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
+                <Icon icon={plus} /> Create Schedule
               </button>
             </Link>
           )}
         </div>
 
-        <div className="px-3 py-4 flex justify-center mt-16  ">
+        <div className="px-3  flex justify-center   ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
             <thead className="sticky top-40 bg-blue-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
-                <th className="text-center p-3 px-5">Hari</th>
-                <th className="text-center p-3 px-5">Kelas</th>
-                <th className="text-center p-3 px-5">Guru</th>
+                <th className="text-center p-3 px-5">Day</th>
+                <th className="text-center p-3 px-5">Class</th>
+                <th className="text-center p-3 px-5">Teacher</th>
                 <th className="text-center p-3 px-5"></th>
                 <th />
               </tr>
@@ -182,55 +190,54 @@ const JadwalPelajaran = () => {
                     <td className="p-3 px-5">{item?.kelas}</td>
                     <td className="p-3 px-5">{item?.guru?.nama}</td>
                     <td className="p-3 px-5 flex justify-center">
-                      <Link to={"/ditailJadwalPelajaran/"+item?._id}>
+                      <Link to={"/ditailJadwalPelajaran/" + item?._id}>
                         {" "}
-                        <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
-                          <Icon icon={externalLink} /> Ditail
+                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                          <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
-                      {localStorage.getItem("role") === "admin" &&
+                      {localStorage.getItem("role") === "admin" && (
                         <>
-                          <Link to={"/editJadwalPelajaran/"+item._id}>
+                          <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}
-                            <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
+                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>
                           <button
-                            className="btn bg-red-500 hover:bg-red-700 text-white"
+                            className="btn  border-red-700 hover:bg-red-500  text-slate-900  hover:text-white"
                             onClick={() => handdleDeletePopUp(item._id)}
                           >
                             <Icon icon={bin} />
-                            Hapus
+                            Delete
                           </button>
-                        
-                      
-                      <dialog id="my_modal_1" className="modal">
-                        <div className="modal-box">
-                          <h3 className="font-bold text-lg">
-                            Apakah yakin ingin menghapus data ini?
-                          </h3>
-                          <div className="modal-action">
-                            <form method="dialog">
-                              <button
-                                onClick={() => {
-                                  handdleDelete();
-                                }}
-                                className="btn bg-red-500 hover:bg-red-700 text-white"
-                              >
-                                Hapus
-                              </button>
-                            </form>
-                            <form method="dialog">
-                              <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                                Kembali
-                              </button>
-                            </form>
-                          </div>
-                        </div>
-                      </dialog>
-                      </>
-              }
+
+                          <dialog id="my_modal_1" className="modal">
+                            <div className="modal-box">
+                              <h3 className="font-bold text-lg">
+                                Are you sure you want to delete this data?
+                              </h3>
+                              <div className="modal-action">
+                                <form method="dialog">
+                                  <button
+                                    onClick={() => {
+                                      handdleDelete();
+                                    }}
+                                    className="btn bg-red-500 hover:bg-red-700 text-white"
+                                  >
+                                    Delete
+                                  </button>
+                                </form>
+                                <form method="dialog">
+                                  <button className="btn bg-green-500 hover:bg-green-700 text-white">
+                                    Back
+                                  </button>
+                                </form>
+                              </div>
+                            </div>
+                          </dialog>
+                        </>
+                      )}
                     </td>
                   </tr>
                 );

@@ -22,6 +22,7 @@ const Profile = ({ id = null }) => {
       });
       setRole(id ? response.data.role : role);
       setData(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -49,17 +50,6 @@ const Profile = ({ id = null }) => {
         currency: "IDR",
         }).format(jpData.gaji);
       console.log(data.dataJP[thisMonth]);
-      setAddons(
-        (
-          <div className="w-[20rem]">
-            <h1 className="font-bold text-xl underline">Gaji Bulan ini:</h1>
-            <div className="pl-10">
-            <p className="font-semibold text-[1.1rem]">Jumlah JP: {jpData?.jumlahJP}</p>
-            <p className="font-semibold text-[1.1rem]">Total Gaji: {jpData?.gaji}</p>
-            </div>
-          </div>
-        )
-      );
     } catch (error) {
       console.log(error);
     }
