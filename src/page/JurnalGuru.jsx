@@ -168,7 +168,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
           )}
         </div>     
 
-        <GajiBulanan id={id} />
+        {isProfile&&<GajiBulanan id={id} />}
 
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
