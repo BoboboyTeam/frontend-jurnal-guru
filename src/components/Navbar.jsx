@@ -44,18 +44,18 @@ const Navbar = () => {
         <div className="w-[700px] mt-3  flex justify-start gap-10 font-bold ">
           <Link to={"/jadwal"}>
             <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
-              Jadwal Pelajaran
+            Lesson Schedule
             </button>
           </Link>
           <Link to={"/jurnal"}>
             <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
-              Jurnal Guru
+            Teacher Journal
             </button>
           </Link>
           {role === "admin" && (
             <Link to={"/guru"}>
               <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-700 ">
-                Daftar Guru
+              List Of Teachers
               </button>
             </Link>
           )}
