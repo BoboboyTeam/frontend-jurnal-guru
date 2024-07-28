@@ -46,7 +46,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       const token = localStorage.getItem("access_token");
       console.log(from,"AAAAAAAAAAAA");
       const query = `?from=${from}&to=${to}`;
-      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date/${id ? `${id+'/'}`:'/'}${query}`
+      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${id ? `${'/'+id}`:''}${query}`
       let { data } = await axios({
         method: "get",
         url: link,
@@ -102,7 +102,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end sticky top-20 bg-white  `}>
+              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${addons && 'sticky top-20'} bg-white  `}>
         {addons && addons}
     
         <div className="flex justify-end gap-1 w-[80%] items-center ">
