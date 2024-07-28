@@ -184,7 +184,7 @@ const JadwalPelajaran = () => {
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/"+item?._id}>
                         {" "}
-                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 bg-blue-100 text-slate-900  hover:text-white">
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
@@ -192,12 +192,12 @@ const JadwalPelajaran = () => {
                         <>
                           <Link to={"/editJadwalPelajaran/"+item._id}>
                             {" "}
-                            <button className="btn  border-green-700 hover:bg-green-500 text-slate-900  hover:text-white mr-2">
+                            <button className="btn  border-green-700 hover:bg-green-500 bg-green-100 text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>
                           <button
-                            className="btn  border-red-700 hover:bg-red-500 text-slate-900  hover:text-white"
+                            className="btn  border-red-700 hover:bg-red-500 bg-red-100 text-slate-900  hover:text-white"
                             onClick={() => handdleDeletePopUp(item._id)}
                           >
                             <Icon icon={bin} />

@@ -177,17 +177,17 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                           <td className="p-3 px-5">{item?.jumlahJP}</td>
                           <td className="p-3 px-5 flex justify-center">
                             <Link to={"/ditailJurnalGuru/"+item._id}>
-                              <button className="btn mr-3 text-smborder border-blue-700 hover:bg-blue-500 text-slate-900 hover:text-white">
+                              <button className="btn mr-3 text-smborder border-blue-700 hover:bg-blue-500 bg-blue-100 text-slate-900 hover:text-white">
                                 <Icon icon={externalLink} /> Detail
                               </button>
                             </Link>
 
-                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn border border-green-700 hover:bg-green-500 text-slate-900 mr-2  hover:text-white">
+                           <Link to={"/editJurnalGuru/"+item._id}> <button className="btn border border-green-700 hover:bg-green-500 bg-green-100 text-slate-900 mr-2  hover:text-white">
                               <Icon icon={pencilSquareO} /> Edit
                             </button></Link>
 
                             <button
-                              className="btn border border-red-700 hover:bg-red-500 text-slate-900  hover:text-white"
+                              className="btn border border-red-700 hover:bg-red-500 bg-red-100 text-slate-900  hover:text-white"
                               onClick={() => handdleDeletePopUp(item._id)}
                             >
                               <Icon icon={bin} />

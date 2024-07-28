@@ -87,7 +87,7 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
 
   return (
     <div className="px-3 py-4 flex justify-center mt-16  ">
-      <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll">
+      <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll text-black">
         <thead className={`${color ? color.primary : "bg-slate-600"} ${color?.text ? color-text : "text-gray-400"} w-full sticky top-24`}>
 
           <tr className="border-b  ">
@@ -127,22 +127,22 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
                       );
                     })}
 
-                    <td className="p-3 px-5 flex justify-center">
+                    <td className="p-3 px-5 flex justify-center ">
                       <Link to={`/${parentLink}/` + item._id}>
-                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                        <button className="btn mr-3 text-sm border-blue-700 bg-blue-100 hover:bg-blue-500 text-slate-900  hover:text-white">
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
 
                       <Link to={`/${parentLink}/edit/` + item._id}>
                         {" "}
-                        <button className="btn   border-green-700 hover:bg-green-500 text-slate-900  hover:text-white mr-2">
+                        <button className="btn   border-green-700 hover:bg-green-500 bg-green-100 text-slate-900  hover:text-white mr-2 bg-green-100">
                           <Icon icon={pencilSquareO} /> Edit
                         </button>
                       </Link>
 
                       <button
-                        className="btn  border-red-700 hover:bg-red-500 text-slate-900  hover:text-white "
+                        className="btn border-red-700 bg-red-100 hover:bg-red-500 text-slate-900 hover:text-white bg-white"
                         onClick={() => handdleDeletePopUp(item._id)}
                       >
                         <Icon icon={bin} />
