@@ -8,11 +8,12 @@ import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
 
-const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
+const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color = null }) => {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("access_token");
 
-  const [keylog, setKeylog] = useState(columns ? columns : []);
+  const [keylog, setKeylog] = useState(keyColumns ? keyColumns : []);
+  const [columns, setColumns] = useState(columnsName ? columnsName : []);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [id, setId] = useState(null);
@@ -67,7 +68,8 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
         },
       });
       const tempDict = response.length > 0 ? Object.keys(response.data[0]) : {};
-      setKeylog(columns ? columns : tempDict);
+      setKeylog(keyColumns ? keyColumns : tempDict);
+      setColumns(columnsName ? columnsName : tempDict);
       setData(response.data);
       setLoading(false);
     } catch (error) {
@@ -76,7 +78,7 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
   };
 
   useEffect(() => {
-    console.log(columns);
+    console.log(keyColumns);
     fetchData();
   }, []);
 
@@ -89,11 +91,11 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
   return (
     <div className="px-3 py-4 flex justify-center mt-16  ">
       <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll">
-        <thead className={`${color ? color.primary : "bg-slate-600"} w-full sticky top-24`}>
+        <thead className={`${color ? color.primary : "bg-slate-600"} ${color?.text ? color-text : "text-gray-400"} w-full sticky top-24`}>
           <tr className="border-b  ">
             <th className="text-center p-3 px-5 ">No</th>
-            {keylog?.map((item, index) => (
-              <th key={index} columns={index} className="text-center p-3 px-5">
+            {columns?.map((item, index) => (
+              <th key={index} className="text-center p-3 px-5">
                 {item}
               </th>
             ))}
@@ -108,21 +110,21 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
                 return (
                   <tr
                     key={index}
-                    columns={index}
+                    keyColumns={index}
                     className="border-b hover:bg-green-100 bg-gray-100 "
                   >
                     <td className="p-3 px-5">{++index}</td>
-                    {keylog.map((columns, index) => {
-                      if (columns.includes("guru")) {
+                    {keylog.map((keyColumns, index) => {
+                      if (keyColumns.includes("guru")) {
                         return (
-                          <td key={index} columns={index} className="p-3 px-5">
-                            {item[columns].nama}
+                          <td key={index} keyColumns={index} className="p-3 px-5">
+                            {item[keyColumns].nama}
                           </td>
                         );
                       }
                       return (
-                        <td key={index} columns={index} className="p-3 px-5">
-                          {item[columns]}
+                        <td key={index} keyColumns={index} className="p-3 px-5">
+                          {item[keyColumns]}
                         </td>
                       );
                     })}
