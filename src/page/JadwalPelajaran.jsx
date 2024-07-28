@@ -151,8 +151,8 @@ const JadwalPelajaran = () => {
 
           {localStorage.getItem("role") === "admin" && (
             <Link to={"/jp/add"}>
-              <button className="btn w-[10rem] text-white bg-green-500 hover:bg-green-700 mt-3">
-                <Icon icon={plus} /> Add Schedule
+              <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
+                <Icon icon={plus} /> Create Schedule
               </button>
             </Link>
           )}
@@ -184,7 +184,7 @@ const JadwalPelajaran = () => {
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/"+item?._id}>
                         {" "}
-                        <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
+                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
@@ -192,12 +192,12 @@ const JadwalPelajaran = () => {
                         <>
                           <Link to={"/editJadwalPelajaran/"+item._id}>
                             {" "}
-                            <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
+                            <button className="btn  border-green-700 hover:bg-green-500 text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>
                           <button
-                            className="btn bg-red-500 hover:bg-red-700 text-white"
+                            className="btn  border-red-700 hover:bg-red-500 text-slate-900  hover:text-white"
                             onClick={() => handdleDeletePopUp(item._id)}
                           >
                             <Icon icon={bin} />

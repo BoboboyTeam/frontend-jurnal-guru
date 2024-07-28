@@ -46,14 +46,13 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
       didOpen: (toast) => {
         toast.onmouseenter = Swal.stopTimer;
         toast.onmouseleave = Swal.resumeTimer;
-        
       },
     });
     Toast.fire({
       icon: "success",
       title: "Data Terhapus",
     });
-    await fetchData()
+    await fetchData();
   }
 
   const fetchData = async () => {
@@ -84,12 +83,14 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
     return <Load />;
   }
 
-
-
   return (
     <div className="px-3 py-4 flex justify-center mt-16  ">
       <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll">
-        <thead className={`${color ? color.primary : "bg-slate-600"} w-full sticky top-24`}>
+        <thead
+          className={`${
+            color ? color.primary : "bg-yellow-300"
+          } w-full sticky top-24`}
+        >
           <tr className="border-b  ">
             <th className="text-center p-3 px-5 ">No</th>
             {keylog?.map((item, index) => (
@@ -109,7 +110,7 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
                   <tr
                     key={index}
                     columns={index}
-                    className="border-b hover:bg-green-100 bg-gray-100 "
+                    className="border-b hover:bg-yellow-50 bg-white "
                   >
                     <td className="p-3 px-5">{++index}</td>
                     {keylog.map((columns, index) => {
@@ -129,30 +130,33 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
 
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={`/${parentLink}/` + item._id}>
-                        <button className="btn mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white">
-                          <Icon icon={externalLink} /> Ditail
+                        <button className="btn mr-3 text-sm border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                          <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
 
                       <Link to={`/${parentLink}/edit/` + item._id}>
                         {" "}
-                        <button className="btn text-white bg-green-500 hover:bg-green-700 mr-2">
+                        <button className="btn   border-green-700 hover:bg-green-500 text-slate-900  hover:text-white mr-2">
                           <Icon icon={pencilSquareO} /> Edit
                         </button>
                       </Link>
 
                       <button
-                        className="btn bg-red-500 hover:bg-red-700 text-white"
+                        className="btn  border-red-700 hover:bg-red-500 text-slate-900  hover:text-white "
                         onClick={() => handdleDeletePopUp(item._id)}
                       >
                         <Icon icon={bin} />
-                        Hapus
+                        Delete
                       </button>
 
-                      <dialog id="delete_modal" className="modal text-[#EEEEEE]">
-                        <div className="modal-box bg-gray-800">
+                      <dialog
+                        id="delete_modal"
+                        className="modal text-slate-900"
+                      >
+                        <div className="modal-box bg-white">
                           <h3 className="font-bold text-lg">
-                            Apakah yakin ingin menghapus data ini?
+                            Are you sure you want to delete this data?
                           </h3>
                           <div className="modal-action">
                             <form method="dialog">
@@ -162,12 +166,12 @@ const DataTable = ({ columns, detail, query, parentLink, color = null }) => {
                                 }}
                                 className="btn bg-red-500 hover:bg-red-700 text-white"
                               >
-                                Hapus
+                                Delete
                               </button>
                             </form>
                             <form method="dialog">
                               <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                                Kembali
+                                Back
                               </button>
                             </form>
                           </div>
