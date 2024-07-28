@@ -108,8 +108,8 @@ const JadwalPelajaran = () => {
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
       <div className="text-gray-900 bg-blue-100 pb-10 ">
-        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">   
-              
+        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 " >   
+
          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">LESSEON SCHEDULE</div>
 
           <div className="w-32 mt-3 ">
@@ -166,8 +166,8 @@ const JadwalPelajaran = () => {
           )}
         </div>
 
-        <div className="px-3  flex justify-center   ">
-          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
+        <div className="px-3  flex justify-center   " >
+          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center" >
             <thead className="sticky top-40 bg-blue-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
