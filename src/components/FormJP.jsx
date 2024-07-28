@@ -38,7 +38,7 @@ const FormJP = ({ id=null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/users/guru",
+        url: process.env.BASE_URL+"/users/role/guru",
         headers: {
           Authorization: `Bearer ${token}`,
         },

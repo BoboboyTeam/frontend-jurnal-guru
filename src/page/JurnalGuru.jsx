@@ -8,13 +8,20 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
+import GajiBulanan from "../components/GajiBulanan";
+import { useDispatch } from "react-redux";
+// Import action
+import {updateState} from "../sandbox/jurnalRedux"
 
 const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
   const role = localStorage.getItem("role");
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
-  const [to, setTo] = useState(new Date().toISOString().slice(0, 7));
+  const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
+
+  // Redux
+  const dispatch = useDispatch();
 
   async function fetchData() {
     try {
@@ -47,6 +54,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       console.log(from,"AAAAAAAAAAAA");
       const query = `?from=${from}&to=${to}`;
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${id ? `${'/'+id}`:''}${query}`
+      console.log(link);
       let { data } = await axios({
         method: "get",
         url: link,
@@ -54,10 +62,29 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
+      console.log(data,"JURNALAAAAAAAAAAAAAAAA");
       setResult(data.data);
+      const fromMonth = parseInt(from.split("-")[1])-1;
+      const toMonth = parseInt(to.split("-")[1])-1;
+      let newDataJP;
+      let keyDataJP = Object.keys(data.dataJP);
+      console.log(fromMonth);
+      console.log(keyDataJP.includes("6"));
+      console.log(keyDataJP.includes(fromMonth+""));
+      for(let i = fromMonth; i<=toMonth; i++){
+        
+        if(keyDataJP.includes(i.toString())){
+          
+          newDataJP = data.dataJP[i];
+          break;
+        }
+      }
+      console.log(newDataJP);
+      console.log("ASDASDAS");
+      dispatch(updateState(newDataJP));
     } catch (error) {
       console.log(error);
+      dispatch(updateState({}));
     }
   };
 
@@ -97,18 +124,18 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
 
   useEffect(() => {
     fetchData();
+    if(isProfile) filterByDate();
   }, []);
 
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-            
-            
               <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${addons && 'sticky top-20'} bg-white sticky top-20  `}>
          <div className="text-3xl font-bold text-green-500 pt-3 w-[700px] ">TEACHER JOURNAL</div>
 
+
         {addons && addons}
-    
+        <GajiBulanan id={id} />
         <div className="flex justify-end gap-1 w-[80%] items-center ">
           <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md"> 
             From  : <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setFrom(e.target.value)} value={from}/>
@@ -148,7 +175,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
 
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-            <thead className={` bg-green-500 sticky top-40`} >
+            <thead className={` bg-green-500`} >
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Date</th>
