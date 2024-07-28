@@ -3,6 +3,8 @@ import { bin } from "react-icons-kit/icomoon/bin";
 import { plus } from "react-icons-kit/fa/plus";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
 import { externalLink } from "react-icons-kit/fa/externalLink";
+
+import { iosCheckmark } from "react-icons-kit/ionicons/iosCheckmark";
 import { Icon } from "react-icons-kit";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
@@ -21,6 +23,7 @@ const JadwalPelajaran = () => {
   ];
   const kelas = ["VII", "VIII", "IX"];
   const [jadwalId, setJadwalId] = useState(null);
+  const [jurnal, setJurnal] = useState(null);
 
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
@@ -43,6 +46,34 @@ const JadwalPelajaran = () => {
                 Authorization: `Bearer ${token}`,
               },
             });
+      console.log(data);
+      let getJurnal;
+      if (localStorage.getItem("role") === "guru") {
+        getJurnal = await axios({
+          method: "get",
+          url: process.env.BASE_URL + "/guru/jurnal-guru/now",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(getJurnal.data, "JOURNAL<<<<<<<<<<<<<<<,");
+        // Get Journal This Day
+        let jurnalCheck = [];
+        data.forEach((item, index) => {
+          if (getJurnal.data.length > 0) {
+            console.log(getJurnal.data[index]?.jamKe, "Jurnal Jam Ke");
+            if (getJurnal.data[index]?.jamKe === item.jamKe) {
+              jurnalCheck.push(1);
+              console.log("Jurnal Sudah Ada");
+            } else {
+              jurnalCheck.push(0);
+            }
+          } else {
+            jurnalCheck.push(0);
+          }
+        });
+        setJurnal(jurnalCheck);
+      }
 
       console.log(data);
       setResult(data);
@@ -108,9 +139,10 @@ const JadwalPelajaran = () => {
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
       <div className="text-gray-900 bg-blue-100 pb-10 ">
-        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">   
-              
-         <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">LESSEON SCHEDULE</div>
+        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">
+          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">
+            LESSEON SCHEDULE
+          </div>
 
           <div className="w-32 mt-3 ">
             <form action="">
@@ -196,11 +228,29 @@ const JadwalPelajaran = () => {
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
+                      {localStorage.getItem("role") === "guru" &&
+                        jurnal[index - 1] < 1 && (
+                          <Link to={"/jurnal/" + item._id}>
+                            {" "}
+                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                              <Icon icon={plus} /> Add Journal
+                            </button>
+                          </Link>
+                        )}
+                      {localStorage.getItem("role") === "guru" &&
+                        jurnal[index - 1] > 0 && (
+                          <div className="border p-[0.6rem] rounded-lg border-green-700 bg-green-500  text-white mr-2">
+                            <p>
+                              <Icon icon={iosCheckmark} /> Journal Has Been
+                              Added
+                            </p>
+                          </div>
+                        )}
                       {localStorage.getItem("role") === "admin" && (
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}
-                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                            <button className="btn border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>

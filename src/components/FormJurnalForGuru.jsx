@@ -56,7 +56,7 @@ const FormJurnalForGuru = ({id=null}) => {
         const role = localStorage.getItem("role");
         const { data } = await axios({
             method: "get",
-            url: `${process.env.BASE_URL}/${role}/jurnal-guru/${id}`,
+            url: `${process.env.BASE_URL}/${role}/jp/${id}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -98,9 +98,19 @@ const FormJurnalForGuru = ({id=null}) => {
     console.log(formData);
 
     try {
+      let link = `${process.env.BASE_URL}/${role}`;
+      if (role === "admin") {
+        link += "/jurnal-guru";
+      } else {
+        link += "/jp";
+      }
+      if (id) {
+        link += `/${id}`;
+      }
+      
       const { data } = await axios({
-        method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id && `/${id}`}`,
+        method: "post",
+        url: `${process.env.BASE_URL}/${role}/jurnal-guru`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -110,9 +120,10 @@ const FormJurnalForGuru = ({id=null}) => {
 
       Swal.fire({
         icon: "success",
-        title: id ? "Success Updating Jurnal" :"Succes Adding Jurnal",
+        title:"Succes Adding Jurnal",
       });
-      redirect("/jurnal-guru");
+      
+      navigate("/jurnal-guru");
     } catch (error) {
       console.log(error);
     }

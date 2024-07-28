@@ -10,7 +10,7 @@ const FormJP = ({ id=null }) => {
   function handleLogout() {}
   const role = localStorage.getItem("role");
 
-  const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [guru, setGuru] = useState();
   const [kelas, setKelas] = useState([]);
   const [jadwal, setJadwal] = useState();

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 const JurnalReform = () => {
     
-    const {id} = useParams();
+  const {id} = useParams();
   if(localStorage.role === "guru"){
     return (
     <FormJurnalForGuru id={id}/>
