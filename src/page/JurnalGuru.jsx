@@ -13,7 +13,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
   const role = localStorage.getItem("role");
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
-  const [to, setTo] = useState(new Date().toISOString().slice(0, 7));
+  const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
 
   async function fetchData() {
@@ -47,6 +47,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       console.log(from,"AAAAAAAAAAAA");
       const query = `?from=${from}&to=${to}`;
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${id ? `${'/'+id}`:''}${query}`
+      console.log(link);
       let { data } = await axios({
         method: "get",
         url: link,
@@ -97,12 +98,13 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
 
   useEffect(() => {
     fetchData();
+    if(isProfile) filterByDate();
   }, []);
 
   return (
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
-              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${addons && 'sticky top-20'} bg-white  `}>
+              <div className={`p-4 gap-10  flex justify-center w-full  md:justify-end ${!addons && 'sticky top-20'} bg-white  `}>
         {addons && addons}
     
         <div className="flex justify-end gap-1 w-[80%] items-center ">
@@ -145,7 +147,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
         
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-            <thead className={` bg-green-500 sticky top-40`} >
+            <thead className={` bg-green-500 ${!addons && 'sticky top-40'}`} >
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Tanggal</th>
