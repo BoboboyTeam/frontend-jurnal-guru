@@ -80,7 +80,6 @@ const Navbar = () => {
           <p>Logout</p>
         </button>
       </div>
-
       <dialog id="my_modal_7" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Are you sure want to logout</h3>
