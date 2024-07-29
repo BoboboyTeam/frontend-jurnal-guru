@@ -30,6 +30,7 @@ const JadwalPelajaran = () => {
 
   const searchByGuru = async (e) => {
     try {
+      setSearchGuru(e.target.value);
       console.log(e.target.value);
       let query = "?";
       if (e.target.id ==='searchGuru') query += `guru=${e.target.value}`;

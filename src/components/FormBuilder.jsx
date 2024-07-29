@@ -6,8 +6,16 @@ import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
 
-const FormBuilder = ({ id=null,detail,keyColumns=null,columnsName=null}) => {
+const FormBuilder = ({
+  id = null,
+  detail,
+  keyColumns = null,
+  columnsName = null,
+}) => {
   const role = localStorage.getItem("role");
+  const [key, setKey] = useState(keyColumns ? keyColumns : []);
+  const [columns, setColumns] = useState(columnsName ? columnsName : []);
+  const [editData, setEditData] = useState({});
 
   const postForm = async (e) => {
     e.preventDefault();
@@ -16,33 +24,32 @@ const FormBuilder = ({ id=null,detail,keyColumns=null,columnsName=null}) => {
     console.log(data);
     const token = localStorage.getItem("access_token");
     const response = await axios({
-        method: "post",
-        url: `${process.env.BASE_URL}/${role}/jadwal`,
-        data: data,
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+      method: "post",
+      url: `${process.env.BASE_URL}/${role}/jadwal`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     console.log(response);
     const Toast = Swal.mixin({
-        toast: true,
-        position: "bottom-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
+      toast: true,
+      position: "bottom-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
     });
     Toast.fire({
-        icon: "success",
-        title: "Data Terkirim",
+      icon: "success",
+      title: "Data Terkirim",
     });
-    };
+  };
 
-
-  if(id && !jadwal) return <Load/>
+  if (id && !jadwal) return <Load />;
 
   return (
     <>
@@ -53,10 +60,8 @@ const FormBuilder = ({ id=null,detail,keyColumns=null,columnsName=null}) => {
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
-        
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postForm}>
-            
             <div>
               <button
                 type="submit"

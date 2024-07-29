@@ -15,9 +15,7 @@ const FormJP = ({ id=null }) => {
   const [kelas, setKelas] = useState([]);
   const [jadwal, setJadwal] = useState();
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const [searchGuru, setSearchGuru] = useState();
-  const [searchKelas, setSearchKelas] = useState();
-  const [searchHari, setSearchHari] = useState();
+  
 
   const mataPelajaran = [
     "Matematika",
@@ -143,24 +141,7 @@ const FormJP = ({ id=null }) => {
     }
   });
 
-  const searchByGuru = async (e) => {
-    try {
-      console.log(searchGuru);
-      let query = "?"
-      if(searchGuru) query += `guru=${searchGuru}`
-      const token = localStorage.getItem("access_token");
-      const { data } = await axios({
-        method: "get",
-        url: `${process.env.BASE_URL}/admin/jp${query}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setJadwal(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
 
   useEffect(() => {
     fetchGuru();
