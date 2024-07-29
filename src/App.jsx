@@ -15,25 +15,27 @@ import EditJurnalGuru from "./page/EditJurnalGuru";
 import JurnalReform from "./page/JurnalReform";
 import JadwalReform from "./page/JadwalReform";
 import Navbar from "./components/Navbar";
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Profile from "./page/Profile";
 import Guru from "./page/Guru";
 import DetailGuru from "./page/DetailGuru";
 import LandingPage from "./page/LandingPage";
+import TableMapel from "./page/TableMapel";
+import TableKelas from "./page/TableKelas";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<NavbarWrapper /> ,
+    element: <NavbarWrapper />,
     children: [
       {
         path: "/page",
-        element: <LandingPage/>,
-        
+        element: <LandingPage />,
       },
       {
         path: "/profile",
-        element: <Profile/>,
+        element: <Profile />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
           }
           return null;
         },
+      },
+      {
+        path: "/tabelmapel",
+        element: <TableMapel />,
+      },
+      {
+        path: "/tabelkelas",
+        element: <TableKelas />,
       },
       {
         path: "/jp/edit/:id",
@@ -72,8 +82,8 @@ const router = createBrowserRouter([
         },
       },
       {
-        path:"/guru",
-        element:<Guru/>,
+        path: "/guru",
+        element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -82,8 +92,8 @@ const router = createBrowserRouter([
         },
       },
       {
-        path:"/guru/:id",
-        element:<DetailGuru/>,
+        path: "/guru/:id",
+        element: <DetailGuru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -190,14 +200,14 @@ const router = createBrowserRouter([
   },
 ]);
 
-function NavbarWrapper(){
+function NavbarWrapper() {
   return (
-  <div>
-      <Navbar/>
-      <Outlet/>
-  </div>
-  )
-};
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
+}
 
 function App() {
   return (

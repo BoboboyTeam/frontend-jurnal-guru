@@ -86,7 +86,7 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
   }
 
   return (
-    <div className="px-3 py-4  justify-center mt-4  ">
+    <div className="px-3 py-4  justify-center   ">
          <div className="text-3xl font-bold text-yellow-400 pt-4 pb-6 sticky top-24 bg-white ">LIST OF TEACHER</div>
       <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll text-black ">
         <thead className={`${color ? color.primary : "bg-yellow-400"} ${color?.text ? color-text : "text-slate-900"} w-full sticky top-40 `}>
