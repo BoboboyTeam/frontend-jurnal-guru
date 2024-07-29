@@ -28,7 +28,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       const token = localStorage.getItem("access_token");
 
       const link = id ? `${role}/filter/jurnal-guru/guru/${id}` : `${role}/jurnal-guru`;
-      const profileLink = isProfile && role==='guru' ? `${role}/jurnal-guru` : '';
+      const profileLink = isProfile | role==='guru' ? `${role}/jurnal-guru` : '';
 
       const trueLink = role==='guru' ? profileLink : link;
       console.log(`${process.env.BASE_URL}/${trueLink}`);
@@ -119,7 +119,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       icon: "success",
       title: "Data Terhapus",
     });
-    fetchData();
+    await fetchData();
   }
 
   useEffect(() => {

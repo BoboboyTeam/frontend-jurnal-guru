@@ -15,6 +15,10 @@ const FormJP = ({ id=null }) => {
   const [kelas, setKelas] = useState([]);
   const [jadwal, setJadwal] = useState();
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [searchGuru, setSearchGuru] = useState();
+  const [searchKelas, setSearchKelas] = useState();
+  const [searchHari, setSearchHari] = useState();
+
   const mataPelajaran = [
     "Matematika",
     "Bahasa Inggris",
@@ -104,7 +108,7 @@ const FormJP = ({ id=null }) => {
     console.log(guru);
 
     const formData = {
-      hari: form.get("hari").toLowerCase(),
+      hari: form.get("hari"),
       jamKe: form.get("jamKe"),
       guru: {
         _id: guru_id._id,
@@ -114,14 +118,14 @@ const FormJP = ({ id=null }) => {
       kelas: form.get("kelas"),
       mapel: form.get("mapel"),
       materi: "",
-      jumlahJP: "",
+      jumlahJP: form.get("jumlahJP"),
     };
     console.log(formData,"FORMDATA");
-
+    const link = `${process.env.BASE_URL}/${role}/jp${ id && id!="add" ?`/${id}`:''}`
     try {
       const { data } = await axios({
-        method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jp${id?`/${id}`:''}`,
+        method: id && id!="add" ? "put" : "post",
+        url: link,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -131,13 +135,32 @@ const FormJP = ({ id=null }) => {
 
       Swal.fire({
         icon: "success",
-        title: id ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
+        title: id && id!="add" ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
       });
-      redirect("/jadwal");
+      navigate("/jadwal");
     } catch (error) {
       console.log(error);
     }
   });
+
+  const searchByGuru = async (e) => {
+    try {
+      console.log(searchGuru);
+      let query = "?"
+      if(searchGuru) query += `guru=${searchGuru}`
+      const token = localStorage.getItem("access_token");
+      const { data } = await axios({
+        method: "get",
+        url: `${process.env.BASE_URL}/admin/jp${query}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setJadwal(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchGuru();

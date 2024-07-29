@@ -35,7 +35,7 @@ const FormJurnal = ({ id = null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL + "/users/guru",
+        url: process.env.BASE_URL + "/users/role/guru",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,11 +101,11 @@ const FormJurnal = ({ id = null }) => {
       jumlahJP: form.get("jumlahJP"),
     };
     console.log(formData);
-
     try {
+      const link = `${process.env.BASE_URL}/${role}/jurnal-guru${ id && id!="add" ?`/${id}`:''}`
       const { data } = await axios({
-        method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id ? `/${id}` : ""}`,
+        method: id && id!="add" ? "put" : "post",
+        url: link,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -115,9 +115,9 @@ const FormJurnal = ({ id = null }) => {
 
       Swal.fire({
         icon: "success",
-        title: id ? "Success Updating Jurnal" : "Succes Adding Jurnal",
+        title: id && id!="add" ?  "Success Updating Jurnal" : "Succes Adding Jurnal",
       });
-      redirect("/jurnal-guru");
+      navigate("/jurnal");
     } catch (error) {
       console.log(error);
     }

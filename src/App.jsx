@@ -20,12 +20,17 @@ import Profile from "./page/Profile";
 import Guru from "./page/Guru";
 import DetailGuru from "./page/DetailGuru";
 import LandingPage from "./page/LandingPage";
+import FormBuilder from "./components/FormBuilder";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element:<NavbarWrapper /> ,
     children: [
+      {
+        path:'/test',
+        element:<FormBuilder/>
+      },
       {
         path: "/page",
         element: <LandingPage/>,

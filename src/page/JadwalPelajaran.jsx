@@ -24,6 +24,28 @@ const JadwalPelajaran = () => {
   const kelas = ["VII", "VIII", "IX"];
   const [jadwalId, setJadwalId] = useState(null);
   const [jurnal, setJurnal] = useState(null);
+  const [searchGuru, setSearchGuru] = useState();
+  const [searchKelas, setSearchKelas] = useState();
+  const [searchHari, setSearchHari] = useState();
+
+  const searchByGuru = async (e) => {
+    try {
+      console.log(e.target.value);
+      let query = "?";
+      if (e.target.id ==='searchGuru') query += `guru=${e.target.value}`;
+      const token = localStorage.getItem("access_token");
+      const { data } = await axios({
+        method: "get",
+        url: `${process.env.BASE_URL}/admin/jp${query}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setResult(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
@@ -47,6 +69,8 @@ const JadwalPelajaran = () => {
               },
             });
       console.log(data);
+
+      // Absence Condition
       let getJurnal;
       if (localStorage.getItem("role") === "guru") {
         getJurnal = await axios({
@@ -62,7 +86,11 @@ const JadwalPelajaran = () => {
         data.forEach((item, index) => {
           if (getJurnal.data.length > 0) {
             console.log(getJurnal.data[index]?.jamKe, "Jurnal Jam Ke");
-            if (getJurnal.data[index]?.jamKe === item.jamKe) {
+            let condition = getJurnal.data[index]?.jamKe === item.jamKe;
+            condition = getJurnal.data[index]?.mapel === item.mapel;
+            condition = getJurnal.data[index]?.guru?._id === item.guru?._id;
+
+            if (condition) {
               jurnalCheck.push(1);
               console.log("Jurnal Sudah Ada");
             } else {
@@ -182,8 +210,10 @@ const JadwalPelajaran = () => {
           <div className="w-80 rounded-md mt-3">
             <form action="">
               <input
+                id="searchGuru"
                 className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
                 type="text"
+                onChange={searchByGuru}
                 placeholder="Cari Nama Guru"
               />
             </form>
@@ -198,8 +228,8 @@ const JadwalPelajaran = () => {
           )}
         </div>
 
-        <div className="px-3  flex justify-center   " >
-          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center" >
+        <div className="px-3  flex justify-center   ">
+          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
             <thead className="sticky top-40 bg-blue-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
@@ -250,7 +280,7 @@ const JadwalPelajaran = () => {
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}
-                            <button className="btn border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                            <button className="btn bg-green-100 border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>

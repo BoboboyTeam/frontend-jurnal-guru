@@ -123,7 +123,7 @@ const FormJurnalForGuru = ({id=null}) => {
         title:"Succes Adding Jurnal",
       });
       
-      navigate("/jurnal-guru");
+      navigate("/jurnal");
     } catch (error) {
       console.log(error);
     }

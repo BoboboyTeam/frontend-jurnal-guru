@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataJP } from "../sandbox/jurnalRedux";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const GajiBulanan = ({ id, from }) => {
   // Redux
@@ -36,11 +37,16 @@ const GajiBulanan = ({ id, from }) => {
   if (loading) {
     return <p>Loading...</p>;
   }
-  if (error) {
-    return <p>Error...</p>;
-  }
-  if (!data.jumlahJP || !data.gaji) {
+  if (!data.jumlahJP || !data.gaji || error.message.split(" ")[4] === "404") {
     return <h1 className="font-bold">Journal is Empty</h1>;
+  }
+  if (error) {
+    return Swal.fire({
+      title: "Error!",
+      text: error.message,
+      icon: "error",
+      confirmButtonText: "Cool",
+    });
   }
   return (
     <div className="px-10 py-2">

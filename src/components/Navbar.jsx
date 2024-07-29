@@ -17,6 +17,10 @@ const Navbar = () => {
     localStorage.removeItem("access_token");
     navigate("/login");
   }
+  
+  if(localStorage.getItem("access_token") === null){
+    return
+  }
 
   return (
     <div
