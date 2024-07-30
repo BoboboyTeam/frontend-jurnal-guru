@@ -9,9 +9,10 @@ import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
 import GajiBulanan from "../components/GajiBulanan";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // Import action
 import {updateState} from "../sandbox/jurnalRedux"
+import Invoice from "../components/Invoice";
 
 const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
@@ -19,6 +20,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
   const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
+  const profile = useSelector((state)=>state.profile?.data);
 
   // Redux
   const dispatch = useDispatch();
@@ -41,7 +43,6 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       });
       console.log(data);
       setResult(data);
-      console.log(addons)
     } catch (error) {
       console.log(error);
     }
@@ -50,11 +51,12 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const filterByDate = async () => {
     try {
       setResult([]);
-      const fromMonth = parseInt(from.split("-")[1])-1;
-      const fromYear = parseInt(from.split("-")[0]);
+      const fromMonth = from.split("-")[1];
+      const fromYear = from.split("-")[0];
       const token = localStorage.getItem("access_token");
-      console.log(from,"AAAAAAAAAAAA");
+      console.log(fromYear,"AAAAAAAAAAAA");
       const query = `?month=${fromMonth}&year=${fromYear}`;
+      console.log(query);
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${id ? `${'/'+id}`:''}${query}`
       console.log(link);
       let { data } = await axios({
@@ -66,7 +68,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       });
       console.log(data,"JURNALAAAAAAAAAAAAAAAA");
       setResult(data.data);
-      let newDataJP = data.dataJP[fromMonth];
+      let newDataJP = data.dataJP[parseInt(fromMonth)-1];
       let keyDataJP = Object.keys(data.dataJP);
       console.log(fromMonth);
       console.log(keyDataJP.includes("6"));
@@ -79,9 +81,11 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       //     break;
       //   }
       // }
-      console.log(newDataJP);
+      console.log(data);
       console.log("ASDASDAS");
       dispatch(updateState(newDataJP));
+      console.log(newDataJP);
+      setResult(data.data);
     } catch (error) {
       console.log(error);
       dispatch(updateState({}));
@@ -146,6 +150,9 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
         </div>
         </div>
         
+        {isProfile && localStorage.getItem("role") === "admin" && (
+          <Invoice nama={profile?.nama} tanggal={from}  />
+          )}
 
 
         {!isProfile &&  
@@ -159,7 +166,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
         }
  
         
-        {localStorage.getItem("role") === "admin" && (
+        {!isProfile && localStorage.getItem("role") === "admin" && (
             <Link to={"/jurnal/add"}>
               <button className="btn w-[10rem] text-white bg-green-500 hover:bg-green-700 mt-3">
                 <Icon icon={plus} /> Create Jurnal

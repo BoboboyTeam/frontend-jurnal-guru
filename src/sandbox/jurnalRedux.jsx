@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import Swal from "sweetalert2";
 const initialState = {
   data: [],
   loading: false,
@@ -19,7 +18,6 @@ export const fetchDataJP = createAsyncThunk(
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${
         id ? `${"/" + id}` : ""
       }`;
-      console.log(link);
       let { data } = await axios({
         method: "get",
         url: link,
@@ -27,13 +25,15 @@ export const fetchDataJP = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(link);
       console.log(month, "MONTH REDUX");
       console.log(data.dataJP[6], "<<<<REDUX");
       const jpData = data.dataJP[month];
+      console.log(jpData, "JP DATA REDUX");
       jpData.gaji = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
-      }).format(jpData.gaji);
+      }).format(jpData?.gaji);
       return jpData;
     } catch (error) {
       throw error;
@@ -48,13 +48,15 @@ const jurnalGuruSlice = createSlice({
     // standard reducer logic, with auto-generated action types per reducer
     updateState: (state, action) => {
       console.log(action, "REDUX PAYLOAD UPDATE STATE");
-      state.data = action.payload;
-    },
+      state.data = action.payload ? action.payload : [];
+      console.log(state.data, "REDUX STATE UPDATE STATE");
+    }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataJP.pending, (state, action) => {
         state.loading = true;
+        state.data = [];
       })
       .addCase(fetchDataJP.fulfilled, (state, action) => {
         state.loading = false;
