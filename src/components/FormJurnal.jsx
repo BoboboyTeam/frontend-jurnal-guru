@@ -138,6 +138,9 @@ const FormJurnal = ({ id = null }) => {
         className="items-center justify-center md:h-screen  p-12"
       >
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
+        <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-white">Form Jurnal Guru</h1>
+          </div>
           <form onSubmit={postJurnalGuru}>
             <div className="md:flex md:gap-28">
               <div>

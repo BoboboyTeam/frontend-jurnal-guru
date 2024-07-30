@@ -21,6 +21,7 @@ import Guru from "./page/Guru";
 import DetailGuru from "./page/DetailGuru";
 import LandingPage from "./page/LandingPage";
 import FormBuilder from "./components/FormBuilder";
+import TestPage from "./page/TestPage";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
     children: [
       {
         path:'/test',
-        element:<FormBuilder/>
+        element:<TestPage/>
       },
       {
         path: "/page",

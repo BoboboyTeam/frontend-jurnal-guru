@@ -50,9 +50,11 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const filterByDate = async () => {
     try {
       setResult([]);
+      const fromMonth = parseInt(from.split("-")[1])-1;
+      const fromYear = parseInt(from.split("-")[0]);
       const token = localStorage.getItem("access_token");
       console.log(from,"AAAAAAAAAAAA");
-      const query = `?from=${from}&to=${to}`;
+      const query = `?month=${fromMonth}&year=${fromYear}`;
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${id ? `${'/'+id}`:''}${query}`
       console.log(link);
       let { data } = await axios({
@@ -64,21 +66,19 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       });
       console.log(data,"JURNALAAAAAAAAAAAAAAAA");
       setResult(data.data);
-      const fromMonth = parseInt(from.split("-")[1])-1;
-      const toMonth = parseInt(to.split("-")[1])-1;
-      let newDataJP;
+      let newDataJP = data.dataJP[fromMonth];
       let keyDataJP = Object.keys(data.dataJP);
       console.log(fromMonth);
       console.log(keyDataJP.includes("6"));
       console.log(keyDataJP.includes(fromMonth+""));
-      for(let i = fromMonth; i<=toMonth; i++){
+      // for(let i = fromMonth; i<=toMonth; i++){
         
-        if(keyDataJP.includes(i.toString())){
+      //   if(keyDataJP.includes(i.toString())){
           
-          newDataJP = data.dataJP[i];
-          break;
-        }
-      }
+      //     newDataJP = data.dataJP[i];
+      //     break;
+      //   }
+      // }
       console.log(newDataJP);
       console.log("ASDASDAS");
       dispatch(updateState(newDataJP));
@@ -135,11 +135,11 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
        
         <div className="flex justify-end gap-1 w-[80%] items-center ">
           <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md"> 
-            From  : <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setFrom(e.target.value)} value={from}/>
+            Journal on  : <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setFrom(e.target.value)} value={from}/>
           </p>
-          <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md">
+          {/* <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md">
             To  :  <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setTo(e.target.value)} value={to}/>
-          </p>
+          </p> */}
 
         <div className="w-[20%] self-center">
           <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold  text-white" onClick={()=>filterByDate()}>Set Filter</button>

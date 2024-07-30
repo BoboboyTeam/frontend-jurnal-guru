@@ -37,7 +37,7 @@ const GajiBulanan = ({ id, from }) => {
   if (loading) {
     return <p>Loading...</p>;
   }
-  if (!data.jumlahJP || !data.gaji || error?.message?.split(" ")[4] === "404") {
+  if (!data?.jumlahJP || !data?.gaji || error?.message?.split(" ")[4] === "404") {
     return <h1 className="font-bold">Journal is Empty</h1>;
   }
   if (error) {

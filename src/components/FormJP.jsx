@@ -165,6 +165,9 @@ const FormJP = ({ id=null }) => {
       >
         
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-white">Form Jadwal Pelajaran</h1>
+          </div>
           <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
               <div>

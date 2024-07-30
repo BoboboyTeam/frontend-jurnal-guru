@@ -143,6 +143,7 @@ const FormJurnalForGuru = ({id=null}) => {
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
+
         <div className="flex justify-end mb-3  ">
           <div className=" bg-yellow-600 inline-block px-2 py-2 rounded-md hover:bg-yellow-700">
             <button onClick={handleLogout}>
@@ -151,6 +152,9 @@ const FormJurnalForGuru = ({id=null}) => {
             </button>
           </div>
         </div>
+        <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-white">Form Jurnal Guru</h1>
+          </div>
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postJurnalGuru}>
             <div className="md:flex md:gap-28">

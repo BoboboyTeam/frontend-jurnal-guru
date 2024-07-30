@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import { Icon } from "react-icons-kit";
-import { user } from "react-icons-kit/icomoon/user";
-import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
+import GuruSelector from "./GuruSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../sandbox/storedRedux";
 
 const FormBuilder = ({
   id = null,
@@ -16,40 +16,71 @@ const FormBuilder = ({
   const [key, setKey] = useState(keyColumns ? keyColumns : []);
   const [columns, setColumns] = useState(columnsName ? columnsName : []);
   const [editData, setEditData] = useState({});
+  
+  // Redux Fetch Data
+  const storedData = useSelector((state) => state.stored);
+
+  // Redux Get State
+  const guru = useSelector((state) => state.guru?.data);
+  const kelas = useSelector((state) => state.kelas?.data);
+  const mapel = useSelector((state) => state.mapel?.data);
+  const stored = useSelector((state) => state.stored?.data);
+  const dispatch = useDispatch();
 
   const postForm = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
-    const data = Object.fromEntries(form);
+    let data = {};
+    for (let key of form.keys()) {
+      data[key] = form.get(key);
+    }
     console.log(data);
-    const token = localStorage.getItem("access_token");
-    const response = await axios({
-      method: "post",
-      url: `${process.env.BASE_URL}/${role}/jadwal`,
-      data: data,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response);
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "bottom-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
-    Toast.fire({
-      icon: "success",
-      title: "Data Terkirim",
-    });
+
+    try {
+      const linkId = `${id && id!== "add" ? `/${id}` : ""}`;
+      const link = `${process.env.BASE_URL}/${role}/${detail}${linkId}`;
+      const response = await axios({
+        method: linkId ? "put" : "post",
+        url: link,
+        data: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      console.log(response);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: linkId ? "Succesfully updated data" : "Successfully added data",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
+    }
   };
 
-  if (id && !jadwal) return <Load />;
+  useEffect(() => {
+    let request = {};
+    if (detail) {
+      request["detail"] = detail;
+    }
+    if (id && id!=="add") {
+      request["id"] = id;
+    }
+    if (request != {}) {
+      console.log(request,"<<<<<<<<<<<<<<<,");
+      dispatch(fetchData({request}));
+    }
+    console.log(storedData);
+  }, [dispatch, detail, id]);
+
+  // if (loading) return <Load />;
+  if(storedData?.loading) return <Load/>
+  if (storedData?.error) return <h1>Error</h1>;
+  
 
   return (
     <>
@@ -62,6 +93,22 @@ const FormBuilder = ({
       >
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postForm}>
+            <div className="mb-4">
+              <h1 className="text-2xl text-white font-bold">Form Builder</h1>
+            </div>
+            <div className="mb-4 md:grid md:grid-cols-2 gap-[2rem]">
+              {key?.map((item,index) => (
+                <div key={index}>
+                  <h4 className={`key${index} py-1`}>{columns[index]}</h4>
+                  <input
+                    type="text"
+                    name={item}
+                    placeholder={item}
+                    className="bg-gray-200 rounded-md p-2"
+                  />
+                </div>
+              ))}
+            </div>
             <div>
               <button
                 type="submit"
