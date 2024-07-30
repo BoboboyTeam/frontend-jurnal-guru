@@ -57,6 +57,7 @@ const GajiBulanan = ({ id, from }) => {
       confirmButtonText: "Cool",
     });
   }
+  console.log(data, "DATA");
   return (
     <div className="px-10 py-2">
       <h1 className="font-bold">

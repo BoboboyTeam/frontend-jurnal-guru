@@ -27,13 +27,14 @@ export const fetchDataJP = createAsyncThunk(
       });
       console.log(link);
       console.log(month, "MONTH REDUX");
-      console.log(data.dataJP[6], "<<<<REDUX");
-      const jpData = data.dataJP[month];
+      console.log(data.dataJP[month], "<<<<REDUX");
+      let jpData = data.dataJP[month];
       console.log(jpData, "JP DATA REDUX");
       jpData.gaji = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
       }).format(jpData?.gaji);
+      console.log(jpData, "JP DATA REDUX");
       return jpData;
     } catch (error) {
       throw error;

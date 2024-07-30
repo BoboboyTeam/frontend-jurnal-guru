@@ -20,7 +20,8 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
   const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
-  const profile = useSelector((state)=>state.profile?.data);
+  const profile = useSelector((state)=>state.profile?.data?.data);
+  const dataJP = useSelector((state)=>state.jurnalGuru?.data);
 
   // Redux
   const dispatch = useDispatch();
@@ -93,6 +94,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   };
 
   function handdleDeletePopUp(idJurnal) {
+    
     setIdJurnal(idJurnal);
     document.getElementById("my_modal_1").showModal();
   }
@@ -128,6 +130,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
 
   useEffect(() => {
     fetchData();
+    console.log(profile)
     if(isProfile) filterByDate();
   }, []);
 
@@ -151,7 +154,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
         </div>
         
         {isProfile && localStorage.getItem("role") === "admin" && (
-          <Invoice nama={profile?.nama} tanggal={from}  />
+          <Invoice nama={profile?.nama} tanggal={from} data={{data:result ,dataJP,columnName:["Date","Start Hours","Lesson Material","Working Hours","Payment"],keyColumns:["updateAt","jamKe","materi","jumlahJP","Payment"],profile }} />
           )}
 
 
