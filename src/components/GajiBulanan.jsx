@@ -52,7 +52,10 @@ const GajiBulanan = ({ id, from }) => {
 
         {data?.jumlahJP ? (<ul className="list-disc px-16 py-2">
           <li>Teaching Hours: {data?.jumlahJP}</li>
-          <li>Payment: {data?.gaji}</li>
+          <li>Payment: {new Intl.NumberFormat("id-ID",{
+            style:"currency",
+            currency:"IDR"
+          }).format(data?.gaji)}</li>
         </ul>) : <p className="px-16 py-2">No Data</p>}
       </div>
     </div>

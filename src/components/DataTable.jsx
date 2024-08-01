@@ -16,7 +16,8 @@ const DataTable = ({
   parentLink,
   isPublic=false,
   color = null,
-  title = "data"
+  title = "data",
+  addButtonName = "Add Data",
 }) => {
   const role = localStorage.getItem("role")?.toLowerCase();
   const token = localStorage.getItem("access_token");
@@ -86,10 +87,10 @@ const DataTable = ({
       setLoading(true);
       let link;
       if(isPublic){
-        link = `${process.env.BASE_URL}/${detail}?${query ? query : ""}`
+        link = `${process.env.BASE_URL}/${detail}${query ? `?${query}` : ""}`
       }
       else{
-        link = `${process.env.BASE_URL}/${role}/${detail}?${query ? query : ""}`
+        link = `${process.env.BASE_URL}/${role}/${detail}${query ? `?${query}` : ""}`
       }
       const response = await axios({
         method: "get",
@@ -105,6 +106,8 @@ const DataTable = ({
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setData([]);
+      setLoading(false);
     }
   };
 
@@ -118,8 +121,28 @@ const DataTable = ({
   }
 
   return (
-    <div className="px-3 py-4  justify-center   ">
-         <div className="text-3xl font-bold text-yellow-400 pt-4 pb-6 sticky top-24 bg-white ">LIST OF TEACHER</div>
+    <div className="px-3 py-4  justify-center mt-4  ">
+      <div className="text-3xl flex justify-between items-center p-[1rem] font-bold text-yellow-400 pt-4 pb-6 sticky top-20 bg-white ">
+        <p>{title}</p>
+
+        <div className="flex justify-center gap-2">
+          
+          <form className="mt-3 " action="">
+            <input
+              className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
+              type="text"
+              placeholder="Search By Teacher"
+            />
+          </form>
+
+          <Link to={`/${parentLink}/add`} className="mt-2 translate-y-[0.2rem]">
+            <button className="btn bg-blue-500 hover:bg-blue-700 text-white">
+              {addButtonName}
+            </button>
+          </Link>
+        </div>
+      </div>
+
       <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll text-black ">
         <thead
           className={`${color ? color.primary : "bg-yellow-400"} ${

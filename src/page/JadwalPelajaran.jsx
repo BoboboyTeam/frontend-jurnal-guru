@@ -21,7 +21,7 @@ const JadwalPelajaran = () => {
     "Thursday",
     "Friday",
   ];
-  const kelas = ["VII", "VIII", "IX"];
+  const kelas = useSelector;
   const [jadwalId, setJadwalId] = useState(null);
   const [jurnal, setJurnal] = useState(null);
   const [searchTeacher, setSearchTeacher] = useState();
@@ -30,25 +30,30 @@ const JadwalPelajaran = () => {
 
   const searchByTeacher = async (e) => {
     try {
-      setSearchTeacher(e.target.value);
       console.log(e.target.value);
-      let query = "?";
+      let query = "";
       
       switch(e.target.id) {
         case "searchTeacher":
-          query += `teacher=${e.target.value}`;
+          query += `?teacher=${e.target.value}`;
+          if(searchHari) query += `&hari=${searchHari}`;
+          if(searchKelas) query += `&kelas=${searchKelas}`;
           setSearchTeacher(e.target.value);
           break;
         case "searchHari":
-          query += `hari=${e.target.value}`;
+          query += `?hari=${e.target.value}`;
           setSearchHari(e.target.value);
+          if(searchTeacher) query += `&teacher=${searchTeacher}`;
+          if(searchKelas) query += `&kelas=${searchKelas}`;
           break;
         case "searchKelas":
-          query += `kelas=${e.target.value}`;
+          query += `?kelas=${e.target.value}`;
           setSearchKelas(e.target.value);
+          if(searchTeacher) query += `&teacher=${searchTeacher}`;
+          if(searchHari) query += `&hari=${searchHari}`;
           break;
       }
-
+      console.log(query);
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
@@ -193,10 +198,18 @@ const JadwalPelajaran = () => {
             <form action="">
               <select
                 className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
-                id="hari"
+                id="searchHari"
                 name="hari"
+                onChange={searchByTeacher}
               >
                 {day.map((item) => {
+                  if (item === "All Days") {
+                    return (
+                      <option value={""} selected>
+                        {item}
+                      </option>
+                    );
+                  }
                   return (
                     <>
                       <option value={item}>{item}</option>
@@ -216,7 +229,7 @@ const JadwalPelajaran = () => {
                 {kelas.map((item) => {
                   return (
                     <>
-                      <option value="hari">{item}</option>
+                      <option value={item.nama}>{item.nama}</option>
                     </>
                   );
                 })}

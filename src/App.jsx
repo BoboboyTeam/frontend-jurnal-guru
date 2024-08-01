@@ -20,15 +20,17 @@ import Profile from "./page/Profile";
 import Guru from "./page/Guru";
 import DetailGuru from "./page/DetailGuru";
 import LandingPage from "./page/LandingPage";
-import TableMapel from "./page/TableMapel";
-import TableKelas from "./page/TableKelas";
+import FormBuilder from "./components/FormBuilder";
 import TestPage from "./page/TestPage";
-
+import EditGuru from "./page/EditGuru";
+import Kelas from "./page/Kelas";
+import FormKelas from "./page/FormKelas";
+import EditKelas from "./page/EditKelas";
+import Mapel from "./page/Mapel";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavbarWrapper />,
     element: <NavbarWrapper />,
     children: [
       {
@@ -47,7 +49,6 @@ const router = createBrowserRouter([
       },
       {
         path: "/page",
-        element: <LandingPage />,
         element: <LandingPage />,
       },
       {
@@ -71,14 +72,6 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/mapel",
-        element: <TableMapel />,
-      },
-      {
-        path: "/kelas",
-        element: <TableKelas />,
-      },
-      {
         path: "/jp/edit/:id",
         element: <JadwalReform />,
         loader: async () => {
@@ -99,7 +92,78 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/guru",
+        path:"/kelas",
+        element:<Kelas/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/kelas/edit/:id",
+        element: <EditKelas/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/kelas/add",
+        element:<FormKelas />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+
+      },
+      {
+        path:"/mapel",
+        element:<Mapel/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/mapel/edit/:id",
+        element:<Mapel isForm={true}/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/mapel/add",
+        element:<Mapel isForm={true}/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path: "/teacher/:id",
+        element: <DetailGuru />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/teacher",
         element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
@@ -109,8 +173,18 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/guru/:id",
-        element: <DetailGuru />,
+        path: "/teacher/add",
+        element: <Register />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/teacher/edit/:id",
+        element: <EditGuru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -206,7 +280,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
 
 function NavbarWrapper() {
   return (
