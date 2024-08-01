@@ -89,7 +89,6 @@ const FormBuilder = ({
 
   // if (loading) return <Load />;
   if(loading) return <Load/>
-  if (error) return <h1>Error</h1>;
   
 
   return (

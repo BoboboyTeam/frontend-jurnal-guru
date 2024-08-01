@@ -26,6 +26,7 @@ import EditGuru from "./page/EditGuru";
 import Kelas from "./page/Kelas";
 import FormKelas from "./page/FormKelas";
 import EditKelas from "./page/EditKelas";
+import Mapel from "./page/Mapel";
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,36 @@ const router = createBrowserRouter([
           return null;
         }
 
+      },
+      {
+        path:"/mapel",
+        element:<Mapel/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/mapel/edit/:id",
+        element:<Mapel isForm={true}/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/mapel/add",
+        element:<Mapel isForm={true}/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
       },
       {
         path: "/teacher/:id",

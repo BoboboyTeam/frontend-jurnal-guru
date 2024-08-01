@@ -16,7 +16,8 @@ const DataTable = ({
   parentLink,
   isPublic=false,
   color = null,
-  title = "data"
+  title = "data",
+  addButtonName = "Add Data",
 }) => {
   const role = localStorage.getItem("role")?.toLowerCase();
   const token = localStorage.getItem("access_token");
@@ -86,10 +87,10 @@ const DataTable = ({
       setLoading(true);
       let link;
       if(isPublic){
-        link = `${process.env.BASE_URL}/${detail}?${query ? query : ""}`
+        link = `${process.env.BASE_URL}/${detail}${query ? `?${query}` : ""}`
       }
       else{
-        link = `${process.env.BASE_URL}/${role}/${detail}?${query ? query : ""}`
+        link = `${process.env.BASE_URL}/${role}/${detail}${query ? `?${query}` : ""}`
       }
       const response = await axios({
         method: "get",
@@ -105,6 +106,8 @@ const DataTable = ({
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setData([]);
+      setLoading(false);
     }
   };
 
@@ -128,13 +131,13 @@ const DataTable = ({
             <input
               className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
               type="text"
-              placeholder="Search Teacher"
+              placeholder="Search By Teacher"
             />
           </form>
 
           <Link to={`/${parentLink}/add`} className="mt-2 translate-y-[0.2rem]">
             <button className="btn bg-blue-500 hover:bg-blue-700 text-white">
-              Add Teacher
+              {addButtonName}
             </button>
           </Link>
         </div>
