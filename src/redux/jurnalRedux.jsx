@@ -10,8 +10,10 @@ export const fetchDataJP = createAsyncThunk(
   "jurnalGuru/fetchDataJP",
   async (params, thunkAPI) => {
     try {
+      
       const id = params?.id;
       const month = params?.month;
+      const year = params?.year;
       console.log(params, "REDUX PARAMSSSSSSSS");
       const token = localStorage.getItem("access_token");
       const role = localStorage.getItem("role").toLowerCase();
@@ -34,6 +36,8 @@ export const fetchDataJP = createAsyncThunk(
         style: "currency",
         currency: "IDR",
       }).format(jpData?.gaji);
+    
+      jpData = {...jpData, month: monthlyName[month], year: year}
       console.log(jpData, "JP DATA REDUX");
       return jpData;
     } catch (error) {

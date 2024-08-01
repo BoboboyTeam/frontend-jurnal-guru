@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataKelas } from "../redux/kelasRedux";
-const KelasSelector = ({ dataName = "Kelas" }) => {
+const KelasSelector = ({ dataName = "Kelas", validation=false }) => {
   const { data, loading, error } = useSelector((state) => state.kelas);
   const dispatch = useDispatch();
 

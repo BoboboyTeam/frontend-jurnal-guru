@@ -4,6 +4,7 @@ import kelasReducer from './kelasRedux';
 import teacherReducer from './teacherRedux';
 import mapelReducer from './mapelRedux';
 import profileReducer from './profileRedux';
+import storedReducer from './storedRedux';
 const store = configureStore({
     reducer: {
         jurnalGuru: jurnalGuruReducer,
@@ -11,6 +12,7 @@ const store = configureStore({
         kelas: kelasReducer,
         mapel: mapelReducer,
         profile: profileReducer,
+        stored: storedReducer
     }
 });
 

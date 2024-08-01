@@ -9,13 +9,13 @@ export const fetchDataKelas = createAsyncThunk(
       const role = localStorage.getItem("role").toLowerCase();
       const response = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${role}/kelas`,
+        url: `${process.env.BASE_URL}/kelas`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
-      return data;
+      
+      return response.data;
     } catch (error) {
       throw error;
     }

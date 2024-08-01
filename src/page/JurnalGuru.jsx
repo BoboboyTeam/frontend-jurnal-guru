@@ -17,12 +17,17 @@ import { selectDataJurnalGuru, selectDataProfile } from "../redux/selectorRedux"
 
 const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
-  const role = localStorage.getItem("role").toLowerCase();
+  const role = localStorage.getItem("role")?.toLowerCase();
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
   const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
+
+  // Query
+  
+
   const profile = useSelector(selectDataProfile);
   const dataJP = useSelector(selectDataJurnalGuru);
+  
 
   // Redux
   const dispatch = useDispatch();
@@ -44,6 +49,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       console.log(error);
     }
   };
+  
 
 
   async function fetchData() {
@@ -71,6 +77,20 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
 
   const filterByDate = async () => {
     try {
+      const monthlyName = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember",
+      ];
       setResult([]);
       const fromMonth = from.split("-")[1];
       const fromYear = from.split("-")[0];
@@ -104,12 +124,30 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       // }
       console.log(data);
       console.log("ASDASDAS");
-      dispatch(updateState(newDataJP));
+      dispatch(updateState({...newDataJP, month: monthlyName[parseInt(fromMonth)-1], year: fromYear}));
       console.log(newDataJP);
       setResult(data.data);
     } catch (error) {
+      const monthlyName = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember",
+      ];
+      setResult([]);
+      const fromMonth = from.split("-")[1];
+      const fromYear = from.split("-")[0];
       console.log(error);
-      dispatch(updateState({}));
+      dispatch(updateState({ month: monthlyName[parseInt(fromMonth)-1], year: fromYear}));
+      setResult([]);
     }
   };
 
@@ -228,7 +266,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                           <td className="p-3 px-5">{++index}</td>
                           <td className="p-3 px-5">{item?.createAt}</td>
                           <td className="p-3 px-5">{item?.teacher?.nama}</td>
-                          <td className="p-3 px-5">{item?.kelas}</td>
+                          <td className="p-3 px-5">{item?.kelas?.nama}</td>
                           <td className="p-3 px-5">{item?.teacherReplacement?.nama}</td>
                           <td className="p-3 px-5">{item?.jamKe}</td>
                           <td className="p-3 px-5">{item?.jumlahJP}</td>

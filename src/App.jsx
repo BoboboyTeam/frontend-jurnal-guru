@@ -23,12 +23,25 @@ import LandingPage from "./page/LandingPage";
 import FormBuilder from "./components/FormBuilder";
 import TestPage from "./page/TestPage";
 import EditGuru from "./page/EditGuru";
+import Kelas from "./page/Kelas";
+import FormKelas from "./page/FormKelas";
+import EditKelas from "./page/EditKelas";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <NavbarWrapper />,
     children: [
+      {
+        path:"/",
+        element:<Home/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
       {
         path: "/test",
         element: <TestPage />,
@@ -78,8 +91,39 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/teacher",
-        element: <Guru />,
+        path:"/kelas",
+        element:<Kelas/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/kelas/edit/:id",
+        element: <EditKelas/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/kelas/add",
+        element:<FormKelas />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+
+      },
+      {
+        path: "/teacher/:id",
+        element: <DetailGuru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -88,8 +132,8 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/teacher/:id",
-        element: <DetailGuru />,
+        path: "/teacher",
+        element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -124,16 +168,6 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
-        loader: async () => {
-          if (!localStorage.getItem("access_token")) {
-            throw redirect("/login");
-          }
-          return null;
-        },
-      },
-      {
-        path: "/teacher",
-        element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");

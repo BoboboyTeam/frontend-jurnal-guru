@@ -14,9 +14,11 @@ const DataTable = ({
   detail,
   query,
   parentLink,
+  isPublic=false,
   color = null,
+  title = "data"
 }) => {
-  const role = localStorage.getItem("role").toLowerCase();
+  const role = localStorage.getItem("role")?.toLowerCase();
   const token = localStorage.getItem("access_token");
 
   const [keylog, setKeylog] = useState(keyColumns ? keyColumns : []);
@@ -82,9 +84,16 @@ const DataTable = ({
   const fetchData = async () => {
     try {
       setLoading(true);
+      let link;
+      if(isPublic){
+        link = `${process.env.BASE_URL}/${detail}?${query ? query : ""}`
+      }
+      else{
+        link = `${process.env.BASE_URL}/${role}/${detail}?${query ? query : ""}`
+      }
       const response = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/${role}/${detail}?${query ? query : ""}`,
+        url: link,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -111,7 +120,7 @@ const DataTable = ({
   return (
     <div className="px-3 py-4  justify-center mt-4  ">
       <div className="text-3xl flex justify-between items-center p-[1rem] font-bold text-yellow-400 pt-4 pb-6 sticky top-20 bg-white ">
-        <p>LIST OF TEACHER</p>
+        <p>{title}</p>
 
         <div className="flex justify-center gap-2">
           

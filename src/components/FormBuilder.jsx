@@ -5,26 +5,35 @@ import Load from "./Load";
 import GuruSelector from "./GuruSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../redux/storedRedux";
+import { selectDataGuru, selectDataKelas, selectDataMapel, selectDataStored, selectLoadingStored, selectErrorStored } from "../redux/selectorRedux";
+import { updateState } from "../redux/jurnalRedux";
 
 const FormBuilder = ({
   id = null,
   detail,
   keyColumns = null,
   columnsName = null,
+  isPublic = false,
 }) => {
   const role = localStorage.getItem("role").toLowerCase();
   const [key, setKey] = useState(keyColumns ? keyColumns : []);
   const [columns, setColumns] = useState(columnsName ? columnsName : []);
   const [editData, setEditData] = useState({});
+  const [data, setData] = useState({});
+
   
   // Redux Fetch Data
-  const storedData = useSelector((state) => state.stored);
 
   // Redux Get State
-  const teacher = useSelector((state) => state.teacher?.data);
-  const kelas = useSelector((state) => state.kelas?.data);
-  const mapel = useSelector((state) => state.mapel?.data);
-  const stored = useSelector((state) => state.stored?.data);
+  const teacher = useSelector(selectDataGuru);
+  const kelas = useSelector(selectDataKelas);
+  const mapel = useSelector(selectDataMapel);
+
+  // Redux Stored Fetch
+  const stored = useSelector(selectDataStored);
+  const loading = useSelector(selectLoadingStored);
+  const error = useSelector(selectErrorStored);
+
   const dispatch = useDispatch();
 
   const postForm = async (e) => {
@@ -63,7 +72,7 @@ const FormBuilder = ({
   };
 
   useEffect(() => {
-    let request = {};
+    let request = {isPublic};
     if (detail) {
       request["detail"] = detail;
     }
@@ -72,14 +81,15 @@ const FormBuilder = ({
     }
     if (request != {}) {
       console.log(request,"<<<<<<<<<<<<<<<,");
-      dispatch(fetchData({request}));
+      dispatch(fetchData(request));
     }
-    console.log(storedData);
+    
+    console.log(stored);
   }, [dispatch, detail, id]);
 
   // if (loading) return <Load />;
-  if(storedData?.loading) return <Load/>
-  if (storedData?.error) return <h1>Error</h1>;
+  if(loading) return <Load/>
+  if (error) return <h1>Error</h1>;
   
 
   return (
@@ -87,9 +97,9 @@ const FormBuilder = ({
       <div
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}
-        className="items-center justify-center md:h-screen  p-12"
+        className=" items-center justify-center md:h-screen  p-12"
       >
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postForm}>
@@ -104,7 +114,9 @@ const FormBuilder = ({
                     type="text"
                     name={item}
                     placeholder={item}
-                    className="bg-gray-200 rounded-md p-2"
+                    className="bg-gray-200 text-black rounded-md p-2"
+                    defaultValue={stored[item]}
+                    
                   />
                 </div>
               ))}

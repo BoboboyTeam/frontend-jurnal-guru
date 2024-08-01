@@ -24,16 +24,31 @@ const JadwalPelajaran = () => {
   const kelas = ["VII", "VIII", "IX"];
   const [jadwalId, setJadwalId] = useState(null);
   const [jurnal, setJurnal] = useState(null);
-  const [searchGuru, setSearchGuru] = useState();
+  const [searchTeacher, setSearchTeacher] = useState();
   const [searchKelas, setSearchKelas] = useState();
   const [searchHari, setSearchHari] = useState();
 
-  const searchByGuru = async (e) => {
+  const searchByTeacher = async (e) => {
     try {
-      setSearchGuru(e.target.value);
+      setSearchTeacher(e.target.value);
       console.log(e.target.value);
       let query = "?";
-      if (e.target.id ==='searchGuru') query += `teacher=${e.target.value}`;
+      
+      switch(e.target.id) {
+        case "searchTeacher":
+          query += `teacher=${e.target.value}`;
+          setSearchTeacher(e.target.value);
+          break;
+        case "searchHari":
+          query += `hari=${e.target.value}`;
+          setSearchHari(e.target.value);
+          break;
+        case "searchKelas":
+          query += `kelas=${e.target.value}`;
+          setSearchKelas(e.target.value);
+          break;
+      }
+
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
@@ -89,7 +104,8 @@ const JadwalPelajaran = () => {
             console.log(getJurnal.data[index]?.jamKe, "Jurnal Jam Ke");
             let condition = getJurnal.data[index]?.jamKe === item.jamKe;
             condition = getJurnal.data[index]?.mapel === item.mapel;
-            condition = getJurnal.data[index]?.teacher?._id === item.teacher?._id;
+            condition =
+              getJurnal.data[index]?.teacher?._id === item.teacher?._id;
 
             if (condition) {
               jurnalCheck.push(1);
@@ -211,11 +227,11 @@ const JadwalPelajaran = () => {
           <div className="w-80 rounded-md mt-3">
             <form action="">
               <input
-                id="searchGuru"
+                id="searchTeacher"
                 className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
                 type="text"
-                onChange={searchByGuru}
-                placeholder="Cari Nama Guru"
+                onChange={searchByTeacher}
+                placeholder="Cari Nama Teacher"
               />
             </form>
           </div>
@@ -250,7 +266,7 @@ const JadwalPelajaran = () => {
                   >
                     <td className="p-3 px-5">{++index}</td>
                     <td className="p-3 px-5">{item?.hari}</td>
-                    <td className="p-3 px-5">{item?.kelas}</td>
+                    <td className="p-3 px-5">{item?.kelas?.nama}</td>
                     <td className="p-3 px-5">{item?.teacher?.nama}</td>
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/" + item?._id}>
@@ -259,7 +275,8 @@ const JadwalPelajaran = () => {
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
-                      {localStorage.getItem("role").toLowerCase() === "teacher" &&
+                      {localStorage.getItem("role").toLowerCase() ===
+                        "teacher" &&
                         jurnal[index - 1] < 1 && (
                           <Link to={"/jurnal/" + item._id}>
                             {" "}
@@ -268,7 +285,8 @@ const JadwalPelajaran = () => {
                             </button>
                           </Link>
                         )}
-                      {localStorage.getItem("role").toLowerCase() === "teacher" &&
+                      {localStorage.getItem("role").toLowerCase() ===
+                        "teacher" &&
                         jurnal[index - 1] > 0 && (
                           <div className="border p-[0.6rem] rounded-lg border-green-700 bg-green-500  text-white mr-2">
                             <p>
@@ -277,7 +295,8 @@ const JadwalPelajaran = () => {
                             </p>
                           </div>
                         )}
-                      {localStorage.getItem("role").toLowerCase() === "admin" && (
+                      {localStorage.getItem("role").toLowerCase() ===
+                        "admin" && (
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}

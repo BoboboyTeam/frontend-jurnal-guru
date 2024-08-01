@@ -5,6 +5,9 @@ import { user } from "react-icons-kit/icomoon/user";
 import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDataGuru, selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
+import { fetchDataKelas } from "../redux/kelasRedux";
 
 const FormJP = ({ id=null }) => {
   function handleLogout() {}
@@ -12,10 +15,12 @@ const FormJP = ({ id=null }) => {
 
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [teacher, setGuru] = useState();
-  const [kelas, setKelas] = useState([]);
   const [jadwal, setJadwal] = useState();
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   
+  const kelas = useSelector(selectDataKelas);
+  const kelasLoading = useSelector(selectLoadingKelas)
+  const dispatch = useDispatch();
 
   const mataPelajaran = [
     "Matematika",
@@ -102,18 +107,24 @@ const FormJP = ({ id=null }) => {
 
     // Dapetin teacher dan _idnya
     let teacher_id = form.get("teacher");
+    let kelas_id = form.get("kelas");
+    kelas_id = kelas.find((item) => item._id === kelas_id);
     teacher_id = teacher.find((item) => item._id === teacher_id);
     console.log(teacher);
+    console.log(kelas_id)
 
     const formData = {
       hari: form.get("hari"),
       jamKe: form.get("jamKe"),
       teacher: {
-        _id: teacher_id._id,
-        nama: teacher_id.nama,
+        _id: teacher_id?._id,
+        nama: teacher_id?.nama,
       },
       teacherReplacement: null,
-      kelas: form.get("kelas"),
+      kelas:  {
+        _id: kelas_id?._id,
+        nama: kelas_id?.nama,
+      },
       mapel: form.get("mapel"),
       materi: "",
       jumlahJP: form.get("jumlahJP"),
@@ -148,18 +159,19 @@ const FormJP = ({ id=null }) => {
     fetchKelas();
     
     id && fetchJadwal();
+    dispatch(fetchDataKelas())
     
     console.log(jadwal,"<<<<<<<<<<<<<<<<<<<");
-  }, []);
+  }, [dispatch]);
 
-  if(id && !jadwal) return <Load/>
+  if(id && !jadwal && kelasLoading) return <Load/>
 
   return (
     <>
       <div
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
@@ -302,20 +314,21 @@ const FormJP = ({ id=null }) => {
 
                 <div className="mb-5 bg-white p-3 rounded-md  w-52">
                   <select className="w-full" id="kelas" name="kelas">
+                    <option value="">None</option>
                     {kelas.map((item, index) => {
                       if (item === jadwal?.kelas) {
                         return (
                           <>
-                            <option key={index} value={item} selected="selected">
-                              {item}
+                            <option key={index} value={item._id} selected="selected">
+                              {item.nama}
                             </option>
                           </>
                         );
                       } else {
                         return (
                           <>
-                            <option key={index} value={item}>
-                              {item}
+                            <option key={index} value={item._id}>
+                              {item.nama}
                             </option>
                           </>
                         );
@@ -353,6 +366,23 @@ const FormJP = ({ id=null }) => {
                         }
                       })}
                     </select>
+                  </div>
+                </div>
+                <div className="mb-5">
+                  <label
+                    htmlFor="mapel"
+                    className="mb-3 block text-base font-medium text-white"
+                  >
+                    Working Hours
+                  </label>
+                  <div className="mb-5 bg-white p-3 rounded-md">
+                    <input
+                      type="number"
+                      id="jumlahJP"
+                      name="jumlahJP"
+                      defaultValue={jadwal?.jumlahJP}
+                      className="w-full px-2 !bg-slate-950"
+                    />
                   </div>
                 </div>
               </div>

@@ -2,14 +2,17 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { user } from "react-icons-kit/icomoon/user";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
+import { fetchDataKelas } from "../redux/kelasRedux";
 
 const FormJurnal = ({ id = null }) => {
   const role = localStorage.getItem("role").toLowerCase();
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [teacher, setGuru] = useState([]);
-  const kelas = ["VII", "VIII", "IX"];
+  const [jurnal, setJurnal] = useState({});
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mataPelajaran = [
     "Matematika",
@@ -19,7 +22,12 @@ const FormJurnal = ({ id = null }) => {
     "IPS",
     "Biologi",
   ];
-  const [jurnal, setJurnal] = useState({});
+
+  const kelas = useSelector(selectDataKelas);
+  const kelasLoading = useSelector(selectLoadingKelas)
+  const kelasError = useSelector(selectLoadingKelas)
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -126,14 +134,19 @@ const FormJurnal = ({ id = null }) => {
   useEffect(() => {
     fetchJurnalGuru();
     fetchGuru();
-  }, []);
+    dispatch(fetchDataKelas())
+  }, [dispatch]);
+
+  if(kelasLoading){
+    return <p>Loading...</p>
+  }
 
   return (
     <>
       <div
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
@@ -327,24 +340,25 @@ const FormJurnal = ({ id = null }) => {
 
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select className="w-full" id="kelas" name="kelas">
-                    {kelas.map((item, index) => {
+                    <option value="">None</option>
+                    {kelas?.map((item, index) => {
                       if (item === jurnal?.kelas) {
                         return (
                           <>
                             <option
                               key={index}
-                              value={item}
+                              value={item._id}
                               selected="selected"
                             >
-                              {item}
+                              {item.nama}
                             </option>
                           </>
                         );
                       } else {
                         return (
                           <>
-                            <option key={index} value={item}>
-                              {item}
+                            <option key={index} value={item._id}>
+                              {item.nama}
                             </option>
                           </>
                         );
@@ -401,7 +415,7 @@ const FormJurnal = ({ id = null }) => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    value={jurnal?.materi}
+                    defaultValue={jurnal?.materi}
                   />
                 </div>
 
@@ -418,7 +432,7 @@ const FormJurnal = ({ id = null }) => {
                     id="subject"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    value={jurnal?.jumlahJP}
+                    defaultValue={jurnal?.jumlahJP}
                   />
                 </div>
               </div>

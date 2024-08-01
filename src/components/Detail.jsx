@@ -40,7 +40,7 @@ const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
       <div className="w-full   flex justify-center  text-[#333333] ">
         <div className=" h-screen   rounded-md  w-full"  style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}>
 
         
