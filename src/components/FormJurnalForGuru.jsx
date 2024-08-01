@@ -93,7 +93,7 @@ const FormJurnalForGuru = ({id=null}) => {
       kelas: jurnal.kelas,
       mapel: jurnal.mapel,
       materi: form.get("materi"),
-      jumlahJP: form.get("jumlahJP"),
+      jumlahJP:jurnal.jumlahJP,
     };
     console.log(formData);
 
@@ -258,9 +258,9 @@ const FormJurnalForGuru = ({id=null}) => {
                 <div className="mb-5 bg-white p-3 rounded-md">
                 <input
                   type="text"
-                  name="hari"
+                  name="kelas"
                   id="subject"
-                  value={jurnal?.kelas}
+                  value={jurnal?.kelas?.nama}
                   placeholder="Enter your subject"
                   className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                   readOnly={true}
@@ -277,9 +277,9 @@ const FormJurnalForGuru = ({id=null}) => {
                   <div className="mb-5 bg-white p-3 rounded-md">
                   <input
                   type="text"
-                  name="hari"
+                  name="mapel"
                   id="subject"
-                  value={jurnal?.kelas}
+                  value={jurnal?.mapel?.nama}
                   placeholder="Enter your subject"
                   className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                   readOnly={true}
@@ -307,7 +307,7 @@ const FormJurnalForGuru = ({id=null}) => {
 
                 <div className="mb-5">
                   <label
-                    htmlFor="subject"
+                    htmlFor="jumlahJP"
                     className="mb-3 block text-base font-medium text-white"
                   >
                     Jumlah Jam Pelajaran
@@ -315,9 +315,10 @@ const FormJurnalForGuru = ({id=null}) => {
                   <input
                     type="text"
                     name="jumlahJP"
-                    id="subject"
+                    id="jumlahJP"
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                    value={jurnal?.jumlahJP}
                     required={true}
                     readOnly={true}
                   />
