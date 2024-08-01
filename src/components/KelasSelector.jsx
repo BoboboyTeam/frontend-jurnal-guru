@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDataKelas } from "../sandbox/kelasRedux";
+import { fetchDataKelas } from "../redux/kelasRedux";
 const KelasSelector = ({ dataName = "Kelas" }) => {
   const { data, loading, error } = useSelector((state) => state.kelas);
   const dispatch = useDispatch();

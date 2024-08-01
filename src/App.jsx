@@ -15,31 +15,31 @@ import EditJurnalGuru from "./page/EditJurnalGuru";
 import JurnalReform from "./page/JurnalReform";
 import JadwalReform from "./page/JadwalReform";
 import Navbar from "./components/Navbar";
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Profile from "./page/Profile";
 import Guru from "./page/Guru";
 import DetailGuru from "./page/DetailGuru";
 import LandingPage from "./page/LandingPage";
 import FormBuilder from "./components/FormBuilder";
 import TestPage from "./page/TestPage";
+import EditGuru from "./page/EditGuru";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<NavbarWrapper /> ,
+    element: <NavbarWrapper />,
     children: [
       {
-        path:'/test',
-        element:<TestPage/>
+        path: "/test",
+        element: <TestPage />,
       },
       {
         path: "/page",
-        element: <LandingPage/>,
-        
+        element: <LandingPage />,
       },
       {
         path: "/profile",
-        element: <Profile/>,
+        element: <Profile />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -78,8 +78,8 @@ const router = createBrowserRouter([
         },
       },
       {
-        path:"/guru",
-        element:<Guru/>,
+        path: "/teacher",
+        element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -88,8 +88,28 @@ const router = createBrowserRouter([
         },
       },
       {
-        path:"/guru/:id",
-        element:<DetailGuru/>,
+        path: "/teacher/:id",
+        element: <DetailGuru />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/teacher/add",
+        element: <Register />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/teacher/edit/:id",
+        element: <EditGuru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -112,7 +132,7 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/guru",
+        path: "/teacher",
         element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
@@ -196,14 +216,14 @@ const router = createBrowserRouter([
   },
 ]);
 
-function NavbarWrapper(){
+function NavbarWrapper() {
   return (
-  <div>
-      <Navbar/>
-      <Outlet/>
-  </div>
-  )
-};
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
+}
 
 function App() {
   return (

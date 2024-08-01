@@ -14,8 +14,8 @@ export const fetchDataJP = createAsyncThunk(
       const month = params?.month;
       console.log(params, "REDUX PARAMSSSSSSSS");
       const token = localStorage.getItem("access_token");
-      const role = localStorage.getItem("role");
-      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${
+      const role = localStorage.getItem("role").toLowerCase();
+      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-teacher/date${
         id ? `${"/" + id}` : ""
       }`;
       let { data } = await axios({

@@ -6,7 +6,7 @@ import axios from "axios";
 export const fetchDataProfile = createAsyncThunk('profile/fetchDataProfile', async (params,thunkAPI) => {
     try {
         const token = localStorage.getItem("access_token");
-        const role = localStorage.getItem("role");
+        const role = localStorage.getItem("role").toLowerCase();
         const link = `${process.env.BASE_URL}/${role}/${
             params?.id ? `users/${params?.id}` : "profile"
           }`
@@ -31,6 +31,7 @@ const profileSlice = createSlice({
         data: [],
         loading: false,
         error: null,
+        role: "",
     },
     reducers: {
     },
@@ -42,6 +43,7 @@ const profileSlice = createSlice({
         .addCase(fetchDataProfile.fulfilled, (state, action) => {
             state.loading = false;
             state.data = action.payload;
+            state.role = action.payload.role.toLowerCase();
         })
         .addCase(fetchDataProfile.rejected, (state, action) => {
             state.loading = false;

@@ -8,8 +8,15 @@ import axios from "axios";
 import Load from "../components/Load";
 import Swal from "sweetalert2";
 
-const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color = null }) => {
-  const role = localStorage.getItem("role");
+const DataTable = ({
+  keyColumns,
+  columnsName,
+  detail,
+  query,
+  parentLink,
+  color = null,
+}) => {
+  const role = localStorage.getItem("role").toLowerCase();
   const token = localStorage.getItem("access_token");
 
   const [keylog, setKeylog] = useState(keyColumns ? keyColumns : []);
@@ -19,6 +26,22 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
   const [id, setId] = useState(null);
 
   // -----------------------------------------------------DELETE
+
+  const searchByGuru = async (e) => {
+    e.preventDefault();
+    const search = e.target.search.value;
+    console.log(search);
+    const response = await axios({
+      method: "get",
+      url: `${process.env.BASE_URL}/${role}/${detail}?teacher=${search}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response);
+
+  };
+
   function handdleDeletePopUp(id) {
     setId(id);
     document.getElementById("delete_modal").showModal();
@@ -87,10 +110,33 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
 
   return (
     <div className="px-3 py-4  justify-center mt-4  ">
-         <div className="text-3xl font-bold text-yellow-400 pt-4 pb-6 sticky top-24 bg-white ">LIST OF TEACHER</div>
-      <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll text-black ">
-        <thead className={`${color ? color.primary : "bg-yellow-400"} ${color?.text ? color-text : "text-slate-900"} w-full sticky top-40 `}>
+      <div className="text-3xl flex justify-between items-center p-[1rem] font-bold text-yellow-400 pt-4 pb-6 sticky top-20 bg-white ">
+        <p>LIST OF TEACHER</p>
 
+        <div className="flex justify-center gap-2">
+          
+          <form className="mt-3 " action="">
+            <input
+              className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
+              type="text"
+              placeholder="Search Teacher"
+            />
+          </form>
+
+          <Link to={`/${parentLink}/add`} className="mt-2 translate-y-[0.2rem]">
+            <button className="btn bg-blue-500 hover:bg-blue-700 text-white">
+              Add Teacher
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      <table className="w-full text-md bg-gray-blue shadow-2xl  mb-4 text-center overflow-x-scroll text-black ">
+        <thead
+          className={`${color ? color.primary : "bg-yellow-400"} ${
+            color?.text ? color - text : "text-slate-900"
+          } w-full sticky top-40 `}
+        >
           <tr className="border-b  ">
             <th className="text-center p-3 px-5 ">No</th>
             {columns?.map((item, index) => (
@@ -114,9 +160,13 @@ const DataTable = ({ keyColumns, columnsName, detail, query, parentLink, color =
                   >
                     <td className="p-3 px-5">{++index}</td>
                     {keylog.map((keyColumns, index) => {
-                      if (keyColumns.includes("guru")) {
+                      if (keyColumns.includes("teacher")) {
                         return (
-                          <td key={index} keyColumns={index} className="p-3 px-5">
+                          <td
+                            key={index}
+                            keyColumns={index}
+                            className="p-3 px-5"
+                          >
                             {item[keyColumns].nama}
                           </td>
                         );

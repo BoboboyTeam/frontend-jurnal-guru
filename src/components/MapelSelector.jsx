@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { fetchDataMapel } from "../sandbox/mapelRedux";
+import { fetchDataMapel } from "../redux/mapelRedux";
 import { useDispatch, useSelector } from "react-redux";
 import Load from "./Load";
 const GuruSelector = ({ dataName = "Guru" }) => {

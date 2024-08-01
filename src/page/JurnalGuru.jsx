@@ -11,29 +11,49 @@ import Swal from "sweetalert2";
 import GajiBulanan from "../components/GajiBulanan";
 import { useDispatch, useSelector } from "react-redux";
 // Import action
-import {updateState} from "../sandbox/jurnalRedux"
+import {updateState} from "../redux/jurnalRedux"
 import Invoice from "../components/Invoice";
+import { selectDataJurnalGuru, selectDataProfile } from "../redux/selectorRedux";
 
 const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
   const [result, setResult] = useState([]);
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role").toLowerCase();
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
   const [to, setTo] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 7));
   const [idJurnal, setIdJurnal] = useState(null);
-  const profile = useSelector((state)=>state.profile?.data?.data);
-  const dataJP = useSelector((state)=>state.jurnalGuru?.data);
+  const profile = useSelector(selectDataProfile);
+  const dataJP = useSelector(selectDataJurnalGuru);
 
   // Redux
   const dispatch = useDispatch();
+
+  const searchByTeacher = async (e) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const link = `${process.env.BASE_URL}/${role}/jurnal-teacher/?teacher=${e.target.value}`;
+      console.log(link);
+      let { data } = await axios({
+        method: "get",
+        url: link,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setResult(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   async function fetchData() {
     try {
       const token = localStorage.getItem("access_token");
 
-      const link = id ? `${role}/filter/jurnal-guru/guru/${id}` : `${role}/jurnal-guru`;
-      const profileLink = isProfile | role==='guru' ? `${role}/jurnal-guru` : '';
+      const link = id ? `${role}/filter/jurnal-teacher/teacher/${id}` : `${role}/jurnal-teacher`;
+      const profileLink = isProfile | role==='teacher' ? `${role}/jurnal-teacher` : '';
 
-      const trueLink = role==='guru' ? profileLink : link;
+      const trueLink = role==='teacher' ? profileLink : link;
       console.log(`${process.env.BASE_URL}/${trueLink}`);
       let { data } = await axios({
         method: "get",
@@ -58,7 +78,7 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
       console.log(fromYear,"AAAAAAAAAAAA");
       const query = `?month=${fromMonth}&year=${fromYear}`;
       console.log(query);
-      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-guru/date${id ? `${'/'+id}`:''}${query}`
+      const link = `${process.env.BASE_URL}/${role}/filter/jurnal-teacher/date${id ? `${'/'+id}`:''}${query}`
       console.log(link);
       let { data } = await axios({
         method: "get",
@@ -101,7 +121,8 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
 
   async function handdleDelete() {
     const token = localStorage.getItem("access_token");
-    const link = `${process.env.BASE_URL}/${role}/jurnal-guru/` + idJurnal
+    const link = `${process.env.BASE_URL}/${role}/jurnal-teacher/` + idJurnal
+    console.log(link)
     const response = await axios({
       method: "delete",
       url: link,
@@ -153,23 +174,24 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
         </div>
         </div>
         
-        {isProfile && localStorage.getItem("role") === "admin" && (
-          <Invoice nama={profile?.nama} tanggal={from} data={{data:result ,dataJP,columnName:["Date","Start Hours","Lesson Material","Working Hours","Payment"],keyColumns:["updateAt","jamKe","materi","jumlahJP","Payment"],profile }} />
+        {isProfile && localStorage.getItem("role").toLowerCase() === "admin" && (
+          <Invoice nama={profile?.data.nama} tanggal={from} data={{data:result ,dataJP,columnName:["Date","Start Hours","Lesson Material","Working Hours","Payment"],keyColumns:["updateAt","jamKe","materi","jumlahJP","Payment"],profile }} />
           )}
 
 
         {!isProfile &&  
         <form className="mt-3 " action="">
-            <input
-              className="w-96 h-12 rounded-md px-4 outline-none border-2 border-slate-400 "
-              type="text"
-              placeholder="Search Teacher"
-            />
-        </form>
+        <input
+          className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
+          type="text"
+          placeholder="Search Teacher"
+          onChange={searchByTeacher}
+        />
+      </form>
         }
  
         
-        {!isProfile && localStorage.getItem("role") === "admin" && (
+        {!isProfile && localStorage.getItem("role").toLowerCase() === "admin" && (
             <Link to={"/jurnal/add"}>
               <button className="btn w-[10rem] text-white bg-green-500 hover:bg-green-700 mt-3">
                 <Icon icon={plus} /> Create Jurnal
@@ -205,9 +227,9 @@ const JurnalGuru = ({isProfile=false,id=false, addons=false}) => {
                         <tr key={index} className="border-b hover:bg-green-100 bg-white ">
                           <td className="p-3 px-5">{++index}</td>
                           <td className="p-3 px-5">{item?.createAt}</td>
-                          <td className="p-3 px-5">{item?.guru?.nama}</td>
+                          <td className="p-3 px-5">{item?.teacher?.nama}</td>
                           <td className="p-3 px-5">{item?.kelas}</td>
-                          <td className="p-3 px-5">{item?.guruPengganti?.nama}</td>
+                          <td className="p-3 px-5">{item?.teacherReplacement?.nama}</td>
                           <td className="p-3 px-5">{item?.jamKe}</td>
                           <td className="p-3 px-5">{item?.jumlahJP}</td>
                           <td className="p-3 px-5 flex justify-center">

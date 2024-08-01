@@ -8,10 +8,10 @@ import Load from "./Load";
 
 const FormJP = ({ id=null }) => {
   function handleLogout() {}
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role").toLowerCase();
 
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const [guru, setGuru] = useState();
+  const [teacher, setGuru] = useState();
   const [kelas, setKelas] = useState([]);
   const [jadwal, setJadwal] = useState();
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -40,14 +40,14 @@ const FormJP = ({ id=null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/users/role/guru",
+        url: process.env.BASE_URL+"/users/role/teacher",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setGuru(data);
-      console.log(JSON.stringify(guru));
-      guru.map((item) => {
+      console.log(JSON.stringify(teacher));
+      teacher.map((item) => {
         console.log(item.nama);
       });
     } catch (error) {
@@ -100,19 +100,19 @@ const FormJP = ({ id=null }) => {
     const token = localStorage.getItem("access_token");
     const form = new FormData(e.target);
 
-    // Dapetin guru dan _idnya
-    let guru_id = form.get("guru");
-    guru_id = guru.find((item) => item._id === guru_id);
-    console.log(guru);
+    // Dapetin teacher dan _idnya
+    let teacher_id = form.get("teacher");
+    teacher_id = teacher.find((item) => item._id === teacher_id);
+    console.log(teacher);
 
     const formData = {
       hari: form.get("hari"),
       jamKe: form.get("jamKe"),
-      guru: {
-        _id: guru_id._id,
-        nama: guru_id.nama,
+      teacher: {
+        _id: teacher_id._id,
+        nama: teacher_id.nama,
       },
-      guruPengganti: null,
+      teacherReplacement: null,
       kelas: form.get("kelas"),
       mapel: form.get("mapel"),
       materi: "",
@@ -166,7 +166,7 @@ const FormJP = ({ id=null }) => {
         
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <div className="flex justify-between">
-            <h1 className="text-3xl font-bold text-white">Form Jadwal Pelajaran</h1>
+            <h1 className="text-3xl font-bold text-white">Form Lesson Schedule</h1>
           </div>
           <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
@@ -175,7 +175,7 @@ const FormJP = ({ id=null }) => {
                   htmlFor="hari"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Hari
+                  Day
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md w-52">
@@ -260,17 +260,17 @@ const FormJP = ({ id=null }) => {
                 </div>
 
                 <label
-                  htmlFor="guru"
+                  htmlFor="teacher"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Guru
+                  Teacher
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
-                  <select className="w-full" id="guru" name="guru">
+                  <select className="w-full" id="teacher" name="teacher">
                     <option value="">None</option>
-                    {guru?.map((item, index) => {
-                      if (item._id === jadwal?.guru?._id) {
+                    {teacher?.map((item, index) => {
+                      if (item._id === jadwal?.teacher?._id) {
                         return (
                           <>
                             <option key={index} value={item._id} selected="selected">
@@ -297,7 +297,7 @@ const FormJP = ({ id=null }) => {
                   htmlFor="kelas"
                   className="mb-3 block text-base font-medium text-white "
                 >
-                  Kelas
+                  Class
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md  w-52">
@@ -329,7 +329,7 @@ const FormJP = ({ id=null }) => {
                     htmlFor="mapel"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Mata Pelajaran
+                    School Subjects
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="mapel" name="mapel">

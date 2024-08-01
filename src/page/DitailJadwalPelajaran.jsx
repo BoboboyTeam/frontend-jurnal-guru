@@ -8,7 +8,7 @@ const DitailJadwalPelajaran = () => {
   const {id} = useParams();
 
   return(
-    <Detail id={id} detail={'jp'} keyColumns={['hari','mapel','kelas','jamKe','guru']} columnsName={['Day','Lesson','Class','Start Hours','Teacher']} />
+    <Detail id={id} detail={'jp'} keyColumns={['hari','mapel','kelas','jamKe','teacher']} columnsName={['Day','Lesson','Class','Start Hours','Teacher']} />
   )
 };
 

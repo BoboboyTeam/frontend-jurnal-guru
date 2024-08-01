@@ -6,7 +6,7 @@ import Icon from "react-icons-kit";
 import { ic_exit_to_app_twotone } from "react-icons-kit/md/ic_exit_to_app_twotone";
 
 const Navbar = () => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role")?.toLowerCase();
   const navigate = useNavigate();
 
   function handdleDeletePopUp() {
@@ -60,7 +60,7 @@ const Navbar = () => {
             </button>
           </Link>
           {role === "admin" && (
-            <Link to={"/guru"}>
+            <Link to={"/teacher"}>
               <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
                 List Of Teachers
               </button>

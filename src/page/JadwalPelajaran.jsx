@@ -33,7 +33,7 @@ const JadwalPelajaran = () => {
       setSearchGuru(e.target.value);
       console.log(e.target.value);
       let query = "?";
-      if (e.target.id ==='searchGuru') query += `guru=${e.target.value}`;
+      if (e.target.id ==='searchGuru') query += `teacher=${e.target.value}`;
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
@@ -54,7 +54,7 @@ const JadwalPelajaran = () => {
       const token = localStorage.getItem("access_token");
 
       const { data } =
-        localStorage.getItem("role") === "admin"
+        localStorage.getItem("role").toLowerCase() === "admin"
           ? await axios({
               method: "get",
               url: process.env.BASE_URL + "/admin/jp",
@@ -64,7 +64,7 @@ const JadwalPelajaran = () => {
             })
           : await axios({
               method: "get",
-              url: process.env.BASE_URL + "/guru/jp",
+              url: process.env.BASE_URL + "/teacher/jp",
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -73,10 +73,10 @@ const JadwalPelajaran = () => {
 
       // Absence Condition
       let getJurnal;
-      if (localStorage.getItem("role") === "guru") {
+      if (localStorage.getItem("role").toLowerCase() === "teacher") {
         getJurnal = await axios({
           method: "get",
-          url: process.env.BASE_URL + "/guru/jurnal-guru/now",
+          url: process.env.BASE_URL + "/teacher/jurnal-teacher/now",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -89,7 +89,7 @@ const JadwalPelajaran = () => {
             console.log(getJurnal.data[index]?.jamKe, "Jurnal Jam Ke");
             let condition = getJurnal.data[index]?.jamKe === item.jamKe;
             condition = getJurnal.data[index]?.mapel === item.mapel;
-            condition = getJurnal.data[index]?.guru?._id === item.guru?._id;
+            condition = getJurnal.data[index]?.teacher?._id === item.teacher?._id;
 
             if (condition) {
               jurnalCheck.push(1);
@@ -170,7 +170,7 @@ const JadwalPelajaran = () => {
       <div className="text-gray-900 bg-blue-100 pb-10 ">
         <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">
           <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">
-            LESSEON SCHEDULE
+            LESSON SCHEDULE
           </div>
 
           <div className="w-32 mt-3 ">
@@ -220,7 +220,7 @@ const JadwalPelajaran = () => {
             </form>
           </div>
 
-          {localStorage.getItem("role") === "admin" && (
+          {localStorage.getItem("role").toLowerCase() === "admin" && (
             <Link to={"/jp/add"}>
               <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
                 <Icon icon={plus} /> Create Schedule
@@ -251,7 +251,7 @@ const JadwalPelajaran = () => {
                     <td className="p-3 px-5">{++index}</td>
                     <td className="p-3 px-5">{item?.hari}</td>
                     <td className="p-3 px-5">{item?.kelas}</td>
-                    <td className="p-3 px-5">{item?.guru?.nama}</td>
+                    <td className="p-3 px-5">{item?.teacher?.nama}</td>
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/" + item?._id}>
                         {" "}
@@ -259,16 +259,16 @@ const JadwalPelajaran = () => {
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
-                      {localStorage.getItem("role") === "guru" &&
+                      {localStorage.getItem("role").toLowerCase() === "teacher" &&
                         jurnal[index - 1] < 1 && (
                           <Link to={"/jurnal/" + item._id}>
                             {" "}
-                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900 bg-green-100  hover:text-white mr-2">
                               <Icon icon={plus} /> Add Journal
                             </button>
                           </Link>
                         )}
-                      {localStorage.getItem("role") === "guru" &&
+                      {localStorage.getItem("role").toLowerCase() === "teacher" &&
                         jurnal[index - 1] > 0 && (
                           <div className="border p-[0.6rem] rounded-lg border-green-700 bg-green-500  text-white mr-2">
                             <p>
@@ -277,7 +277,7 @@ const JadwalPelajaran = () => {
                             </p>
                           </div>
                         )}
-                      {localStorage.getItem("role") === "admin" && (
+                      {localStorage.getItem("role").toLowerCase() === "admin" && (
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}

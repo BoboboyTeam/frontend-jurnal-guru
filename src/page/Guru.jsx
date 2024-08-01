@@ -4,7 +4,7 @@ import DataTable from '../components/DataTable'
 const Guru = () => {
   return (
     <div>
-      <DataTable keyColumns={["nama","role","email"]} columnsName={["Name","Role","Email"]} detail={"users"} parentLink={"guru"} />
+      <DataTable keyColumns={["nama","role","email"]} columnsName={["Name","Role","Email"]} detail={"users"} parentLink={"teacher"} />
 
     </div>
   )

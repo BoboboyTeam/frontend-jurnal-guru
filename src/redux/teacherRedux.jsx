@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react";
 
 const initialState ={
     data:[],
@@ -8,21 +7,17 @@ const initialState ={
     error:null
 }
 
-export const fetchData = createAsyncThunk("stored/fetchData",async(params,thunkAPI)=>{
+export const fetchDataGuru = createAsyncThunk("teacher/fetchDataGuru",async()=>{
     try{
         const token = localStorage.getItem("access_token");
-        const role = localStorage.getItem("role");
-        const detail = params.detail;
-        const id = params?.id;
-        const link =`${process.env.BASE_URL}/${role}/${detail}${id ? `/${id}` : ""}`;
+        const role = localStorage.getItem("role").toLowerCase();
         const response = await axios({
             method:"get",
-            url:link,
+            url:`${process.env.BASE_URL}/users/role/teacher`,
             headers:{
                 Authorization:`Bearer ${token}`
             }
         });
-        console.log(response.data,"<<<<<<<<<<<<FETCH STORED REDUX");
         return response.data;
     }
     catch{
@@ -30,10 +25,11 @@ export const fetchData = createAsyncThunk("stored/fetchData",async(params,thunkA
     }
 })
 
-const storedSlice = createSlice({
-    name:"stored",
+const teacherSlice = createSlice({
+    name:"teacher",
     initialState,
     reducers:{
+        
     },
     extraReducers:(builder)=>{
         builder
@@ -51,4 +47,6 @@ const storedSlice = createSlice({
     }
 })
 
-export default storedSlice.reducer;
+export const {getDataGuru}=teacherSlice.actions;
+
+export default teacherSlice.reducer;

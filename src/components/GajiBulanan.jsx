@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDataJP } from "../sandbox/jurnalRedux";
+import { fetchDataJP } from "../redux/jurnalRedux";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 

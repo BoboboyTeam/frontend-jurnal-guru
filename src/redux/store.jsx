@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import jurnalGuruReducer from './jurnalRedux';
 import kelasReducer from './kelasRedux';
-import guruReducer from './guruRedux';
+import teacherReducer from './teacherRedux';
 import mapelReducer from './mapelRedux';
 import profileReducer from './profileRedux';
 const store = configureStore({
     reducer: {
         jurnalGuru: jurnalGuruReducer,
-        guru: guruReducer,
+        teacher: teacherReducer,
         kelas: kelasReducer,
         mapel: mapelReducer,
         profile: profileReducer,
@@ -25,7 +25,7 @@ useSelector -> configureStore
 v
 state -> reducer -> {
         jurnalGuru: jurnalGuruReducer,
-        guru: guruReducer,
+        teacher: teacherReducer,
         kelas: kelasReducer,
         mapel: mapelReducer,
         profile: profileReducer,

@@ -145,7 +145,10 @@ const InvoiceDocument = ({ nama, alamat, tanggal, data }) => (
       <Text style={styles.total}>
         Total Lesson Hours: {data?.dataJP?.jumlahJP}
       </Text>
-      <Text style={styles.total}>Total: {data?.dataJP?.gaji}</Text>
+      <Text style={styles.total}>Total: {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(parseInt(data?.dataJP?.gaji))}</Text>
     </Page>
   </Document>
 );

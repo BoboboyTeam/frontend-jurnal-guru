@@ -6,7 +6,7 @@ export const fetchDataKelas = createAsyncThunk(
   async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const role = localStorage.getItem("role");
+      const role = localStorage.getItem("role").toLowerCase();
       const response = await axios({
         method: "get",
         url: `${process.env.BASE_URL}/${role}/kelas`,

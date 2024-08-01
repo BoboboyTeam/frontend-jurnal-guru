@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
-import { fetchDataGuru } from "../sandbox/guruRedux";
+import { fetchDataGuru } from "../redux/teacherRedux";
 import { useDispatch, useSelector } from "react-redux";
 import Load from "./Load";
+import { selectDataJurnalGuru, selectErrorJurnalGuru, selectLoadingJurnalGuru } from "../redux/selectorRedux";
 const GuruSelector = ({ dataName = "Guru" }) => {
-  const { data, loading, error } = useSelector((state) => state.guru);
+  const data = useSelector(selectDataJurnalGuru)
+  const loading = useSelector(selectLoadingJurnalGuru)
+  const error = useSelector(selectErrorJurnalGuru)
+
   const dispatch = useDispatch();
 
   useEffect(() => {

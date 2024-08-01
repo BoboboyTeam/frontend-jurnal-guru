@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import Load from "./Load";
 import GuruSelector from "./GuruSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../sandbox/storedRedux";
+import { fetchData } from "../redux/storedRedux";
 
 const FormBuilder = ({
   id = null,
@@ -12,7 +12,7 @@ const FormBuilder = ({
   keyColumns = null,
   columnsName = null,
 }) => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role").toLowerCase();
   const [key, setKey] = useState(keyColumns ? keyColumns : []);
   const [columns, setColumns] = useState(columnsName ? columnsName : []);
   const [editData, setEditData] = useState({});
@@ -21,7 +21,7 @@ const FormBuilder = ({
   const storedData = useSelector((state) => state.stored);
 
   // Redux Get State
-  const guru = useSelector((state) => state.guru?.data);
+  const teacher = useSelector((state) => state.teacher?.data);
   const kelas = useSelector((state) => state.kelas?.data);
   const mapel = useSelector((state) => state.mapel?.data);
   const stored = useSelector((state) => state.stored?.data);

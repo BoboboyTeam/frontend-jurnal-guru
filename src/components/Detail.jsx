@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role").toLowerCase();
   const token = localStorage.getItem("access_token");
   
   const [result, setResult] = useState([]);
@@ -54,7 +54,7 @@ const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
               return (
                 <div key={index} className=" flex gap-2 pl-4 py-2 bg-blue-100">
                   <p className="font-bold">{columns[index].charAt(0).toUpperCase() + columns[index].slice(1)} :</p>
-                  <p>{item.includes('guru') ?  result[item]?.nama : result[item]}</p>
+                  <p>{item.includes('teacher') ?  result[item]?.nama : result[item]}</p>
                 </div>
               );
             })}
