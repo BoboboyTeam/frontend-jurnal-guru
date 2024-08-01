@@ -22,15 +22,32 @@ import DetailGuru from "./page/DetailGuru";
 import LandingPage from "./page/LandingPage";
 import TableMapel from "./page/TableMapel";
 import TableKelas from "./page/TableKelas";
+import TestPage from "./page/TestPage";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <NavbarWrapper />,
+    element: <NavbarWrapper />,
     children: [
       {
+        path:"/",
+        element:<Home/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/test",
+        element: <TestPage />,
+      },
+      {
         path: "/page",
+        element: <LandingPage />,
         element: <LandingPage />,
       },
       {
@@ -54,11 +71,11 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/tabelmapel",
+        path: "/mapel",
         element: <TableMapel />,
       },
       {
-        path: "/tabelkelas",
+        path: "/kelas",
         element: <TableKelas />,
       },
       {
@@ -108,16 +125,6 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
-        loader: async () => {
-          if (!localStorage.getItem("access_token")) {
-            throw redirect("/login");
-          }
-          return null;
-        },
-      },
-      {
-        path: "/guru",
-        element: <Guru />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");
@@ -199,6 +206,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 
 function NavbarWrapper() {
   return (

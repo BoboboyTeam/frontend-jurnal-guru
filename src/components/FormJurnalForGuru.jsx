@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const FormJurnalForGuru = ({id=null}) => {
-  const role = localStorage.getItem("role");
-  const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  const [guru, setGuru] = useState([]);
+  const role = localStorage.getItem("role").toLowerCase();
+  const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const [teacher, setGuru] = useState([]);
   const kelas = ["VII", "VIII", "IX"];
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mataPelajaran = [
@@ -35,14 +35,14 @@ const FormJurnalForGuru = ({id=null}) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/users/guru",
+        url: process.env.BASE_URL+"/users/teacher",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setGuru(data);
-      console.log(JSON.stringify(guru));
-      guru.map((item) => {
+      console.log(JSON.stringify(teacher));
+      teacher.map((item) => {
         console.log(item.nama);
       });
     } catch (error) {
@@ -53,10 +53,10 @@ const FormJurnalForGuru = ({id=null}) => {
   const fetchJurnalGuru = useCallback(async () => {
     try {
         const token = localStorage.getItem("access_token");
-        const role = localStorage.getItem("role");
+        const role = localStorage.getItem("role").toLowerCase();
         const { data } = await axios({
             method: "get",
-            url: `${process.env.BASE_URL}/${role}/jurnal-guru/${id}`,
+            url: `${process.env.BASE_URL}/${role}/jp/${id}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -73,22 +73,22 @@ const FormJurnalForGuru = ({id=null}) => {
     const token = localStorage.getItem("access_token");
     const form = new FormData(e.target);
 
-    // Dapetin guru dan _idnya
-    let guruPengganti_id = form.get("guruPengganti");
-    let guru_id = jurnal.guru ? jurnal.guru : guru.find((item) => item._id === guru_id);
-    guruPengganti_id = guru.find((item) => item._id === guruPengganti_id);
-    console.log(guru);
+    // Dapetin teacher dan _idnya
+    let teacherReplacement_id = form.get("teacherReplacement");
+    let teacher_id = jurnal.teacher ? jurnal.teacher : teacher.find((item) => item._id === teacher_id);
+    teacherReplacement_id = teacher.find((item) => item._id === teacherReplacement_id);
+    console.log(teacher);
 
     const formData = {
       hari:jurnal.hari,
       jamKe: jurnal.jamKe,
-      guru: {
-        _id: guru_id._id,
-        nama: guru_id.nama,
+      teacher: {
+        _id: teacher_id._id,
+        nama: teacher_id.nama,
       },
-      guruPengganti: guruPengganti_id ? {
-        _id: guruPengganti_id._id,
-        nama: guruPengganti_id.nama
+      teacherReplacement: teacherReplacement_id ? {
+        _id: teacherReplacement_id._id,
+        nama: teacherReplacement_id.nama
         } : null,
       kelas: jurnal.kelas,
       mapel: jurnal.mapel,
@@ -98,9 +98,19 @@ const FormJurnalForGuru = ({id=null}) => {
     console.log(formData);
 
     try {
+      let link = `${process.env.BASE_URL}/${role}`;
+      if (role === "admin") {
+        link += "/jurnal-teacher";
+      } else {
+        link += "/jp";
+      }
+      if (id) {
+        link += `/${id}`;
+      }
+      
       const { data } = await axios({
-        method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jurnal-guru${id && `/${id}`}`,
+        method: "post",
+        url: `${process.env.BASE_URL}/${role}/jurnal-teacher`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -110,15 +120,17 @@ const FormJurnalForGuru = ({id=null}) => {
 
       Swal.fire({
         icon: "success",
-        title: id ? "Success Updating Jurnal" :"Succes Adding Jurnal",
+        title:"Succes Adding Jurnal",
       });
-      redirect("/jurnal-guru");
+      
+      navigate("/jurnal");
     } catch (error) {
       console.log(error);
     }
   });
 
   useEffect(() => {
+    console.log("id<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     fetchJurnalGuru();
     fetchGuru();
   }, []);
@@ -128,10 +140,11 @@ const FormJurnalForGuru = ({id=null}) => {
       <div
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
+
         <div className="flex justify-end mb-3  ">
           <div className=" bg-yellow-600 inline-block px-2 py-2 rounded-md hover:bg-yellow-700">
             <button onClick={handleLogout}>
@@ -140,8 +153,12 @@ const FormJurnalForGuru = ({id=null}) => {
             </button>
           </div>
         </div>
+        
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postJurnalGuru}>
+          <div className="flex justify-between my-[1rem]">
+            <h1 className="text-3xl font-bold text-white">Form Jurnal Guru</h1>
+          </div>
             <div className="md:flex md:gap-28">
               <div>
                 <label
@@ -184,7 +201,7 @@ const FormJurnalForGuru = ({id=null}) => {
                 </div>
 
                 <label
-                  htmlFor="guru"
+                  htmlFor="teacher"
                   className="mb-3 block text-base font-medium text-white"
                 >
                   Guru
@@ -195,7 +212,7 @@ const FormJurnalForGuru = ({id=null}) => {
                   type="text"
                   name="hari"
                   id="subject"
-                  value={jurnal?.guru?.nama}
+                  value={jurnal?.teacher?.nama}
                   placeholder="Enter your subject"
                   className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                   readOnly={true}
@@ -203,21 +220,21 @@ const FormJurnalForGuru = ({id=null}) => {
                 </div>
 
                 <label
-                  htmlFor="guruPengganti"
+                  htmlFor="teacherReplacement"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Guru Pengganti{" "}
+                  Guru Replacement{" "}
                   <span className="font-light text-sm">(Opsional)</span>
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
                   <select
                     className="w-full"
-                    id="guruPengganti"
-                    name="guruPengganti"
+                    id="teacherReplacement"
+                    name="teacherReplacement"
                   >
                     <option value="">None</option>
-                    {guru?.map((item) => {
+                    {teacher?.map((item) => {
                       return (
                         <>
                           <option key={item._id} value={item._id}>
@@ -302,6 +319,7 @@ const FormJurnalForGuru = ({id=null}) => {
                     placeholder="Enter your subject"
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                     required={true}
+                    readOnly={true}
                   />
                 </div>
               </div>

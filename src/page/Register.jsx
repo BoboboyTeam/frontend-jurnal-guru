@@ -62,7 +62,7 @@ const Register = () => {
         className="flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat"
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}
       >
         <div className="rounded-xl bg-gray-800 bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
@@ -113,8 +113,8 @@ const Register = () => {
                   onChange={(e) => setRole(e.target.value)}
                 >
                   <option className="text-center">Pilih Role</option>
-                  <option className="text-center" value="Guru">
-                    Guru
+                  <option className="text-center" value="Teacher">
+                    Teacher
                   </option>
                   <option className="text-center" value="Admin">
                     Admin

@@ -5,16 +5,23 @@ import { user } from "react-icons-kit/icomoon/user";
 import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDataGuru, selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
+import { fetchDataKelas } from "../redux/kelasRedux";
 
 const FormJP = ({ id=null }) => {
   function handleLogout() {}
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role").toLowerCase();
 
-  const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  const [guru, setGuru] = useState();
-  const [kelas, setKelas] = useState([]);
+  const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const [teacher, setGuru] = useState();
   const [jadwal, setJadwal] = useState();
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  
+  const kelas = useSelector(selectDataKelas);
+  const kelasLoading = useSelector(selectLoadingKelas)
+  const dispatch = useDispatch();
+
   const mataPelajaran = [
     "Matematika",
     "Bahasa Inggris",
@@ -38,14 +45,14 @@ const FormJP = ({ id=null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/users/role/guru",
+        url: process.env.BASE_URL+"/users/role/teacher",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setGuru(data);
-      console.log(JSON.stringify(guru));
-      guru.map((item) => {
+      console.log(JSON.stringify(teacher));
+      teacher.map((item) => {
         console.log(item.nama);
       });
     } catch (error) {
@@ -98,30 +105,36 @@ const FormJP = ({ id=null }) => {
     const token = localStorage.getItem("access_token");
     const form = new FormData(e.target);
 
-    // Dapetin guru dan _idnya
-    let guru_id = form.get("guru");
-    guru_id = guru.find((item) => item._id === guru_id);
-    console.log(guru);
+    // Dapetin teacher dan _idnya
+    let teacher_id = form.get("teacher");
+    let kelas_id = form.get("kelas");
+    kelas_id = kelas.find((item) => item._id === kelas_id);
+    teacher_id = teacher.find((item) => item._id === teacher_id);
+    console.log(teacher);
+    console.log(kelas_id)
 
     const formData = {
-      hari: form.get("hari").toLowerCase(),
+      hari: form.get("hari"),
       jamKe: form.get("jamKe"),
-      guru: {
-        _id: guru_id._id,
-        nama: guru_id.nama,
+      teacher: {
+        _id: teacher_id?._id,
+        nama: teacher_id?.nama,
       },
-      guruPengganti: null,
-      kelas: form.get("kelas"),
+      teacherReplacement: null,
+      kelas:  {
+        _id: kelas_id?._id,
+        nama: kelas_id?.nama,
+      },
       mapel: form.get("mapel"),
       materi: "",
-      jumlahJP: "",
+      jumlahJP: form.get("jumlahJP"),
     };
     console.log(formData,"FORMDATA");
-
+    const link = `${process.env.BASE_URL}/${role}/jp${ id && id!="add" ?`/${id}`:''}`
     try {
       const { data } = await axios({
-        method: id ? "put" : "post",
-        url: `${process.env.BASE_URL}/${role}/jp${id?`/${id}`:''}`,
+        method: id && id!="add" ? "put" : "post",
+        url: link,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -131,36 +144,42 @@ const FormJP = ({ id=null }) => {
 
       Swal.fire({
         icon: "success",
-        title: id ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
+        title: id && id!="add" ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
       });
-      redirect("/jadwal");
+      navigate("/jadwal");
     } catch (error) {
       console.log(error);
     }
   });
+
+ 
 
   useEffect(() => {
     fetchGuru();
     fetchKelas();
     
     id && fetchJadwal();
+    dispatch(fetchDataKelas())
     
     console.log(jadwal,"<<<<<<<<<<<<<<<<<<<");
-  }, []);
+  }, [dispatch]);
 
-  if(id && !jadwal) return <Load/>
+  if(id && !jadwal && kelasLoading) return <Load/>
 
   return (
     <>
       <div
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
         
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-white">Form Lesson Schedule</h1>
+          </div>
           <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
               <div>
@@ -168,7 +187,7 @@ const FormJP = ({ id=null }) => {
                   htmlFor="hari"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Hari
+                  Day
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md w-52">
@@ -253,17 +272,17 @@ const FormJP = ({ id=null }) => {
                 </div>
 
                 <label
-                  htmlFor="guru"
+                  htmlFor="teacher"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Guru
+                  Teacher
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
-                  <select className="w-full" id="guru" name="guru">
+                  <select className="w-full" id="teacher" name="teacher">
                     <option value="">None</option>
-                    {guru?.map((item, index) => {
-                      if (item._id === jadwal?.guru?._id) {
+                    {teacher?.map((item, index) => {
+                      if (item._id === jadwal?.teacher?._id) {
                         return (
                           <>
                             <option key={index} value={item._id} selected="selected">
@@ -290,25 +309,26 @@ const FormJP = ({ id=null }) => {
                   htmlFor="kelas"
                   className="mb-3 block text-base font-medium text-white "
                 >
-                  Kelas
+                  Class
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md  w-52">
                   <select className="w-full" id="kelas" name="kelas">
+                    <option value="">None</option>
                     {kelas.map((item, index) => {
                       if (item === jadwal?.kelas) {
                         return (
                           <>
-                            <option key={index} value={item} selected="selected">
-                              {item}
+                            <option key={index} value={item._id} selected="selected">
+                              {item.nama}
                             </option>
                           </>
                         );
                       } else {
                         return (
                           <>
-                            <option key={index} value={item}>
-                              {item}
+                            <option key={index} value={item._id}>
+                              {item.nama}
                             </option>
                           </>
                         );
@@ -322,7 +342,7 @@ const FormJP = ({ id=null }) => {
                     htmlFor="mapel"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Mata Pelajaran
+                    School Subjects
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="mapel" name="mapel">
@@ -346,6 +366,23 @@ const FormJP = ({ id=null }) => {
                         }
                       })}
                     </select>
+                  </div>
+                </div>
+                <div className="mb-5">
+                  <label
+                    htmlFor="mapel"
+                    className="mb-3 block text-base font-medium text-white"
+                  >
+                    Working Hours
+                  </label>
+                  <div className="mb-5 bg-white p-3 rounded-md">
+                    <input
+                      type="number"
+                      id="jumlahJP"
+                      name="jumlahJP"
+                      defaultValue={jadwal?.jumlahJP}
+                      className="w-full px-2 !bg-slate-950"
+                    />
                   </div>
                 </div>
               </div>

@@ -6,7 +6,7 @@ import Icon from "react-icons-kit";
 import { ic_exit_to_app_twotone } from "react-icons-kit/md/ic_exit_to_app_twotone";
 
 const Navbar = () => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role")?.toLowerCase();
   const navigate = useNavigate();
 
   function handdleDeletePopUp() {
@@ -17,13 +17,17 @@ const Navbar = () => {
     localStorage.removeItem("access_token");
     navigate("/login");
   }
+  
+  if(localStorage.getItem("access_token") === null){
+    return
+  }
 
   return (
     <div
       className="w-full sticky top-0  bg-blue-300  h-24 flex pl-6 gap-2 border-b-2 border-slate-100 justify-center md:justify-between z-50  "
       style={{
         backgroundImage:
-          'url("https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+          'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
       }}
     >
       <Link to={"/page"}>
@@ -43,7 +47,7 @@ const Navbar = () => {
       </div>
       </Link>
 
-      <div className="p-4  flex justify-center w-full  md:justify-center  pl-56">
+      <div className="p-4  flex justify-center w-full  md:justify-center  tra">
         <div className="w-[700px] mt-3  flex justify-start gap-5 font-bold ">
           <Link to={"/jadwal"}>
             <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100 ">
@@ -56,11 +60,23 @@ const Navbar = () => {
             </button>
           </Link>
           {role === "admin" && (
-            <Link to={"/guru"}>
+            <>
+            <Link to={"/teacher"}>
               <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
-                List Of Teachers
+                Teachers
               </button>
             </Link>
+            <Link to={"/kelas"}>
+              <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
+                Class
+              </button>
+            </Link>
+            <Link to={"/mapel"}>
+              <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
+                Lesson
+              </button>
+            </Link>
+            </>
           )}
         </div>
       </div>

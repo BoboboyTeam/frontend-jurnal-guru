@@ -3,6 +3,8 @@ import { bin } from "react-icons-kit/icomoon/bin";
 import { plus } from "react-icons-kit/fa/plus";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
 import { externalLink } from "react-icons-kit/fa/externalLink";
+
+import { iosCheckmark } from "react-icons-kit/ionicons/iosCheckmark";
 import { Icon } from "react-icons-kit";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
@@ -21,6 +23,45 @@ const JadwalPelajaran = () => {
   ];
   const kelas = ["VII", "VIII", "IX"];
   const [jadwalId, setJadwalId] = useState(null);
+  const [jurnal, setJurnal] = useState(null);
+  const [searchTeacher, setSearchTeacher] = useState();
+  const [searchKelas, setSearchKelas] = useState();
+  const [searchHari, setSearchHari] = useState();
+
+  const searchByTeacher = async (e) => {
+    try {
+      setSearchTeacher(e.target.value);
+      console.log(e.target.value);
+      let query = "?";
+      
+      switch(e.target.id) {
+        case "searchTeacher":
+          query += `teacher=${e.target.value}`;
+          setSearchTeacher(e.target.value);
+          break;
+        case "searchHari":
+          query += `hari=${e.target.value}`;
+          setSearchHari(e.target.value);
+          break;
+        case "searchKelas":
+          query += `kelas=${e.target.value}`;
+          setSearchKelas(e.target.value);
+          break;
+      }
+
+      const token = localStorage.getItem("access_token");
+      const { data } = await axios({
+        method: "get",
+        url: `${process.env.BASE_URL}/admin/jp${query}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setResult(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
@@ -28,7 +69,7 @@ const JadwalPelajaran = () => {
       const token = localStorage.getItem("access_token");
 
       const { data } =
-        localStorage.getItem("role") === "admin"
+        localStorage.getItem("role").toLowerCase() === "admin"
           ? await axios({
               method: "get",
               url: process.env.BASE_URL + "/admin/jp",
@@ -38,11 +79,46 @@ const JadwalPelajaran = () => {
             })
           : await axios({
               method: "get",
-              url: process.env.BASE_URL + "/guru/jp",
+              url: process.env.BASE_URL + "/teacher/jp",
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             });
+      console.log(data);
+
+      // Absence Condition
+      let getJurnal;
+      if (localStorage.getItem("role").toLowerCase() === "teacher") {
+        getJurnal = await axios({
+          method: "get",
+          url: process.env.BASE_URL + "/teacher/jurnal-teacher/now",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(getJurnal.data, "JOURNAL<<<<<<<<<<<<<<<,");
+        // Get Journal This Day
+        let jurnalCheck = [];
+        data.forEach((item, index) => {
+          if (getJurnal.data.length > 0) {
+            console.log(getJurnal.data[index]?.jamKe, "Jurnal Jam Ke");
+            let condition = getJurnal.data[index]?.jamKe === item.jamKe;
+            condition = getJurnal.data[index]?.mapel === item.mapel;
+            condition =
+              getJurnal.data[index]?.teacher?._id === item.teacher?._id;
+
+            if (condition) {
+              jurnalCheck.push(1);
+              console.log("Jurnal Sudah Ada");
+            } else {
+              jurnalCheck.push(0);
+            }
+          } else {
+            jurnalCheck.push(0);
+          }
+        });
+        setJurnal(jurnalCheck);
+      }
 
       console.log(data);
       setResult(data);
@@ -108,9 +184,10 @@ const JadwalPelajaran = () => {
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
       <div className="text-gray-900 bg-blue-100 pb-10 ">
-        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 " >   
-
-         <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">LESSEON SCHEDULE</div>
+        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-20 ">
+          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">
+            LESSON SCHEDULE
+          </div>
 
           <div className="w-32 mt-3 ">
             <form action="">
@@ -150,14 +227,16 @@ const JadwalPelajaran = () => {
           <div className="w-80 rounded-md mt-3">
             <form action="">
               <input
+                id="searchTeacher"
                 className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
                 type="text"
-                placeholder="Cari Nama Guru"
+                onChange={searchByTeacher}
+                placeholder="Cari Nama Teacher"
               />
             </form>
           </div>
 
-          {localStorage.getItem("role") === "admin" && (
+          {localStorage.getItem("role").toLowerCase() === "admin" && (
             <Link to={"/jp/add"}>
               <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
                 <Icon icon={plus} /> Create Schedule
@@ -166,8 +245,8 @@ const JadwalPelajaran = () => {
           )}
         </div>
 
-        <div className="px-3  flex justify-center   " >
-          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center" >
+        <div className="px-3  flex justify-center   ">
+          <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
             <thead className="sticky top-40 bg-blue-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
@@ -187,8 +266,8 @@ const JadwalPelajaran = () => {
                   >
                     <td className="p-3 px-5">{++index}</td>
                     <td className="p-3 px-5">{item?.hari}</td>
-                    <td className="p-3 px-5">{item?.kelas}</td>
-                    <td className="p-3 px-5">{item?.guru?.nama}</td>
+                    <td className="p-3 px-5">{item?.kelas?.nama}</td>
+                    <td className="p-3 px-5">{item?.teacher?.nama}</td>
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/" + item?._id}>
                         {" "}
@@ -196,11 +275,32 @@ const JadwalPelajaran = () => {
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
-                      {localStorage.getItem("role") === "admin" && (
+                      {localStorage.getItem("role").toLowerCase() ===
+                        "teacher" &&
+                        jurnal[index - 1] < 1 && (
+                          <Link to={"/jurnal/" + item._id}>
+                            {" "}
+                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900 bg-green-100  hover:text-white mr-2">
+                              <Icon icon={plus} /> Add Journal
+                            </button>
+                          </Link>
+                        )}
+                      {localStorage.getItem("role").toLowerCase() ===
+                        "teacher" &&
+                        jurnal[index - 1] > 0 && (
+                          <div className="border p-[0.6rem] rounded-lg border-green-700 bg-green-500  text-white mr-2">
+                            <p>
+                              <Icon icon={iosCheckmark} /> Journal Has Been
+                              Added
+                            </p>
+                          </div>
+                        )}
+                      {localStorage.getItem("role").toLowerCase() ===
+                        "admin" && (
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}
-                            <button className="btn  border-green-700 bg-white hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                            <button className="btn bg-green-100 border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>

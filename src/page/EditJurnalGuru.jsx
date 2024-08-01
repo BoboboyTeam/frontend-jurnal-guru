@@ -4,8 +4,8 @@ import FormJurnal from "../components/FormJurnal";
 
 
 const EditJurnalGuru = () => {
-    const guru =["Budi1","Budi2"]
-    const day = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const teacher =["Budi1","Budi2"]
+    const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     const kelas = ["VII", "VIII", "IX"];
     const jam = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
     const mataPelajaran = [
