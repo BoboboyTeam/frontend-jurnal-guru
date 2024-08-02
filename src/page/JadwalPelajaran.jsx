@@ -334,7 +334,7 @@ const JadwalPelajaran = () => {
                           </button>
 
                           <dialog id="my_modal_1" className="modal">
-                            <div className="modal-box">
+                            <div className="modal-box bg-white">
                               <h3 className="font-bold text-lg">
                                 Are you sure you want to delete this data?
                               </h3>

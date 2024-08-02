@@ -125,7 +125,7 @@ const FormJurnal = ({ id = null }) => {
         icon: "success",
         title: id && id!="add" ?  "Success Updating Jurnal" : "Succes Adding Jurnal",
       });
-      navigate("/jurnal");
+      navigate(-1);
     } catch (error) {
       console.log(error);
     }

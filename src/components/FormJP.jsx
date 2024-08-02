@@ -16,7 +16,7 @@ const FormJP = ({ id=null }) => {
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [teacher, setGuru] = useState();
   const [jadwal, setJadwal] = useState();
-  const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const jam = ["7:10-7:50","7:50-8:30","8:30-9:10","9:10-9:50","10:30-11:10","11:10-11:50","12:30-13:10","13:10-13:50","13:50-14:30","14:30-15:10"];
   
   const kelas = useSelector(selectDataKelas);
   const kelasLoading = useSelector(selectLoadingKelas)
@@ -146,7 +146,7 @@ const FormJP = ({ id=null }) => {
         icon: "success",
         title: id && id!="add" ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
       });
-      navigate("/jadwal");
+      navigate(-1);
     } catch (error) {
       console.log(error);
     }
@@ -232,7 +232,7 @@ const FormJP = ({ id=null }) => {
                     htmlFor="jamKe"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Jam ke
+                    Start Hours
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="jamKe" name="jamKe">
@@ -240,7 +240,7 @@ const FormJP = ({ id=null }) => {
                       if (item === jadwal?.jamKe) {
                         return (
                           <>
-                            <option key={index} value={item} selected="selected">
+                            <option key={index} value={index+1} selected="selected">
                               {item}
                             </option>
                           </>
@@ -248,7 +248,7 @@ const FormJP = ({ id=null }) => {
                       } else {
                         return (
                           <>
-                            <option key={index} value={item}>
+                            <option key={index} value={index+1}>
                               {item}
                             </option>
                           </>
@@ -259,7 +259,7 @@ const FormJP = ({ id=null }) => {
                       !id && jam.map((item, index) => {
                         return (
                           <>
-                            <option key={index} value={item}>
+                            <option key={index} value={index+1}>
                               {item}
                             </option>
                           </>

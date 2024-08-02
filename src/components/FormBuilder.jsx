@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../redux/storedRedux";
 import { selectDataGuru, selectDataKelas, selectDataMapel, selectDataStored, selectLoadingStored, selectErrorStored } from "../redux/selectorRedux";
 import { updateState } from "../redux/jurnalRedux";
+import { useNavigate } from "react-router-dom";
 
 const FormBuilder = ({
   id = null,
@@ -20,7 +21,7 @@ const FormBuilder = ({
   const [columns, setColumns] = useState(columnsName ? columnsName : []);
   const [editData, setEditData] = useState({});
   const [data, setData] = useState({});
-
+  const navigate = useNavigate();
   
   // Redux Fetch Data
 
@@ -62,6 +63,7 @@ const FormBuilder = ({
         title: "Success",
         text: linkId ? "Succesfully updated data" : "Successfully added data",
       });
+      navigate(-1);
     } catch (error) {
       Swal.fire({
         icon: "error",

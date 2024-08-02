@@ -54,7 +54,7 @@ const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
               return (
                 <div key={index} className=" flex gap-2 pl-4 py-2 bg-blue-100">
                   <p className="font-bold">{columns[index].charAt(0).toUpperCase() + columns[index].slice(1)} :</p>
-                  <p>{item.includes('teacher') ?  result[item]?.nama : result[item]}</p>
+                  <p>{typeof result[item] === 'object' && !Array.isArray(result[item]) && result[item] !== null ?  result[item]?.nama : result[item]}</p>
                 </div>
               );
             })}

@@ -127,13 +127,13 @@ const DataTable = ({
 
         <div className="flex justify-center gap-2">
           
-          <form className="mt-3 " action="">
+          {/* <form className="mt-3 " action="">
             <input
               className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
               type="text"
-              placeholder="Search By Teacher"
+              placeholder="Search"
             />
-          </form>
+          </form> */}
 
           <Link to={`/${parentLink}/add`} className="mt-2 translate-y-[0.2rem]">
             <button className="btn bg-blue-500 hover:bg-blue-700 text-white">
