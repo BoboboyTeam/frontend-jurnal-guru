@@ -9,7 +9,9 @@ import { Icon } from "react-icons-kit";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { useDispatch, useSelector } from "react-redux";
+import { selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
+import { fetchDataKelas } from "../redux/kelasRedux";
 const JadwalPelajaran = () => {
   const [result, setResult] = useState([]);
   const day = [
@@ -21,14 +23,16 @@ const JadwalPelajaran = () => {
     "Thursday",
     "Friday",
   ];
-  const kelas = useSelector;
+  const kelas = useSelector(selectDataKelas);
+  const kelasLoading = useSelector(selectLoadingKelas);
+  const dispatch = useDispatch();
   const [jadwalId, setJadwalId] = useState(null);
   const [jurnal, setJurnal] = useState(null);
   const [searchTeacher, setSearchTeacher] = useState();
   const [searchKelas, setSearchKelas] = useState();
   const [searchHari, setSearchHari] = useState();
 
-  const searchByTeacher = async (e) => {
+  const searchEvent = async (e) => {
     try {
       console.log(e.target.value);
       let query = "";
@@ -63,6 +67,7 @@ const JadwalPelajaran = () => {
         },
       });
       setResult(data);
+      fetchDataKelas();
     } catch (error) {
       console.log(error);
     }
@@ -184,6 +189,7 @@ const JadwalPelajaran = () => {
 
   useEffect(() => {
     fetchData();
+    dispatch(fetchDataKelas());
   }, []);
 
   return (
@@ -200,7 +206,7 @@ const JadwalPelajaran = () => {
                 className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
                 id="searchHari"
                 name="hari"
-                onChange={searchByTeacher}
+                onChange={searchEvent}
               >
                 {day.map((item) => {
                   if (item === "All Days") {
@@ -224,9 +230,11 @@ const JadwalPelajaran = () => {
             <form action="">
               <select
                 className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
-                id="day"
+                id="searchKelas"
+                onChange={searchEvent}
               >
-                {kelas.map((item) => {
+                <option value="">All Class</option>
+                {kelas?.map((item) => {
                   return (
                     <>
                       <option value={item.nama}>{item.nama}</option>
@@ -243,7 +251,7 @@ const JadwalPelajaran = () => {
                 id="searchTeacher"
                 className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
                 type="text"
-                onChange={searchByTeacher}
+                onChange={searchEvent}
                 placeholder="Cari Nama Teacher"
               />
             </form>
@@ -271,7 +279,7 @@ const JadwalPelajaran = () => {
               </tr>
             </thead>
             <tbody>
-              {result.map((item, index) => {
+              {result?.map((item, index) => {
                 return (
                   <tr
                     key={index}
