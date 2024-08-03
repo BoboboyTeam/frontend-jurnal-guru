@@ -5,8 +5,9 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
+import { selectDataKelas, selectDataMapel, selectLoadingKelas } from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
+import { fetchDataMapel } from "../redux/mapelRedux";
 
 const FormJurnal = ({ id = null }) => {
   const role = localStorage.getItem("role").toLowerCase();
@@ -14,14 +15,7 @@ const FormJurnal = ({ id = null }) => {
   const [teacher, setGuru] = useState([]);
   const [jurnal, setJurnal] = useState({});
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const mataPelajaran = [
-    "Matematika",
-    "Bahasa Inggris",
-    "Bahasa Jawa",
-    "IPA",
-    "IPS",
-    "Biologi",
-  ];
+  const mataPelajaran = useSelector(selectDataMapel);
 
   const kelas = useSelector(selectDataKelas);
   const kelasLoading = useSelector(selectLoadingKelas)
@@ -87,6 +81,10 @@ const FormJurnal = ({ id = null }) => {
       jurnal && jurnal?.teacher
         ? jurnal.teacher
         : teacher.find((item) => item._id === form.get("teacher"));
+    let mapel_id = form.get("mapel");
+    mapel_id = mataPelajaran.find((item) => item._id === mapel_id);
+    let kelas_id = form.get("kelas");
+    kelas_id = kelas.find((item) => item._id === kelas_id);
     teacherReplacement_id = teacher.find((item) => item._id === teacherReplacement_id);
     console.log(teacher);
 
@@ -103,8 +101,14 @@ const FormJurnal = ({ id = null }) => {
             nama: teacherReplacement_id.nama,
           }
         : null,
-      kelas: form.get("kelas"),
-      mapel: form.get("mapel"),
+      kelas: {
+        _id: kelas_id?._id,
+        nama: kelas_id?.nama,
+      },
+      mapel: {
+        _id: mapel_id?._id,
+        nama: mapel_id?.nama,
+      },
       materi: form.get("materi"),
       jumlahJP: form.get("jumlahJP"),
     };
@@ -135,6 +139,7 @@ const FormJurnal = ({ id = null }) => {
     fetchJurnalGuru();
     fetchGuru();
     dispatch(fetchDataKelas())
+    dispatch(fetchDataMapel())
   }, [dispatch]);
 
   if(kelasLoading){
@@ -165,7 +170,7 @@ const FormJurnal = ({ id = null }) => {
                     {id &&
                       jurnal &&
                       day.map((item, index) => {
-                        if (item.toLowerCase() === jurnal?.hari) {
+                        if (item.toLowerCase() === jurnal?.hari?.toLowerCase()) {
                           return (
                             <>
                               <option
@@ -338,23 +343,23 @@ const FormJurnal = ({ id = null }) => {
                   <select className="w-full" id="kelas" name="kelas">
                     <option value="">None</option>
                     {kelas?.map((item, index) => {
-                      if (item === jurnal?.kelas) {
+                      if (item?._id === jurnal?.kelas?._id) {
                         return (
                           <>
                             <option
                               key={index}
-                              value={item._id}
+                              value={item?._id}
                               selected="selected"
                             >
-                              {item.nama}
+                              {item?.nama}
                             </option>
                           </>
                         );
                       } else {
                         return (
                           <>
-                            <option key={index} value={item._id}>
-                              {item.nama}
+                            <option key={index} value={item?._id}>
+                              {item?.nama}
                             </option>
                           </>
                         );
@@ -373,23 +378,23 @@ const FormJurnal = ({ id = null }) => {
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="mapel" name="mapel">
                       {mataPelajaran.map((item, index) => {
-                        if (item === jurnal?.mapel) {
+                        if (item?._id === jurnal?.mapel?._id) {
                           return (
                             <>
                               <option
                                 key={index}
-                                value={item}
+                                value={item._id}
                                 selected="selected"
                               >
-                                {item}
+                                {item.nama}
                               </option>
                             </>
                           );
                         } else {
                           return (
                             <>
-                              <option key={index} value={item}>
-                                {item}
+                              <option key={index} value={item._id}>
+                                {item.nama}
                               </option>
                             </>
                           );
