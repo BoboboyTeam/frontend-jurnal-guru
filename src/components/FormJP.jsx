@@ -6,8 +6,9 @@ import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
 import { useDispatch, useSelector } from "react-redux";
-import { selectDataGuru, selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
+import { selectDataGuru, selectDataKelas, selectDataMapel, selectLoadingKelas } from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
+import { fetchDataMapel } from "../redux/mapelRedux";
 
 const FormJP = ({ id=null }) => {
   function handleLogout() {}
@@ -21,15 +22,7 @@ const FormJP = ({ id=null }) => {
   const kelas = useSelector(selectDataKelas);
   const kelasLoading = useSelector(selectLoadingKelas)
   const dispatch = useDispatch();
-
-  const mataPelajaran = [
-    "Matematika",
-    "Bahasa Inggris",
-    "Bahasa Jawa",
-    "IPA",
-    "IPS",
-    "Biologi",
-  ];
+  const mataPelajaran = useSelector(selectDataMapel);
 
   const navigate = useNavigate();
 
@@ -160,6 +153,7 @@ const FormJP = ({ id=null }) => {
     
     id && fetchJadwal();
     dispatch(fetchDataKelas())
+    dispatch(fetchDataMapel())
     
     console.log(jadwal,"<<<<<<<<<<<<<<<<<<<");
   }, [dispatch]);
@@ -346,20 +340,21 @@ const FormJP = ({ id=null }) => {
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="mapel" name="mapel">
+                      <option value="">None</option>
                       {mataPelajaran.map((item, index) => {
-                        if (item === jadwal?.mapel) {
+                        if (item._id === jadwal?.mapel._id) {
                           return (
                             <>
-                              <option key={index} value={item} selected="selected">
-                                {item}
+                              <option key={index} value={item._id} selected="selected">
+                                {item.nama}
                               </option>
                             </>
                           );
                         } else {
                           return (
                             <>
-                              <option key={index} value={item}>
-                                {item}
+                              <option key={index} value={item._id}>
+                                {item.nama}
                               </option>
                             </>
                           );

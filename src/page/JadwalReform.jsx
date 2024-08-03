@@ -5,7 +5,7 @@ import FormJP from '../components/FormJP';
 const JadwalReform = () => {
     
     const {id} = useParams();
-    if(id){
+    if(id && id !== "add"){
     return (
         <FormJP id={id}/>
     ) 
