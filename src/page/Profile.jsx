@@ -32,7 +32,7 @@ const Profile = ({ id = null }) => {
   if (data?.error) return <h1>Error</h1>;
 
   return (
-    <div className=" w-full h-screen ">
+    <div className=" w-full h-full ">
       <div class="flex flex-col pt-28">
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5 ">
           <div class="py-2 inline-block w-[100%] sm:px-6 lg:px-8  ">

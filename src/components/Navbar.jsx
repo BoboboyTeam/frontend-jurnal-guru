@@ -24,11 +24,7 @@ const Navbar = () => {
 
   return (
     <div
-      className="w-full sticky top-0  bg-blue-300  h-24 flex pl-6 gap-2 border-b-2 border-slate-100 justify-center md:justify-between z-50  "
-      style={{
-        backgroundImage:
-          'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
-      }}
+      className="w-full h-24 flex pl-6 gap-2 border-b-2 border-slate-100 justify-center md:justify-between z-50  bg-transparent"
     >
       <Link to={"/page"}>
       <div className="flex pt-2 gap-2">

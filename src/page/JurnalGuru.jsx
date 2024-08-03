@@ -215,15 +215,13 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
     <div className="m-auto w-full h-screen bg-green-100">
       <div className="text-gray-900 bg-green-100">
         <div
-          className={`p-4 gap-10  flex justify-center w-full  md:justify-end bg-white sticky ${
-            isProfile ? "top-0" : "top-20"
-          }  `}
+          className={`p-4 gap-10  flex justify-center w-full  md:justify-end bg-white sticky top-0  `}
         >
           <div className="text-3xl font-bold text-green-500 pt-3 w-[700px] ">
             TEACHER JOURNAL
           </div>
 
-          <div className="flex justify-end gap-1 w-[80%] items-center ">
+          <div className="flex flex-col justify-end gap-1 w-[80%] items-center ">
             <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md">
               Journal on :{" "}
               <input
@@ -237,7 +235,8 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
             To  :  <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setTo(e.target.value)} value={to}/>
           </p> */}
 
-            <div className="w-[20%] self-center">
+            <div className="gap-10 self-center flex">
+              <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold text-white" onClick={()=>fetchData}>Reset Filter</button>
               <button
                 className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold  text-white"
                 onClick={() => filterByDate()}
@@ -299,7 +298,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
 
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
-            <thead className={` bg-green-500`}>
+            <thead className={` bg-green-500 sticky top-[8rem]`}>
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Date</th>

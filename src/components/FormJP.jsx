@@ -6,21 +6,37 @@ import { redirect, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Load from "./Load";
 import { useDispatch, useSelector } from "react-redux";
-import { selectDataGuru, selectDataKelas, selectDataMapel, selectLoadingKelas } from "../redux/selectorRedux";
+import {
+  selectDataGuru,
+  selectDataKelas,
+  selectDataMapel,
+  selectLoadingKelas,
+} from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
 import { fetchDataMapel } from "../redux/mapelRedux";
 
-const FormJP = ({ id=null }) => {
+const FormJP = ({ id = null }) => {
   function handleLogout() {}
   const role = localStorage.getItem("role").toLowerCase();
 
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [teacher, setGuru] = useState();
   const [jadwal, setJadwal] = useState();
-  const jam = ["7:10-7:50","7:50-8:30","8:30-9:10","9:10-9:50","10:30-11:10","11:10-11:50","12:30-13:10","13:10-13:50","13:50-14:30","14:30-15:10"];
-  
+  const jam = [
+    "7:10-7:50",
+    "7:50-8:30",
+    "8:30-9:10",
+    "9:10-9:50",
+    "10:30-11:10",
+    "11:10-11:50",
+    "12:30-13:10",
+    "13:10-13:50",
+    "13:50-14:30",
+    "14:30-15:10",
+  ];
+
   const kelas = useSelector(selectDataKelas);
-  const kelasLoading = useSelector(selectLoadingKelas)
+  const kelasLoading = useSelector(selectLoadingKelas);
   const dispatch = useDispatch();
   const mataPelajaran = useSelector(selectDataMapel);
 
@@ -38,7 +54,7 @@ const FormJP = ({ id=null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/users/role/teacher",
+        url: process.env.BASE_URL + "/users/role/teacher",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -58,7 +74,7 @@ const FormJP = ({ id=null }) => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/kelas",
+        url: process.env.BASE_URL + "/kelas",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -69,21 +85,19 @@ const FormJP = ({ id=null }) => {
     }
   });
 
-
-
   const fetchJadwal = useCallback(async () => {
     try {
       const token = localStorage.getItem("access_token");
-      console.log(process.env.BASE_URL)
-      console.log(id,"IDIDIDIIDID");
+      console.log(process.env.BASE_URL);
+      console.log(id, "IDIDIDIIDID");
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL+"/admin/jp/" + id,
+        url: process.env.BASE_URL + "/admin/jp/" + id,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data,"DSADADADA");
+      console.log(data, "DSADADADA");
 
       setJadwal(data);
       console.log(jadwal, ">>>>>>>>>>JADWAL>>>>>>>>>>>>>");
@@ -91,7 +105,6 @@ const FormJP = ({ id=null }) => {
       console.log(error);
     }
   }, [id]);
-
 
   const postJadwal = useCallback(async (e) => {
     e.preventDefault();
@@ -104,7 +117,7 @@ const FormJP = ({ id=null }) => {
     kelas_id = kelas.find((item) => item._id === kelas_id);
     teacher_id = teacher.find((item) => item._id === teacher_id);
     console.log(teacher);
-    console.log(kelas_id)
+    console.log(kelas_id);
 
     const formData = {
       hari: form.get("hari"),
@@ -114,7 +127,7 @@ const FormJP = ({ id=null }) => {
         nama: teacher_id?.nama,
       },
       teacherReplacement: null,
-      kelas:  {
+      kelas: {
         _id: kelas_id?._id,
         nama: kelas_id?.nama,
       },
@@ -122,11 +135,13 @@ const FormJP = ({ id=null }) => {
       materi: "",
       jumlahJP: form.get("jumlahJP"),
     };
-    console.log(formData,"FORMDATA");
-    const link = `${process.env.BASE_URL}/${role}/jp${ id && id!="add" ?`/${id}`:''}`
+    console.log(formData, "FORMDATA");
+    const link = `${process.env.BASE_URL}/${role}/jp${
+      id && id != "add" ? `/${id}` : ""
+    }`;
     try {
       const { data } = await axios({
-        method: id && id!="add" ? "put" : "post",
+        method: id && id != "add" ? "put" : "post",
         url: link,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -137,7 +152,10 @@ const FormJP = ({ id=null }) => {
 
       Swal.fire({
         icon: "success",
-        title: id && id!="add" ? "Succes Updating Jadwal Pelajaran" : "Succes Adding Jadwal Pelajaran",
+        title:
+          id && id != "add"
+            ? "Succes Updating Jadwal Pelajaran"
+            : "Succes Adding Jadwal Pelajaran",
       });
       navigate(-1);
     } catch (error) {
@@ -145,20 +163,18 @@ const FormJP = ({ id=null }) => {
     }
   });
 
- 
-
   useEffect(() => {
     fetchGuru();
     fetchKelas();
-    
+
     id && fetchJadwal();
-    dispatch(fetchDataKelas())
-    dispatch(fetchDataMapel())
-    
-    console.log(jadwal,"<<<<<<<<<<<<<<<<<<<");
+    dispatch(fetchDataKelas());
+    dispatch(fetchDataMapel());
+
+    console.log(jadwal, "<<<<<<<<<<<<<<<<<<<");
   }, [dispatch]);
 
-  if(id && !jadwal && kelasLoading) return <Load/>
+  if (id && !jadwal && kelasLoading) return <Load />;
 
   return (
     <>
@@ -166,13 +182,15 @@ const FormJP = ({ id=null }) => {
         style={{
           backgroundImage:
             'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
+          backgroundSize: "cover",
         }}
         className="items-center justify-center md:h-screen  p-12"
       >
-        
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <div className="flex justify-between">
-            <h1 className="text-3xl font-bold text-white">Form Lesson Schedule</h1>
+            <h1 className="text-3xl font-bold text-white">
+              Form Lesson Schedule
+            </h1>
           </div>
           <form onSubmit={postJadwal}>
             <div className="md:flex md:gap-28">
@@ -186,17 +204,33 @@ const FormJP = ({ id=null }) => {
 
                 <div className="mb-5 bg-white p-3 rounded-md w-52">
                   <select className="w-full" id="hari" name="hari">
-            
-                    {id && jadwal && day.map((item, index) => {
-                      if (`${item}`.toLowerCase() === jadwal?.hari) {
-                        return (
-                          <>
-                            <option key={index} value={item} selected="selected">
-                              {item}
-                            </option>
-                          </>
-                        );
-                      } else {
+                    {id &&
+                      jadwal &&
+                      day.map((item, index) => {
+                        if (`${item}`.toLowerCase() === jadwal?.hari) {
+                          return (
+                            <>
+                              <option
+                                key={index}
+                                value={item}
+                                selected="selected"
+                              >
+                                {item}
+                              </option>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <>
+                              <option key={index} value={item}>
+                                {item}
+                              </option>
+                            </>
+                          );
+                        }
+                      })}
+                    {!id &&
+                      day.map((item, index) => {
                         return (
                           <>
                             <option key={index} value={item}>
@@ -204,20 +238,7 @@ const FormJP = ({ id=null }) => {
                             </option>
                           </>
                         );
-                      }
-                    })}
-                    {
-                      !id && day.map((item, index) => {
-                        return (
-                          <>
-                            <option key={index} value={item}>
-                              {item}
-                            </option>
-                          </>
-                        );
-                        })
-                    }
-
+                      })}
                   </select>
                 </div>
 
@@ -230,37 +251,41 @@ const FormJP = ({ id=null }) => {
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                     <select className="w-full" id="jamKe" name="jamKe">
-                      {id && jadwal && jam.map((item, index) => {
-                      if (item === jadwal?.jamKe) {
-                        return (
-                          <>
-                            <option key={index} value={index+1} selected="selected">
-                              {item}
-                            </option>
-                          </>
-                        );
-                      } else {
-                        return (
-                          <>
-                            <option key={index} value={index+1}>
-                              {item}
-                            </option>
-                          </>
-                        );
-                      }
-                    })}
-                    {
-                      !id && jam.map((item, index) => {
-                        return (
-                          <>
-                            <option key={index} value={index+1}>
-                              {item}
-                            </option>
-                          </>
-                        );
-                        })
-                    }
-
+                      {id &&
+                        jadwal &&
+                        jam.map((item, index) => {
+                          if (item === jadwal?.jamKe) {
+                            return (
+                              <>
+                                <option
+                                  key={index}
+                                  value={item}
+                                  selected="selected"
+                                >
+                                  {item}
+                                </option>
+                              </>
+                            );
+                          } else {
+                            return (
+                              <>
+                                <option key={index} value={item}>
+                                  {item}
+                                </option>
+                              </>
+                            );
+                          }
+                        })}
+                      {!id &&
+                        jam.map((item, index) => {
+                          return (
+                            <>
+                              <option key={index} value={item}>
+                                {item}
+                              </option>
+                            </>
+                          );
+                        })}
                     </select>
                   </div>
                 </div>
@@ -279,7 +304,11 @@ const FormJP = ({ id=null }) => {
                       if (item._id === jadwal?.teacher?._id) {
                         return (
                           <>
-                            <option key={index} value={item._id} selected="selected">
+                            <option
+                              key={index}
+                              value={item._id}
+                              selected="selected"
+                            >
                               {item.nama}
                             </option>
                           </>
@@ -313,7 +342,11 @@ const FormJP = ({ id=null }) => {
                       if (item === jadwal?.kelas) {
                         return (
                           <>
-                            <option key={index} value={item._id} selected="selected">
+                            <option
+                              key={index}
+                              value={item._id}
+                              selected="selected"
+                            >
                               {item.nama}
                             </option>
                           </>
@@ -345,7 +378,11 @@ const FormJP = ({ id=null }) => {
                         if (item._id === jadwal?.mapel._id) {
                           return (
                             <>
-                              <option key={index} value={item._id} selected="selected">
+                              <option
+                                key={index}
+                                value={item._id}
+                                selected="selected"
+                              >
                                 {item.nama}
                               </option>
                             </>
@@ -371,13 +408,12 @@ const FormJP = ({ id=null }) => {
                     Working Hours
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
-                    <input
-                      type="number"
-                      id="jumlahJP"
-                      name="jumlahJP"
-                      defaultValue={jadwal?.jumlahJP}
-                      className="w-full px-2 !bg-slate-950"
-                    />
+                    <select name="jumlahJP" className="w-full" id="jumlahJP">
+                      {[1, 2, 3, 4, 5, 6].map(
+                        (item)=>
+                        <option value={item}>{item}</option>
+                      )}
+                    </select>
                   </div>
                 </div>
               </div>

@@ -39,10 +39,14 @@ const Register = () => {
         title: "Succes register",
       });
       console.log(data);
-      navigate("/cms");
+      navigate("/guru");
       console.log(data);
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text:error.response.data.message,
+      });
     }
   }
 
@@ -77,7 +81,7 @@ const Register = () => {
               <h1 className="mb-2 text-md">
                 Islamic School of Ummusabri Kendari{" "}
               </h1>
-              <span className="text-gray-300">Enter Register Details</span>
+              <span className="text-gray-300">Enter Personal Data Details</span>
             </div>
             <form onSubmit={handdleRegister}>
               <div className="mb-4 text-lg">
@@ -126,7 +130,7 @@ const Register = () => {
                 <input
                   className="rounded-xl border-none  bg-black opacity-60  px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                   type={type}
-                  name="Passowrd"
+                  name="Password"
                   placeholder="Password"
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -152,10 +156,10 @@ const Register = () => {
               </div>
 
               <div className="mt-8 flex justify-center text-lg text-black">
-                <Link to={"/jadwal"} ><button                 
+                <Link to={"/guru"} ><button                 
                   className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700"
                 >
-                Kembali
+                Go Back
                 </button></Link>
               </div>
               </div>

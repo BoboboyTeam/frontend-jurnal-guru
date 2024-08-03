@@ -121,8 +121,8 @@ const DataTable = ({
   }
 
   return (
-    <div className="px-3 py-4  justify-center mt-4  ">
-      <div className="text-3xl flex justify-between items-center p-[1rem] font-bold text-yellow-400 pt-4 pb-6 sticky top-20 bg-white ">
+    <div className=" justify-center w-full ">
+      <div className="text-3xl flex justify-between items-center p-[1rem] font-bold text-yellow-400 pt-4 pb-6 sticky top-0 bg-white ">
         <p>{title}</p>
 
         <div className="flex justify-center gap-2">
@@ -147,7 +147,7 @@ const DataTable = ({
         <thead
           className={`${color ? color.primary : "bg-yellow-400"} ${
             color?.text ? color - text : "text-slate-900"
-          } w-full sticky top-40 `}
+          } w-full sticky top-20 `}
         >
           <tr className="border-b  ">
             <th className="text-center p-3 px-5 ">No</th>
