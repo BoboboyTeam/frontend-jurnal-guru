@@ -30,6 +30,7 @@ export const fetchDataJP = createAsyncThunk(
       console.log(link);
       console.log(month, "MONTH REDUX");
       console.log(data.dataJP[month], "<<<<REDUX");
+      console.log(data.dataJP, "REDUX DATA");
       let jpData = data.dataJP[month];
       console.log(jpData, "JP DATA REDUX");
       jpData.gaji = new Intl.NumberFormat("id-ID", {

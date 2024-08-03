@@ -112,10 +112,17 @@ const JadwalPelajaran = () => {
         data.forEach((item, index) => {
           if (getJurnal.data.length > 0) {
             console.log(getJurnal.data[index]?.jamKe, "Jurnal Jam Ke");
-            let condition = getJurnal.data[index]?.jamKe === item.jamKe;
-            condition = getJurnal.data[index]?.mapel === item.mapel;
-            condition =
-              getJurnal.data[index]?.teacher?._id === item.teacher?._id;
+            console.log(item.jamKe, "Item Jam Ke");
+            console.log(getJurnal.data[index]?.mapel, "Jurnal Mapel");
+            console.log(item.mapel, "Item Mapel");
+
+            let condition
+            condition = getJurnal.data.find((condItem)=>condItem?.jamKe === item.jamKe && condItem?.mapel._id === item.mapel._id && condItem?.teacher?._id === item.teacher?._id)
+            console.log(`item ${index} : ${condition}`);
+            // condition = getJurnal.data[index]?.jamKe === item.jamKe;
+            // condition = getJurnal.data[index]?.mapel === item.mapel;
+            // condition =
+            //   getJurnal.data[index]?.teacher?._id === item.teacher?._id;
 
             if (condition) {
               jurnalCheck.push(1);
