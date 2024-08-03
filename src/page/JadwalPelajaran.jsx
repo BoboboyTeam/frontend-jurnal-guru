@@ -22,6 +22,7 @@ const JadwalPelajaran = () => {
     "Wednesday",
     "Thursday",
     "Friday",
+    
   ];
   const kelas = useSelector(selectDataKelas);
   const kelasLoading = useSelector(selectLoadingKelas);
@@ -272,6 +273,7 @@ const JadwalPelajaran = () => {
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Day</th>
+                <th className="text-center p-3 px-5">Working Hours</th>
                 <th className="text-center p-3 px-5">Class</th>
                 <th className="text-center p-3 px-5">Subject</th>
                 <th className="text-center p-3 px-5">Teacher</th>
@@ -288,6 +290,7 @@ const JadwalPelajaran = () => {
                   >
                     <td className="p-3 px-5">{++index}</td>
                     <td className="p-3 px-5">{item?.hari}</td>
+                    <td className="p-3 px-5">{item?.jamKe}</td>
                     <td className="p-3 px-5">{item?.kelas?.nama}</td>
                     <td className="p-3 px-5">{item?.mapel?.nama}</td>
                     <td className="p-3 px-5">{item?.teacher?.nama}</td>

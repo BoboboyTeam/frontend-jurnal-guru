@@ -19,7 +19,7 @@ const FormJP = ({ id = null }) => {
   function handleLogout() {}
   const role = localStorage.getItem("role").toLowerCase();
 
-  const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const [teacher, setGuru] = useState();
   const [jadwal, setJadwal] = useState();
   const jam = [
@@ -114,8 +114,10 @@ const FormJP = ({ id = null }) => {
     // Dapetin teacher dan _idnya
     let teacher_id = form.get("teacher");
     let kelas_id = form.get("kelas");
+    let mapel_id = form.get("mapel");
     kelas_id = kelas.find((item) => item._id === kelas_id);
     teacher_id = teacher.find((item) => item._id === teacher_id);
+    mapel_id = mataPelajaran.find((item) => item._id === mapel_id);
     console.log(teacher);
     console.log(kelas_id);
 
@@ -131,7 +133,10 @@ const FormJP = ({ id = null }) => {
         _id: kelas_id?._id,
         nama: kelas_id?.nama,
       },
-      mapel: form.get("mapel"),
+      mapel: {
+        _id: mapel_id?._id,
+        nama: mapel_id?.nama,
+      },
       materi: "",
       jumlahJP: form.get("jumlahJP"),
     };
@@ -207,7 +212,7 @@ const FormJP = ({ id = null }) => {
                     {id &&
                       jadwal &&
                       day.map((item, index) => {
-                        if (`${item}`.toLowerCase() === jadwal?.hari) {
+                        if (`${item}`.toLowerCase() === jadwal?.hari?.toLowerCase()) {
                           return (
                             <>
                               <option
@@ -339,7 +344,7 @@ const FormJP = ({ id = null }) => {
                   <select className="w-full" id="kelas" name="kelas">
                     <option value="">None</option>
                     {kelas.map((item, index) => {
-                      if (item === jadwal?.kelas) {
+                      if (item?._id === jadwal?.kelas?._id) {
                         return (
                           <>
                             <option

@@ -236,7 +236,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
           </p> */}
 
             <div className="gap-10 self-center flex">
-              <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold text-white" onClick={()=>fetchData}>Reset Filter</button>
+              <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold text-white" onClick={()=>fetchData()}>Reset Filter</button>
               <button
                 className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold  text-white"
                 onClick={() => filterByDate()}
@@ -299,7 +299,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">
             <thead className={` bg-green-500 sticky top-[8rem]`}>
-              <tr className="border-b  ">
+              <tr className="border-b ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Date</th>
                 <th className="text-center p-3 px-5">Teacher</th>
@@ -307,7 +307,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
                 <th className="text-center p-3 px-5">Teacher Replacement</th>
                 <th className="text-center p-3 px-5">Jam Ke</th>
                 <th className="text-center p-3 px-5">Jumlah JP</th>
-                <th className="text-center p-3 px-5"></th>
+                <th className="text-center p-3 px-5">Control Panel</th>
                 <th />
               </tr>
             </thead>

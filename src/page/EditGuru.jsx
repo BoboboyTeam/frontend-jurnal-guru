@@ -1,8 +1,8 @@
-import { useParams } from 'next/navigation'
+import { useParams } from 'react-router-dom'
 import React from 'react'
 
 const EditGuru = () => {
-    const id = useParams()
+    const {id} = useParams()
   return (
     <div>EditGuru</div>
   )
