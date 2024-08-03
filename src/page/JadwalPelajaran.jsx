@@ -22,7 +22,6 @@ const JadwalPelajaran = () => {
     "Wednesday",
     "Thursday",
     "Friday",
-    
   ];
   const kelas = useSelector(selectDataKelas);
   const kelasLoading = useSelector(selectLoadingKelas);
@@ -37,25 +36,25 @@ const JadwalPelajaran = () => {
     try {
       console.log(e.target.value);
       let query = "";
-      
-      switch(e.target.id) {
+
+      switch (e.target.id) {
         case "searchTeacher":
           query += `?teacher=${e.target.value}`;
-          if(searchHari) query += `&hari=${searchHari}`;
-          if(searchKelas) query += `&kelas=${searchKelas}`;
+          if (searchHari) query += `&hari=${searchHari}`;
+          if (searchKelas) query += `&kelas=${searchKelas}`;
           setSearchTeacher(e.target.value);
           break;
         case "searchHari":
           query += `?hari=${e.target.value}`;
           setSearchHari(e.target.value);
-          if(searchTeacher) query += `&teacher=${searchTeacher}`;
-          if(searchKelas) query += `&kelas=${searchKelas}`;
+          if (searchTeacher) query += `&teacher=${searchTeacher}`;
+          if (searchKelas) query += `&kelas=${searchKelas}`;
           break;
         case "searchKelas":
           query += `?kelas=${e.target.value}`;
           setSearchKelas(e.target.value);
-          if(searchTeacher) query += `&teacher=${searchTeacher}`;
-          if(searchHari) query += `&hari=${searchHari}`;
+          if (searchTeacher) query += `&teacher=${searchTeacher}`;
+          if (searchHari) query += `&hari=${searchHari}`;
           break;
       }
       console.log(query);
@@ -201,69 +200,70 @@ const JadwalPelajaran = () => {
             LESSON SCHEDULE
           </div>
 
-          <div className="w-32 mt-3 ">
-            <form action="">
-              <select
-                className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
-                id="searchHari"
-                name="hari"
-                onChange={searchEvent}
-              >
-                {day.map((item) => {
-                  if (item === "All Days") {
-                    return (
-                      <option value={""} selected>
-                        {item}
-                      </option>
-                    );
-                  }
-                  return (
-                    <>
-                      <option value={item}>{item}</option>
-                    </>
-                  );
-                })}
-              </select>
-            </form>
-          </div>
-
-          <div className="w-32 mt-3 ">
-            <form action="">
-              <select
-                className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
-                id="searchKelas"
-                onChange={searchEvent}
-              >
-                <option value="">All Class</option>
-                {kelas?.map((item) => {
-                  return (
-                    <>
-                      <option value={item.nama}>{item.nama}</option>
-                    </>
-                  );
-                })}
-              </select>
-            </form>
-          </div>
-
-          <div className="w-80 rounded-md mt-3">
-            <form action="">
-              <input
-                id="searchTeacher"
-                className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
-                type="text"
-                onChange={searchEvent}
-                placeholder="Cari Nama Teacher"
-              />
-            </form>
-          </div>
-
           {localStorage.getItem("role").toLowerCase() === "admin" && (
-            <Link to={"/jp/add"}>
-              <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
-                <Icon icon={plus} /> Create Schedule
-              </button>
-            </Link>
+            <>
+              <div className="w-32 mt-3 ">
+                <form action="">
+                  <select
+                    className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
+                    id="searchHari"
+                    name="hari"
+                    onChange={searchEvent}
+                  >
+                    {day.map((item) => {
+                      if (item === "All Days") {
+                        return (
+                          <option value={""} selected>
+                            {item}
+                          </option>
+                        );
+                      }
+                      return (
+                        <>
+                          <option value={item}>{item}</option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </form>
+              </div>
+              <div className="w-32 mt-3 ">
+                <form action="">
+                  <select
+                    className="w-full h-12 outline-none border-2 border-slate-400   rounded-md px-4 bg-white"
+                    id="searchKelas"
+                    onChange={searchEvent}
+                  >
+                    <option value="">All Class</option>
+                    {kelas?.map((item) => {
+                      return (
+                        <>
+                          <option value={item.nama}>{item.nama}</option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </form>
+              </div>
+
+              <div className="w-80 rounded-md mt-3">
+                <form action="">
+                  <input
+                    id="searchTeacher"
+                    className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
+                    type="text"
+                    onChange={searchEvent}
+                    placeholder="Cari Nama Teacher"
+                  />
+                </form>
+              </div>
+
+              <Link to={"/jp/add"}>
+                <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
+                  <Icon icon={plus} /> Create Schedule
+                </button>
+              </Link>
+            </>
           )}
         </div>
 

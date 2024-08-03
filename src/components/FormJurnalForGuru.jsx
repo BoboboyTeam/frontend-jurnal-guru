@@ -2,13 +2,16 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { user } from "react-icons-kit/icomoon/user";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { selectDataGuru } from "../redux/selectorRedux";
+import { fetchDataGuru } from "../redux/teacherRedux";
 
 const FormJurnalForGuru = ({id=null}) => {
   const role = localStorage.getItem("role").toLowerCase();
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const [teacher, setGuru] = useState([]);
+  const teacher = useSelector(selectDataGuru)
   const kelas = ["VII", "VIII", "IX"];
   const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mataPelajaran = [
@@ -22,6 +25,7 @@ const FormJurnalForGuru = ({id=null}) => {
   const [jurnal, setJurnal] = useState({});
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function handleLogout() {
     localStorage.removeItem("access_token");
@@ -30,25 +34,7 @@ const FormJurnalForGuru = ({id=null}) => {
 
   // ------------------------------------------------------Get all data
 
-  const fetchGuru = useCallback(async () => {
-    try {
-      const token = localStorage.getItem("access_token");
-      const { data } = await axios({
-        method: "get",
-        url: process.env.BASE_URL+"/users/teacher",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setGuru(data);
-      console.log(JSON.stringify(teacher));
-      teacher.map((item) => {
-        console.log(item.nama);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+ 
 
   const fetchJurnalGuru = useCallback(async () => {
     try {
@@ -132,7 +118,8 @@ const FormJurnalForGuru = ({id=null}) => {
   useEffect(() => {
     console.log("id<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     fetchJurnalGuru();
-    fetchGuru();
+
+    dispatch(fetchDataGuru())
   }, []);
 
   return (
