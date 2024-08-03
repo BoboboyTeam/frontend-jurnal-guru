@@ -152,7 +152,7 @@ const FormJurnalForGuru = ({id=null}) => {
                   htmlFor="hari"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Hari
+                  Days
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
@@ -172,7 +172,7 @@ const FormJurnalForGuru = ({id=null}) => {
                     htmlFor="jamKe"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Jam ke
+                    Start Hours
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                   <input
@@ -191,7 +191,7 @@ const FormJurnalForGuru = ({id=null}) => {
                   htmlFor="teacher"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Guru
+                  Teacher
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
@@ -210,7 +210,7 @@ const FormJurnalForGuru = ({id=null}) => {
                   htmlFor="teacherReplacement"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Guru Replacement{" "}
+                  Teacher Replacement{" "}
                   <span className="font-light text-sm">(Opsional)</span>
                 </label>
 
@@ -239,7 +239,7 @@ const FormJurnalForGuru = ({id=null}) => {
                   htmlFor="kelas"
                   className="mb-3 block text-base font-medium text-white"
                 >
-                  Kelas
+                  Class
                 </label>
 
                 <div className="mb-5 bg-white p-3 rounded-md">
@@ -259,7 +259,7 @@ const FormJurnalForGuru = ({id=null}) => {
                     htmlFor="mapel"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Mata Pelajaran
+                    School Subjects
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
                   <input
@@ -279,7 +279,7 @@ const FormJurnalForGuru = ({id=null}) => {
                     htmlFor="subject"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Materi Pembelajaran
+                    Lesson Material
                   </label>
                   <input
                   type="text"
@@ -297,7 +297,7 @@ const FormJurnalForGuru = ({id=null}) => {
                     htmlFor="jumlahJP"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Jumlah Jam Pelajaran
+                    Total Working Hours
                   </label>
                   <input
                     type="text"
