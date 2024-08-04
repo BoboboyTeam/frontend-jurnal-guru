@@ -103,10 +103,11 @@ const JurnalGuru = ({ isProfile = false, id = false }) => {
         "Desember",
       ];
       setResult([]);
+      console.log(from);
       const fromMonth = from.split("-")[1];
       const fromYear = from.split("-")[0];
       const token = localStorage.getItem("access_token");
-      console.log(fromYear, "AAAAAAAAAAAA");
+      console.log(fromMonth, "AAAAAAAAAAAA");
       const query = `?month=${fromMonth}&year=${fromYear}`;
       console.log(query);
       const link = `${process.env.BASE_URL}/${role}/filter/jurnal-teacher/date${
@@ -127,6 +128,7 @@ const JurnalGuru = ({ isProfile = false, id = false }) => {
       console.log(fromMonth);
       console.log(keyDataJP.includes("6"));
       console.log(keyDataJP.includes(fromMonth + ""));
+      console.log(newDataJP);
       // for(let i = fromMonth; i<=toMonth; i++){
 
       //   if(keyDataJP.includes(i.toString())){
@@ -241,6 +243,7 @@ const JurnalGuru = ({ isProfile = false, id = false }) => {
                 onChange={(e) => setFrom(e.target.value)}
                 value={from}
               />
+              {/* <input className="bg-white" type="text" value={from} name="" id="" /> */}
             </p>
             {/* <p className="bg-green-400 text-[#184210] font-bold p-2 rounded-md">
             To  :  <input type="month" className="p-1 rounded-md bg-green-300" onChange={(e)=>setTo(e.target.value)} value={to}/>

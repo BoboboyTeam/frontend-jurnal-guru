@@ -86,11 +86,8 @@ const Register = ({ id }) => {
   return (
     <>
       <div
-        className="flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat"
-        style={{
-          backgroundImage:
-            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
-        }}
+        className="flex h-screen w-full items-center justify-center"
+        
       >
         <div className="rounded-xl bg-gray-800 bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
           <div className="text-white">
@@ -124,8 +121,8 @@ const Register = ({ id }) => {
                 <input
                   className="rounded-xl border-none  bg-black opacity-60  px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                   type="text"
-                  name="email"
-                  placeholder="Email"
+                  name="username"
+                  placeholder="Username"
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}

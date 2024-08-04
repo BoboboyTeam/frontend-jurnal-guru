@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [icon, setIcon] = useState(ic_lock_open);
   const [type, setType] = useState("password");
-  const [email, setEmail] = useState("");
+  const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const Login = () => {
   async function handdleLogin(e) {
     e.preventDefault();
     try {      
-      const requestBody = { email, password };
+      const requestBody = { username, password };
       const response = await axios.post(
         process.env.BASE_URL+"/login",
         requestBody
@@ -82,12 +82,12 @@ const Login = () => {
                 <input
                   className="rounded-xl border-none bg-black opacity-60  px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                   type="text"
-                  name="email"
-                  placeholder="E-mail"
+                  name="username"
+                  placeholder="Username"
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
-                  value={email}
+                  value={username}
                 />
               </div>
 

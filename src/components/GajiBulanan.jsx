@@ -13,30 +13,30 @@ const GajiBulanan = ({ id, from }) => {
   const error = useSelector(selectErrorJurnalGuru)
   const [monthName, setMonthName] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
-  useEffect(() => {
-    const monthlyName = [
-      "Januari",
-      "Februari",
-      "Maret",
-      "April",
-      "Mei",
-      "Juni",
-      "Juli",
-      "Agustus",
-      "September",
-      "Oktober",
-      "November",
-      "Desember",
-    ];
+  // useEffect(() => {
+  //   const monthlyName = [
+  //     "Januari",
+  //     "Februari",
+  //     "Maret",
+  //     "April",
+  //     "Mei",
+  //     "Juni",
+  //     "Juli",
+  //     "Agustus",
+  //     "September",
+  //     "Oktober",
+  //     "November",
+  //     "Desember",
+  //   ];
 
-    const month = from ? parseInt(from.split("-")[1])-1 : new Date().getMonth();
-    const year = from ? from.split("-")[1] : new Date().getFullYear();
-    setYear(year);
-    console.log(month, year);
-    dispatch(fetchDataJP({ id, month, year }));
+  //   const month = from ? parseInt(from.split("-")[1])-1 : new Date().getMonth();
+  //   const year = from ? from.split("-")[0] : new Date().getFullYear();
+  //   setYear(year);
+  //   console.log(month, year,"MONTH YEAR");
+  //   dispatch(fetchDataJP({ id, month, year }));
     
-    setMonthName(month ? monthlyName[month] : false);
-  }, [dispatch]);
+  //   setMonthName(month ? monthlyName[month] : false);
+  // }, []);
 
   if (loading) {
     return <p>Loading...</p>;
