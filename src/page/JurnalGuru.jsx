@@ -236,7 +236,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
           </p> */}
 
             <div className="gap-10 self-center flex">
-              <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold text-white" onClick={()=>fetchData()}>Reset Filter</button>
+              <button className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold text-white" onClick={()=>{fetchData()}}>Reset Filter</button>
               <button
                 className="p-3 rounded-md bg-green-500 hover:bg-green-600 font-bold  text-white"
                 onClick={() => filterByDate()}
@@ -248,29 +248,31 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
 
           {isProfile &&
             localStorage.getItem("role").toLowerCase() === "admin" && (
-              <Invoice
-                nama={profile?.data.nama}
-                tanggal={from}
-                data={{
-                  data: result,
-                  dataJP,
-                  columnName: [
-                    "Date",
-                    "Start Hours",
-                    "Lesson Material",
-                    "Working Hours",
-                    "Payment",
-                  ],
-                  keyColumns: [
-                    "updateAt",
-                    "jamKe",
-                    "materi",
-                    "jumlahJP",
-                    "Payment",
-                  ],
-                  profile,
-                }}
-              />
+              <div className="p-1 py-5">
+                <Invoice
+                  nama={profile?.data.nama}
+                  tanggal={from}
+                  data={{
+                    data: result,
+                    dataJP,
+                    columnName: [
+                      "Date",
+                      "Start Hours",
+                      "Lesson Material",
+                      "Working Hours",
+                      "Payment",
+                    ],
+                    keyColumns: [
+                      "updateAt",
+                      "jamKe",
+                      "materi",
+                      "jumlahJP",
+                      "Payment",
+                    ],
+                    profile,
+                  }}
+                />
+              </div>
             )}
 
           {!isProfile && localStorage.getItem('role').toLowerCase() !== 'teacher' && (
