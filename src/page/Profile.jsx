@@ -48,7 +48,7 @@ const Profile = ({ id = null }) => {
                   Role : <span>{role.charAt(0).toUpperCase() + role.slice(1)}</span>
                 </p>
                 <p className="font-bold">
-                  Email : <span>{data?.data?.email}</span>
+                  Username : <span>{data?.data?.username}</span>
                 </p>
 
                 
