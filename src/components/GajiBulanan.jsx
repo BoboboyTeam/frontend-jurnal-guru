@@ -29,7 +29,7 @@ const GajiBulanan = ({ id, from }) => {
       "Desember",
     ];
 
-    const month = from ? parseInt(from.split("-")[0]) : new Date().getMonth();
+    const month = from ? parseInt(from.split("-")[1])-1 : new Date().getMonth();
     const year = from ? from.split("-")[1] : new Date().getFullYear();
     setYear(year);
     console.log(month, year);

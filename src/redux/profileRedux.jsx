@@ -39,11 +39,12 @@ const profileSlice = createSlice({
         builder
         .addCase(fetchDataProfile.pending, (state, action) => {
             state.loading = true;
+            state.data = [];
         })
         .addCase(fetchDataProfile.fulfilled, (state, action) => {
             state.loading = false;
             state.data = action.payload;
-            state.role = action.payload.role.toLowerCase();
+            state.role = action.payload?.role?.toLowerCase();
         })
         .addCase(fetchDataProfile.rejected, (state, action) => {
             state.loading = false;

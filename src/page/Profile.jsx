@@ -3,12 +3,14 @@ import axios from "axios";
 import JurnalGuru from "./JurnalGuru";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataProfile } from "../redux/profileRedux";
-import { selectDataProfile, selectRoleProfile } from "../redux/selectorRedux";
+import { selectDataProfile, selectLoadingProfile, selectRoleProfile } from "../redux/selectorRedux";
+import Load from "../components/Load";
 const Profile = ({ id = null }) => {
   const token = localStorage.getItem("access_token");
   const role = useSelector(selectRoleProfile);
   
   const data = useSelector(selectDataProfile);
+  const loading = useSelector(selectLoadingProfile);
 
 
   const dispatch = useDispatch()
@@ -30,6 +32,7 @@ const Profile = ({ id = null }) => {
     );
   }
   if (data?.error) return <h1>Error</h1>;
+  if (loading) return <Load />;
 
   return (
     <div className=" w-full h-full ">

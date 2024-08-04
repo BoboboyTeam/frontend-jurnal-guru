@@ -58,9 +58,14 @@ export const selectDataMapel = createSelector(
     [selectMapel],
     (mapel) => mapel.data
     );
+
 export const selectDataProfile = createSelector(
     [selectProfile],
     (profile) => profile.data
+    );
+export const selectLoadingProfile = createSelector(
+    [selectProfile],
+    (profile) => profile.loading
     );
 export const selectRoleProfile = createSelector(
     [selectProfile],

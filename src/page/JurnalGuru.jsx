@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { bin } from "react-icons-kit/icomoon/bin";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";
 import { externalLink } from "react-icons-kit/fa/externalLink";
@@ -16,9 +16,10 @@ import Invoice from "../components/Invoice";
 import {
   selectDataJurnalGuru,
   selectDataProfile,
+  selectLoadingJurnalGuru,
 } from "../redux/selectorRedux";
 
-const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
+const JurnalGuru = ({ isProfile = false, id = false }) => {
   const [result, setResult] = useState([]);
   const role = localStorage.getItem("role")?.toLowerCase();
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 7));
@@ -28,6 +29,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
       .slice(0, 7)
   );
   const [idJurnal, setIdJurnal] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Query
 
@@ -57,6 +59,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
 
   async function fetchData() {
     try {
+      setLoading(true);
       const token = localStorage.getItem("access_token");
 
       const link = id
@@ -76,13 +79,15 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
       });
       console.log(data);
       setResult(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
   }
 
-  const filterByDate = async () => {
+  const filterByDate = useCallback(async () => {
     try {
+      setLoading(true);
       const monthlyName = [
         "Januari",
         "Februari",
@@ -141,7 +146,9 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
       );
       console.log(newDataJP);
       setResult(data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(true);
       const monthlyName = [
         "Januari",
         "Februari",
@@ -167,8 +174,9 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
         })
       );
       setResult([]);
+      setLoading(false);
     }
-  };
+  },[dispatch,from]);
 
   function handdleDeletePopUp(idJurnal) {
     setIdJurnal(idJurnal);
@@ -210,6 +218,9 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
     console.log(profile);
     if (isProfile) filterByDate();
   }, []);
+  if (loading) {
+    return <Load />;
+  }
 
   return (
     <div className="m-auto w-full h-screen bg-green-100">
@@ -296,7 +307,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
             )}
         </div>
 
-        {isProfile && <GajiBulanan id={id} />}
+        {isProfile && <GajiBulanan id={id} from={from} />}
 
         <div className="px-3 flex justify-center  ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center overflow-x-scroll">

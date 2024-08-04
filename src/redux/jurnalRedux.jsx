@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { act } from "react";
 const initialState = {
   data: [],
   loading: false,
@@ -10,6 +11,20 @@ export const fetchDataJP = createAsyncThunk(
   "jurnalGuru/fetchDataJP",
   async (params, thunkAPI) => {
     try {
+      const monthlyName = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
       
       const id = params?.id;
       const month = params?.month;
@@ -29,14 +44,15 @@ export const fetchDataJP = createAsyncThunk(
       });
       console.log(link);
       console.log(month, "MONTH REDUX");
+      console.log(data, "REDUX DATA");
       console.log(data.dataJP[month], "<<<<REDUX");
       console.log(data.dataJP, "REDUX DATA");
       let jpData = data.dataJP[month];
       console.log(jpData, "JP DATA REDUX");
-      jpData.gaji = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      }).format(jpData?.gaji);
+      // jpData.gaji = new Intl.NumberFormat("id-ID", {
+      //   style: "currency",
+      //   currency: "IDR",
+      // }).format(jpData?.gaji);
     
       jpData = {...jpData, month: monthlyName[month], year: year}
       console.log(jpData, "JP DATA REDUX");
@@ -61,8 +77,9 @@ const jurnalGuruSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataJP.pending, (state, action) => {
+        console.log(action, "REDUX ACTION LOADING");
         state.loading = true;
-        state.data = [];
+        state.data = action.payload;
       })
       .addCase(fetchDataJP.fulfilled, (state, action) => {
         state.loading = false;
@@ -72,6 +89,7 @@ const jurnalGuruSlice = createSlice({
         console.log(state.data, "REDUX STATE");
       })
       .addCase(fetchDataJP.rejected, (state, action) => {
+        console.log(action, "REDUX ACTION REJECTED");
         state.loading = false;
         state.error = action.error;
       });

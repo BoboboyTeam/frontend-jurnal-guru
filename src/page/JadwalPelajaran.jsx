@@ -12,6 +12,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
+import Load from "../components/Load";
 const JadwalPelajaran = () => {
   const [result, setResult] = useState([]);
   const day = [
@@ -31,6 +32,7 @@ const JadwalPelajaran = () => {
   const [searchTeacher, setSearchTeacher] = useState();
   const [searchKelas, setSearchKelas] = useState();
   const [searchHari, setSearchHari] = useState();
+  const [loading, setLoading] = useState(false);
 
   const searchEvent = async (e) => {
     try {
@@ -76,6 +78,7 @@ const JadwalPelajaran = () => {
   // -----------------------------------------------------Fetching data all
   async function fetchData() {
     try {
+      setLoading(true);
       const token = localStorage.getItem("access_token");
 
       const { data } =
@@ -139,6 +142,7 @@ const JadwalPelajaran = () => {
 
       console.log(data);
       setResult(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -198,6 +202,11 @@ const JadwalPelajaran = () => {
     fetchData();
     dispatch(fetchDataKelas());
   }, []);
+  if (loading || kelasLoading) {
+    return (
+      <Load />
+    );
+  }
 
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
