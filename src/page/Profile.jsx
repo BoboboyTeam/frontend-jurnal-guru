@@ -42,7 +42,7 @@ const Profile = ({ id = null }) => {
                   Nama : <span>{data?.data?.nama}</span>
                 </p>
                 <p className="font-bold">
-                  Role : <span>{role}</span>
+                  Role : <span>{role.charAt(0).toUpperCase() + role.slice(1)}</span>
                 </p>
                 <p className="font-bold">
                   Email : <span>{data?.data?.email}</span>
