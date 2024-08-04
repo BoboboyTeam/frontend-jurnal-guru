@@ -82,7 +82,7 @@ const JadwalPelajaran = () => {
       const token = localStorage.getItem("access_token");
 
       const { data } =
-        localStorage.getItem("role").toLowerCase() === "admin"
+        localStorage.getItem("role")?.toLowerCase() === "admin"
           ? await axios({
               method: "get",
               url: process.env.BASE_URL + "/admin/jp",
@@ -140,7 +140,7 @@ const JadwalPelajaran = () => {
         setJurnal(jurnalCheck);
       }
 
-      console.log(data);
+      console.log(data,"DATA");
       setResult(data);
       setLoading(false);
     } catch (error) {

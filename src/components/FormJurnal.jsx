@@ -100,7 +100,7 @@ const FormJurnal = ({ id = null }) => {
     console.log(teacher);
 
     const formData = {
-      hari: form.get("hari").toLowerCase(),
+      hari: form.get("hari"),
       jamKe: form.get("jamKe"),
       teacher: {
         _id: teacher_id._id,

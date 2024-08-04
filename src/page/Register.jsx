@@ -11,7 +11,7 @@ import { fetchData } from "../redux/storedRedux";
 
 const Register = ({ id }) => {
   const [nama, setNama] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [icon, setIcon] = useState(ic_lock_open);
@@ -124,9 +124,9 @@ const Register = ({ id }) => {
                   name="username"
                   placeholder="Username"
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setUsername(e.target.value);
                   }}
-                  defaultValue={data?.email}
+                  defaultValue={data?.username}
                 />
               </div>
 
