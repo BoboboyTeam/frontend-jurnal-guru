@@ -273,7 +273,7 @@ const JurnalGuru = ({ isProfile = false, id = false, addons = false }) => {
               />
             )}
 
-          {!isProfile && localStorage.getItem('role').toLowerCase() === 'teacher' && (
+          {!isProfile && localStorage.getItem('role').toLowerCase() !== 'teacher' && (
             <form className="mt-3 " action="">
               <input
                 className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
