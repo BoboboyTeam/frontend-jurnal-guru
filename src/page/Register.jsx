@@ -170,7 +170,7 @@ const Register = ({ id }) => {
                     type="submit"
                     className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700"
                   >
-                    Daftar
+                    Submit
                   </button>
                 </div>
 
