@@ -27,6 +27,8 @@ import Kelas from "./page/Kelas";
 import FormKelas from "./page/FormKelas";
 import EditKelas from "./page/EditKelas";
 import Mapel from "./page/Mapel";
+import DetailMapel from "./page/DetailMapel";
+import DetailKelas from "./page/DetailKelas";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +102,15 @@ const router = createBrowserRouter([
           }
           return null;
         }
+      },{
+        path:"/kelas/:id",
+        element:<DetailKelas/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
       },
       {
         path:"/kelas/edit/:id",
@@ -125,6 +136,16 @@ const router = createBrowserRouter([
       {
         path:"/mapel",
         element:<Mapel/>,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        }
+      },
+      {
+        path:"/mapel/:id",
+        element:<DetailMapel/>,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");

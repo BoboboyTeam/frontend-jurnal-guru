@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
+const Detail = ({id,detail,keyColumns=null,columnsName=null,isPublic=false}) => {
   const role = localStorage.getItem("role").toLowerCase();
   const token = localStorage.getItem("access_token");
   
@@ -11,9 +11,15 @@ const Detail = ({id,detail,keyColumns=null,columnsName=null}) => {
 
   async function fetchDataId() {
     try {
+      let link
+      if(isPublic){
+        link = `${process.env.BASE_URL}/${detail}/${id}`
+      }else{
+        link = `${process.env.BASE_URL}/${role}/${detail}/${id}`
+      }
       const { data } = await axios({
         method: "get",
-        url: process.env.BASE_URL + `/${role}/${detail}/` + id,
+        url: link,
         headers: {
           Authorization: `Bearer ${token}`,
         },
