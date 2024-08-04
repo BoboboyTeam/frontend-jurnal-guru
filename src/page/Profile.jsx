@@ -36,13 +36,13 @@ const Profile = ({ id = null }) => {
 
   return (
     <div className=" w-full h-full ">
-      <div class="flex flex-col pt-28">
+      <div class="flex flex-col pt-8 px-60">
         <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5 ">
           <div class="py-2 inline-block w-[100%] sm:px-6 lg:px-8  ">
-            <div className="bg-green-400 flex justify-between gap-64 leading-8 p-5 rounded-md text-[#333333] ">
-              <div className="p-14 text-3xl leading-[5rem] ">
+            <div className="bg-blue-300 flex justify-between gap-64 leading-8 p-5 rounded-md text-[#333333] ">
+              <div className="p-14 text-3xl leading-[5rem] bg- bg-blue-200 rounded-md ">
                 <p className="font-bold">
-                  Nama : <span>{data?.data?.nama}</span>
+                  Name : <span>{data?.data?.nama}</span>
                 </p>
                 <p className="font-bold">
                   Role : <span>{role.charAt(0).toUpperCase() + role.slice(1)}</span>
@@ -55,7 +55,7 @@ const Profile = ({ id = null }) => {
               </div>
               <div className="py-14">
                 <img
-                  className="w-[15rem] h-[15rem] rounded-full"
+                  className="w-[15rem] h-[15rem] rounded-full mr-24"
                   src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
                   alt=""
                 />
