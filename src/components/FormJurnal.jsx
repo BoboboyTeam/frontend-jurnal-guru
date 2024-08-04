@@ -14,7 +14,18 @@ const FormJurnal = ({ id = null }) => {
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [teacher, setGuru] = useState([]);
   const [jurnal, setJurnal] = useState({});
-  const jam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const jam = [
+    "7:10-7:50",
+    "7:50-8:30",
+    "8:30-9:10",
+    "9:10-9:50",
+    "10:30-11:10",
+    "11:10-11:50",
+    "12:30-13:10",
+    "13:10-13:50",
+    "13:50-14:30",
+    "14:30-15:10",
+  ];
   const mataPelajaran = useSelector(selectDataMapel);
 
   const kelas = useSelector(selectDataKelas);
@@ -422,19 +433,19 @@ const FormJurnal = ({ id = null }) => {
 
                 <div className="mb-5">
                   <label
-                    htmlFor="subject"
+                    htmlFor="mapel"
                     className="mb-3 block text-base font-medium text-white"
                   >
-                    Total Working Hours
+                    Working Hours
                   </label>
-                  <input
-                    type="text"
-                    name="jumlahJP"
-                    id="subject"
-                    placeholder="Enter your subject"
-                    className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    defaultValue={jurnal?.jumlahJP}
-                  />
+                  <div className="mb-5 bg-white p-3 rounded-md">
+                    <select name="jumlahJP" className="w-full" id="jumlahJP">
+                      {[1, 2, 3, 4, 5, 6].map(
+                        (item)=>
+                        <option value={item}>{item}</option>
+                      )}
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
