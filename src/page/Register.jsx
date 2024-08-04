@@ -175,7 +175,7 @@ const Register = ({ id }) => {
                 </div>
 
                 <div className="mt-8 flex justify-center text-lg text-black">
-                  <Link to={"/guru"}>
+                  <Link to={"/teacher"}>
                     <button className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700">
                       Go Back
                     </button>
