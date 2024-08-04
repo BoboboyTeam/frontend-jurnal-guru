@@ -159,8 +159,8 @@ const FormJP = ({ id = null }) => {
         icon: "success",
         title:
           id && id != "add"
-            ? "Succes Updating Jadwal Pelajaran"
-            : "Succes Adding Jadwal Pelajaran",
+            ? "Succes Updated"
+            : "Succes Added ",
       });
       navigate(-1);
     } catch (error) {

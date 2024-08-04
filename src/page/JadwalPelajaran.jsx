@@ -276,7 +276,7 @@ const JadwalPelajaran = () => {
 
         <div className="px-3  flex justify-center   ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
-            <thead className="sticky top-[7rem] bg-blue-500  ">
+            <thead className="sticky top-[5rem] bg-blue-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Day</th>
@@ -333,7 +333,7 @@ const JadwalPelajaran = () => {
                         <>
                           <Link to={"/editJadwalPelajaran/" + item._id}>
                             {" "}
-                            <button className="btn bg-green-100 border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
+                            <button className="btn bg-white border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
                               <Icon icon={pencilSquareO} /> Edit
                             </button>
                           </Link>
