@@ -1,51 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { ic_lock_outline_twotone } from "react-icons-kit/md/ic_lock_outline_twotone";
 import { ic_lock_open } from "react-icons-kit/md/ic_lock_open";
 import Swal from "sweetalert2";
-import axios from "axios";
+import axios, { formToJSON } from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDataStored } from "../redux/selectorRedux";
+import { fetchData } from "../redux/storedRedux";
 
-
-const Register = () => {
+const Register = ({ id }) => {
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [icon, setIcon] = useState(ic_lock_open);
   const [type, setType] = useState("password");
-  const navigate = useNavigate()
-
-   // -----------------------------------------------------REGISTER
-
-   async function handdleRegister(e) {
+  const navigate = useNavigate();
+  const [data,setData] = useState([])
+  const dispatch = useDispatch();
+  // -----------------------------------------------------REGISTER
+  
+  async function handdleRegister(e) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("access_token");
-      const requestBody = {nama, email, role, password};
-      const { data } = await axios.post(
-        process.env.BASE_URL+"/register",
-        requestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
- 
+      const form = new FormData(e.target);
+      const role = localStorage.getItem("role").toLowerCase();
+      const requestBody = formToJSON(form);
+      console.log(requestBody);
+      let link = process.env.BASE_URL + "/register";
+      if (id) {
+        link = `${process.env.BASE_URL}/${role}/users/${id}`;
+      }
+      const { data } = await axios({
+        method: id ? "put" : "post",
+        url: link,
+        data: requestBody,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       console.log(data);
       Swal.fire({
         icon: "success",
-        title: "Succes register",
+        title: id ? "Success Updating" : "Succes register",
       });
       console.log(data);
-      navigate("/guru");
+      navigate("/teacher");
       console.log(data);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text:error.response.data.message,
+        text: error.response.data.message,
       });
     }
   }
@@ -59,7 +68,21 @@ const Register = () => {
       setType("password");
     }
   }
-
+  async function fetchData(){
+    const token = localStorage.getItem("access_token");
+    const role = localStorage.getItem("role").toLowerCase();
+    const response = await axios({
+      method: "get",
+      url: `${process.env.BASE_URL}/${role}/users/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setData(response.data)
+  }
+  useEffect(()=>{
+    if(id) fetchData()
+  },[])
   return (
     <>
       <div
@@ -93,7 +116,7 @@ const Register = () => {
                   onChange={(e) => {
                     setNama(e.target.value);
                   }}
-                  value={nama}
+                  defaultValue={data?.nama}
                 />
               </div>
 
@@ -106,7 +129,7 @@ const Register = () => {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
-                  value={email}
+                  defaultValue={data?.email}
                 />
               </div>
 
@@ -117,10 +140,10 @@ const Register = () => {
                   onChange={(e) => setRole(e.target.value)}
                 >
                   <option className="text-center">Pilih Role</option>
-                  <option className="text-center" value="Teacher">
+                  <option className="text-center" value="Teacher" selected={data?.role?.toLowerCase()==='teacher'}>
                     Teacher
                   </option>
-                  <option className="text-center" value="Admin">
+                  <option className="text-center" value="Admin" selected={data?.role?.toLowerCase()==='admin'}>
                     Admin
                   </option>
                 </select>
@@ -130,12 +153,9 @@ const Register = () => {
                 <input
                   className="rounded-xl border-none  bg-black opacity-60  px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                   type={type}
-                  name="Password"
+                  name="password"
                   placeholder="Password"
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  value={password}
+                  defaultValue={data?.password}
                 />
               </div>
               <div
@@ -145,23 +165,22 @@ const Register = () => {
                 <Icon size={30} icon={icon} />
               </div>
               <div className="flex gap-4 justify-center">
+                <div className="mt-8 flex justify-center text-lg text-black">
+                  <button
+                    type="submit"
+                    className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700"
+                  >
+                    Daftar
+                  </button>
+                </div>
 
-              <div className="mt-8 flex justify-center text-lg text-black">
-                <button
-                  type="submit"
-                  className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700"
-                >
-                  Daftar
-                </button>
-              </div>
-
-              <div className="mt-8 flex justify-center text-lg text-black">
-                <Link to={"/guru"} ><button                 
-                  className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700"
-                >
-                Go Back
-                </button></Link>
-              </div>
+                <div className="mt-8 flex justify-center text-lg text-black">
+                  <Link to={"/guru"}>
+                    <button className="rounded-md bg-blue-500  px-7 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-700">
+                      Go Back
+                    </button>
+                  </Link>
+                </div>
               </div>
             </form>
           </div>
