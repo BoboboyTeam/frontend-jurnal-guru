@@ -1,11 +1,10 @@
 import React from 'react'
-
+import loading from '../assets/loading.gif'
 const Load = () => {
   return (
-    <div className='mt-40 ml-[700px]'>
-     <iframe  src="https://lottie.host/embed/86074522-8af9-4076-ae54-f320516df236/iY5nxM2o5g.json"></iframe>
+    
+    <iframe className='!bg-transparent w-screen h-[36rem]' src="https://lottie.host/embed/5eed27c2-cd5f-4754-a056-59c3ddd48a34/Jt2usHycFy.json"></iframe>
 
-    </div>
   )
 }
 

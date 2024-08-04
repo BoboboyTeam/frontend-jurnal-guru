@@ -1,11 +1,11 @@
 import React from 'react'
 import FormBuilder from '../components/FormBuilder'
 import Invoice from '../components/Invoice'
+import Load from '../components/Load'
 
 const TestPage = () => {
   return (
-    // <FormBuilder detail={"kelas"} keyColumns={["nama"]} columnsName={["Class Name"]} />
-    <Invoice nama={"Adam"} />
+    <Load/>
   )
 }
 
