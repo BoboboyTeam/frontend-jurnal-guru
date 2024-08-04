@@ -187,7 +187,7 @@ const JadwalPelajaran = () => {
 
       Toast.fire({
         icon: "success",
-        title: "Data Terhapus",
+        title: "Data Deleted Successfully",
       });
       fetchData();
     } catch (error) {

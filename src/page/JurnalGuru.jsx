@@ -211,7 +211,7 @@ const JurnalGuru = ({ isProfile = false, id = false }) => {
     });
     Toast.fire({
       icon: "success",
-      title: "Data Terhapus",
+      title: "Data Deleted Successfully",
     });
     await fetchData();
   }

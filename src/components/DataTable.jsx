@@ -77,7 +77,7 @@ const DataTable = ({
     });
     Toast.fire({
       icon: "success",
-      title: "Data Terhapus",
+      title: "Data Deleted Successfully",
     });
     await fetchData();
   }
