@@ -144,7 +144,7 @@ const FormJurnalForGuru = ({id=null}) => {
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postJurnalGuru}>
           <div className="flex justify-between my-[1rem]">
-            <h1 className="text-3xl font-bold text-white">Form Jurnal Guru</h1>
+            <h1 className="text-3xl font-bold text-white">Form Teacher Journal</h1>
           </div>
             <div className="md:flex md:gap-28">
               <div>
