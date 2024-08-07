@@ -42,9 +42,18 @@ const Navbar = () => {
         </div>
       </div>
       </Link>
+          
 
       <div className="p-4  flex justify-center w-full  md:justify-center  tra">
         <div className="w-[700px] mt-3  flex justify-start gap-5 font-bold ">
+        {role === "teacher" && (
+          <Link to={"/my-jadwal"}>
+          <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
+            My Schedule
+          </button>
+        </Link>
+          )  
+          }
           <Link to={"/jadwal"}>
             <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100 ">
               Lesson Schedule
@@ -55,14 +64,6 @@ const Navbar = () => {
               Teacher Journal
             </button>
           </Link>
-          {role === "teacher" && (
-          <Link to={"/my-jadwal"}>
-          <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
-            My Schedule
-          </button>
-        </Link>
-          )  
-          }
           {role === "admin" && (
             <>
             <Link to={"/teacher"}>

@@ -44,12 +44,7 @@ const Detail = ({id,detail,keyColumns=null,columnsName=null,isPublic=false}) => 
   return (
     <div className="m-auto w-full h-screen ">
       <div className="w-full   flex justify-center  text-[#333333] ">
-        <div className=" h-screen   rounded-md  w-full"  style={{
-          backgroundImage:
-            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
-        }}>
-
-        
+        <div className=" h-screen   rounded-md  w-full">
           <div className="px-3 py-4  mt-4 sticky top-20   ">
             <div className="text-center font-bold text-xl bg-blue-300 py-2">
               <p>Detail</p>
