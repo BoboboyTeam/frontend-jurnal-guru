@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectDataKelas, selectLoadingKelas } from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
 import Load from "../components/Load";
-const JadwalPelajaran = () => {
+const JadwalSaya = () => {
   const [result, setResult] = useState([]);
   const day = [
     "All Days",
@@ -63,11 +63,12 @@ const JadwalPelajaran = () => {
       const token = localStorage.getItem("access_token");
       const { data } = await axios({
         method: "get",
-        url: `${process.env.BASE_URL}/admin/jp${query}`,
+        url: `${process.env.BASE_URL}/teacher/myjp${query}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(data);
       setResult(data);
       fetchDataKelas();
     } catch (error) {
@@ -85,14 +86,14 @@ const JadwalPelajaran = () => {
         localStorage.getItem("role")?.toLowerCase() === "admin"
           ? await axios({
               method: "get",
-              url: process.env.BASE_URL + "/admin/jp",
+              url: process.env.BASE_URL + "/teacher/myjp",
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             })
           : await axios({
               method: "get",
-              url: process.env.BASE_URL + "/teacher/jp",
+              url: process.env.BASE_URL + "/teacher/myjp",
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -211,12 +212,11 @@ const JadwalPelajaran = () => {
   return (
     <div className="m-auto w-full h-screen bg-blue-100 ">
       <div className="text-gray-900 bg-blue-100 pb-10 ">
-        <div className="p-4  flex justify-center w-full  md:justify-end gap-5  bg-white  sticky top-0 ">
-          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[550px]">
-            LESSON SCHEDULE
+        <div className="p-4  flex justify-between w-full  md:justify-end gap-5  bg-white  sticky top-0 ">
+          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[45rem]">
+            MY SCHEDULE
           </div>
-
-          {localStorage.getItem("role").toLowerCase() === "admin" && (
+          {(
             <>
               <div className="w-32 mt-3 ">
                 <form action="">
@@ -261,24 +261,6 @@ const JadwalPelajaran = () => {
                   </select>
                 </form>
               </div>
-
-              <div className="w-80 rounded-md mt-3">
-                <form action="">
-                  <input
-                    id="searchTeacher"
-                    className="w-full h-12 rounded-md px-4 outline-none border-2 bg-white border-slate-400 "
-                    type="text"
-                    onChange={searchEvent}
-                    placeholder="Cari Nama Teacher"
-                  />
-                </form>
-              </div>
-
-              <Link to={"/jp/add"}>
-                <button className="btn  text-white bg-green-500 hover:bg-green-700 mt-3 px-4">
-                  <Icon icon={plus} /> Schedule
-                </button>
-              </Link>
             </>
           )}
         </div>
@@ -317,69 +299,7 @@ const JadwalPelajaran = () => {
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
-                      {localStorage.getItem("role").toLowerCase() ===
-                        "teacher" &&
-                        jurnal[index - 1] < 1 && (
-                          <Link to={"/jurnal/" + item._id}>
-                            {" "}
-                            <button className="btn  border-green-700 hover:bg-green-500  text-slate-900 bg-green-100  hover:text-white mr-2">
-                              <Icon icon={plus} /> Add Journal
-                            </button>
-                          </Link>
-                        )}
-                      {localStorage.getItem("role").toLowerCase() ===
-                        "teacher" &&
-                        jurnal[index - 1] > 0 && (
-                          <div className="border p-[0.6rem] rounded-lg border-green-700 bg-green-500  text-white mr-2">
-                            <p>
-                              <Icon icon={iosCheckmark} /> Journal Has Been
-                              Added
-                            </p>
-                          </div>
-                        )}
-                      {localStorage.getItem("role").toLowerCase() ===
-                        "admin" && (
-                        <>
-                          <Link to={"/editJadwalPelajaran/" + item._id}>
-                            {" "}
-                            <button className="btn bg-white border-green-700 hover:bg-green-500  text-slate-900  hover:text-white mr-2">
-                              <Icon icon={pencilSquareO} /> Edit
-                            </button>
-                          </Link>
-                          <button
-                            className="btn  border-red-700 hover:bg-red-500 bg-white  text-slate-900  hover:text-white"
-                            onClick={() => handdleDeletePopUp(item._id)}
-                          >
-                            <Icon icon={bin} />
-                            Delete
-                          </button>
-
-                          <dialog id="my_modal_1" className="modal">
-                            <div className="modal-box bg-white">
-                              <h3 className="font-bold text-lg">
-                                Are you sure you want to delete this data?
-                              </h3>
-                              <div className="modal-action">
-                                <form method="dialog">
-                                  <button
-                                    onClick={() => {
-                                      handdleDelete();
-                                    }}
-                                    className="btn bg-red-500 hover:bg-red-700 text-white"
-                                  >
-                                    Delete
-                                  </button>
-                                </form>
-                                <form method="dialog">
-                                  <button className="btn bg-green-500 hover:bg-green-700 text-white">
-                                    Cancel
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </dialog>
-                        </>
-                      )}
+                      
                     </td>
                   </tr>
                 );
@@ -392,4 +312,4 @@ const JadwalPelajaran = () => {
   );
 };
 
-export default JadwalPelajaran;
+export default JadwalSaya;

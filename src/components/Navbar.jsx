@@ -55,6 +55,14 @@ const Navbar = () => {
               Teacher Journal
             </button>
           </Link>
+          {role === "teacher" && (
+          <Link to={"/my-jadwal"}>
+          <button className="bg-blue-700 hover:bg-blue-800 px-5 py-3 rounded-md text-white focus:bg-blue-900 focus:scale-110 hover:scale-110 hover:duration-100  ">
+            My Schedule
+          </button>
+        </Link>
+          )  
+          }
           {role === "admin" && (
             <>
             <Link to={"/teacher"}>
@@ -93,7 +101,7 @@ const Navbar = () => {
         </button>
       </div>
       <dialog id="my_modal_7" className="modal">
-        <div className="modal-box">
+        <div className="modal-box bg-slate-300">
           <h3 className="font-bold text-lg">Are you sure want to logout</h3>
           <div className="modal-action">
             <form method="dialog">

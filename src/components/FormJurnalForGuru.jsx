@@ -125,21 +125,9 @@ const FormJurnalForGuru = ({id=null}) => {
   return (
     <>
       <div
-        style={{
-          backgroundImage:
-            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
-        }}
+        
         className="items-center justify-center md:h-screen  p-12"
       >
-
-        <div className="flex justify-end mb-3  ">
-          <div className=" bg-yellow-600 inline-block px-2 py-2 rounded-md hover:bg-yellow-700">
-            <button onClick={handleLogout}>
-              {" "}
-              <Icon size={30} icon={user}></Icon> Logout{" "}
-            </button>
-          </div>
-        </div>
         
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
           <form onSubmit={postJurnalGuru}>

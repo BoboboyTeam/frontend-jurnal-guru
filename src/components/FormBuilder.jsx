@@ -111,7 +111,7 @@ const FormBuilder = ({
                   <input
                     type="text"
                     name={item}
-                    placeholder={item}
+                    placeholder={'Name'}
                     className="bg-gray-200 text-black rounded-md p-2"
                     defaultValue={stored[item]}
                     

@@ -29,6 +29,7 @@ import EditKelas from "./page/EditKelas";
 import Mapel from "./page/Mapel";
 import DetailMapel from "./page/DetailMapel";
 import DetailKelas from "./page/DetailKelas";
+import JadwalSaya from "./page/JadwalSaya";
 
 const router = createBrowserRouter([
   {
@@ -241,6 +242,16 @@ const router = createBrowserRouter([
       {
         path: "/jadwal",
         element: <JadwalPelajaran />,
+        loader: async () => {
+          if (!localStorage.getItem("access_token")) {
+            throw redirect("/login");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/my-jadwal",
+        element: <JadwalSaya />,
         loader: async () => {
           if (!localStorage.getItem("access_token")) {
             throw redirect("/login");

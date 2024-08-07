@@ -184,11 +184,7 @@ const FormJP = ({ id = null }) => {
   return (
     <>
       <div
-        style={{
-          backgroundImage:
-            'url("https://ucarecdn.com/3ecabc98-04d2-4c9b-b568-6936280e9ceb/download")',
-          backgroundSize: "cover",
-        }}
+        
         className="items-center justify-center md:h-screen  p-12"
       >
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
