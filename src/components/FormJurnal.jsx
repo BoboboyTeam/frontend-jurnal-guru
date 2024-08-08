@@ -5,32 +5,37 @@ import { user } from "react-icons-kit/icomoon/user";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { selectDataKelas, selectDataMapel, selectLoadingKelas } from "../redux/selectorRedux";
+import {
+  selectDataKelas,
+  selectDataMapel,
+  selectLoadingKelas,
+} from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
 import { fetchDataMapel } from "../redux/mapelRedux";
+import incrementTimeSlot from "../services/jam.service";
 
 const FormJurnal = ({ id = null }) => {
   const role = localStorage.getItem("role").toLowerCase();
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [teacher, setGuru] = useState([]);
   const [jurnal, setJurnal] = useState({});
-  const jam = [
-    "7:10-7:50",
-    "7:50-8:30",
-    "8:30-9:10",
-    "9:10-9:50",
+  const [jam, setJam] = useState([
+    "07:10-07:50",
+    "07:50-08:30",
+    "08:30-09:10",
+    "09:10-09:50",
     "10:30-11:10",
     "11:10-11:50",
     "12:30-13:10",
     "13:10-13:50",
     "13:50-14:30",
     "14:30-15:10",
-  ];
+  ]);
   const mataPelajaran = useSelector(selectDataMapel);
 
   const kelas = useSelector(selectDataKelas);
-  const kelasLoading = useSelector(selectLoadingKelas)
-  const kelasError = useSelector(selectLoadingKelas)
+  const kelasLoading = useSelector(selectLoadingKelas);
+  const kelasError = useSelector(selectLoadingKelas);
 
   const dispatch = useDispatch();
 
@@ -40,7 +45,42 @@ const FormJurnal = ({ id = null }) => {
     localStorage.removeItem("access_token");
     navigate("/login");
   }
+  function handleJamKe(e) {
+    let storedJam = [
+      "07:10-07:50",
+      "07:50-08:30",
+      "08:30-09:10",
+      "09:10-09:50",
+      "10:30-11:10",
+      "11:10-11:50",
+      "12:30-13:10",
+      "13:10-13:50",
+      "13:50-14:30",
+      "14:30-15:10",
+    ];
 
+    if (e.target.value > 0) {
+      console.log(storedJam);
+      const calc = (e.target.value-1) * 40;
+      let jamChange = storedJam.map((item) => incrementTimeSlot(item, calc));
+      storedJam = jamChange;
+      console.log(storedJam);
+    } else {
+      storedJam = [
+        "07:10-07:50",
+        "07:50-08:30",
+        "08:30-09:10",
+        "09:10-09:50",
+        "10:30-11:10",
+        "11:10-11:50",
+        "12:30-13:10",
+        "13:10-13:50",
+        "13:50-14:30",
+        "14:30-15:10",
+      ];
+    }
+    setJam(storedJam);
+  }
   // ------------------------------------------------------Get all data
 
   const fetchGuru = useCallback(async () => {
@@ -96,7 +136,9 @@ const FormJurnal = ({ id = null }) => {
     mapel_id = mataPelajaran.find((item) => item._id === mapel_id);
     let kelas_id = form.get("kelas");
     kelas_id = kelas.find((item) => item._id === kelas_id);
-    teacherReplacement_id = teacher.find((item) => item._id === teacherReplacement_id);
+    teacherReplacement_id = teacher.find(
+      (item) => item._id === teacherReplacement_id
+    );
     console.log(teacher);
 
     const formData = {
@@ -125,9 +167,11 @@ const FormJurnal = ({ id = null }) => {
     };
     console.log(formData);
     try {
-      const link = `${process.env.BASE_URL}/${role}/jurnal-teacher${ id && id!="add" ?`/${id}`:''}`
+      const link = `${process.env.BASE_URL}/${role}/jurnal-teacher${
+        id && id != "add" ? `/${id}` : ""
+      }`;
       const { data } = await axios({
-        method: id && id!="add" ? "put" : "post",
+        method: id && id != "add" ? "put" : "post",
         url: link,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -138,7 +182,10 @@ const FormJurnal = ({ id = null }) => {
 
       Swal.fire({
         icon: "success",
-        title: id && id!="add" ?  "Success Updating Jurnal" : "Succes Adding Jurnal",
+        title:
+          id && id != "add"
+            ? "Success Updating Jurnal"
+            : "Succes Adding Jurnal",
       });
       navigate(-1);
     } catch (error) {
@@ -149,22 +196,22 @@ const FormJurnal = ({ id = null }) => {
   useEffect(() => {
     fetchJurnalGuru();
     fetchGuru();
-    dispatch(fetchDataKelas())
-    dispatch(fetchDataMapel())
+    dispatch(fetchDataKelas());
+    dispatch(fetchDataMapel());
   }, [dispatch]);
 
-  if(kelasLoading){
-    return <p>Loading...</p>
+  if (kelasLoading) {
+    return <p>Loading...</p>;
   }
 
   return (
     <>
-      <div
-        className="items-center justify-center md:h-screen  p-12"
-      >
+      <div className="items-center justify-center md:h-screen  p-12">
         <div className="mx-auto w-full max-w-[600px] p-10 bg-black bg-opacity-50 rounded-md shadow-lg  ">
-        <div className="flex justify-between">
-            <h1 className="text-3xl font-bold text-white">Form Teacher Journal</h1>
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-white">
+              Form Teacher Journal
+            </h1>
           </div>
           <form onSubmit={postJurnalGuru}>
             <div className="md:flex md:gap-28">
@@ -181,7 +228,9 @@ const FormJurnal = ({ id = null }) => {
                     {id &&
                       jurnal &&
                       day.map((item, index) => {
-                        if (item.toLowerCase() === jurnal?.hari?.toLowerCase()) {
+                        if (
+                          item.toLowerCase() === jurnal?.hari?.toLowerCase()
+                        ) {
                           return (
                             <>
                               <option
@@ -439,11 +488,15 @@ const FormJurnal = ({ id = null }) => {
                     Working Hours
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
-                    <select name="jumlahJP" className="w-full" id="jumlahJP">
-                      {[1, 2, 3, 4, 5, 6].map(
-                        (item)=>
+                    <select
+                      name="jumlahJP"
+                      className="w-full"
+                      id="jumlahJP"
+                      onChange={handleJamKe}
+                    >
+                      {[1, 2, 3, 4, 5, 6].map((item) => (
                         <option value={item}>{item}</option>
-                      )}
+                      ))}
                     </select>
                   </div>
                 </div>

@@ -14,6 +14,7 @@ import {
 } from "../redux/selectorRedux";
 import { fetchDataKelas } from "../redux/kelasRedux";
 import { fetchDataMapel } from "../redux/mapelRedux";
+import incrementTimeSlot from "../services/jam.service";
 
 const FormJP = ({ id = null }) => {
   function handleLogout() {}
@@ -22,18 +23,18 @@ const FormJP = ({ id = null }) => {
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const [teacher, setGuru] = useState();
   const [jadwal, setJadwal] = useState();
-  const jam = [
-    "7:10-7:50",
-    "7:50-8:30",
-    "8:30-9:10",
-    "9:10-9:50",
+  const [jam,setJam] = useState([
+    "07:10-07:50",
+    "07:50-08:30",
+    "08:30-09:10",
+    "09:10-09:50",
     "10:30-11:10",
     "11:10-11:50",
     "12:30-13:10",
     "13:10-13:50",
     "13:50-14:30",
     "14:30-15:10",
-  ];
+  ]);
 
   const kelas = useSelector(selectDataKelas);
   const kelasLoading = useSelector(selectLoadingKelas);
@@ -68,6 +69,43 @@ const FormJP = ({ id = null }) => {
       console.log(error);
     }
   });
+
+  function handleJamKe(e) {
+    let storedJam = [
+      "07:10-07:50",
+      "07:50-08:30",
+      "08:30-09:10",
+      "09:10-09:50",
+      "10:30-11:10",
+      "11:10-11:50",
+      "12:30-13:10",
+      "13:10-13:50",
+      "13:50-14:30",
+      "14:30-15:10",
+    ];
+
+    if (e.target.value > 0) {
+      console.log(storedJam);
+      const calc = (e.target.value-1) * 40;
+      let jamChange = storedJam.map((item) => incrementTimeSlot(item, calc));
+      storedJam = jamChange;
+      console.log(storedJam);
+    } else {
+      storedJam = [
+        "07:10-07:50",
+        "07:50-08:30",
+        "08:30-09:10",
+        "09:10-09:50",
+        "10:30-11:10",
+        "11:10-11:50",
+        "12:30-13:10",
+        "13:10-13:50",
+        "13:50-14:30",
+        "14:30-15:10",
+      ];
+    }
+    setJam(storedJam);
+  }
 
   const fetchKelas = useCallback(async () => {
     try {
@@ -409,7 +447,7 @@ const FormJP = ({ id = null }) => {
                     Working Hours
                   </label>
                   <div className="mb-5 bg-white p-3 rounded-md">
-                    <select name="jumlahJP" className="w-full" id="jumlahJP">
+                    <select name="jumlahJP" className="w-full" id="jumlahJP" onChange={handleJamKe}>
                       {[1, 2, 3, 4, 5, 6].map(
                         (item)=>
                         <option value={item}>{item}</option>
