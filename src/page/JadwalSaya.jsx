@@ -210,10 +210,10 @@ const JadwalSaya = () => {
   }
 
   return (
-    <div className="m-auto w-full h-screen bg-blue-100 ">
-      <div className="text-gray-900 bg-blue-100 pb-10 ">
+    <div className="m-auto w-full h-screen bg-purple-100 ">
+      <div className="text-gray-900 bg-purple-100 pb-10 ">
         <div className="p-4  flex justify-between w-full  md:justify-end gap-5  bg-white  sticky top-0 ">
-          <div className="text-3xl font-bold text-blue-500 pt-3 mr-[45rem]">
+          <div className="text-3xl font-bold text-purple-500 pt-3 mr-[45rem]">
             MY SCHEDULE
           </div>
           {(
@@ -267,7 +267,7 @@ const JadwalSaya = () => {
 
         <div className="px-3  flex justify-center   ">
           <table className="w-full text-md bg-gray-100 shadow-2xl  mb-4 text-center">
-            <thead className="sticky top-[5rem] bg-blue-500  ">
+            <thead className="sticky top-[5rem] bg-purple-500  ">
               <tr className="border-b  ">
                 <th className="text-center p-3 px-5 ">No</th>
                 <th className="text-center p-3 px-5">Day</th>
@@ -284,7 +284,7 @@ const JadwalSaya = () => {
                 return (
                   <tr
                     key={index}
-                    className="border-b hover:bg-blue-100 bg-white "
+                    className="border-b hover:bg-purple-100 bg-white "
                   >
                     <td className="p-3 px-5">{++index}</td>
                     <td className="p-3 px-5">{item?.hari}</td>
@@ -295,7 +295,7 @@ const JadwalSaya = () => {
                     <td className="p-3 px-5 flex justify-center">
                       <Link to={"/ditailJadwalPelajaran/" + item?._id}>
                         {" "}
-                        <button className="btn mr-3 text-sm bg-white border-blue-700 hover:bg-blue-500 text-slate-900  hover:text-white">
+                        <button className="btn mr-3 text-sm bg-white border-purple-700 hover:bg-purple-500 text-slate-900  hover:text-white">
                           <Icon icon={externalLink} /> Detail
                         </button>
                       </Link>
