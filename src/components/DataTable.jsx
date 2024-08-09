@@ -12,9 +12,10 @@ const DataTable = ({
   keyColumns,
   columnsName,
   detail,
+  searchDetail,
   query,
   parentLink,
-  isPublic=false,
+  isPublic = false,
   color = null,
   title = "data",
   addButtonName = "Add Data",
@@ -30,19 +31,24 @@ const DataTable = ({
 
   // -----------------------------------------------------DELETE
 
-  const searchByGuru = async (e) => {
+  const searchByText = async (e) => {
     e.preventDefault();
-    const search = e.target.search.value;
+    const search = e.target.value;
     console.log(search);
-    const response = await axios({
-      method: "get",
-      url: `${process.env.BASE_URL}/${role}/${detail}?teacher=${search}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response);
-
+    if (search === "") {
+      console.log("masuk");
+      fetchData();
+    } else {
+      const response = await axios({
+        method: "get",
+        url: `${process.env.BASE_URL}/${role}/${detail}?${searchDetail}=${search}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setData(response.data);
+      console.log(response);
+    }
   };
 
   function handdleDeletePopUp(id) {
@@ -86,11 +92,12 @@ const DataTable = ({
     try {
       setLoading(true);
       let link;
-      if(isPublic){
-        link = `${process.env.BASE_URL}/${detail}${query ? `?${query}` : ""}`
-      }
-      else{
-        link = `${process.env.BASE_URL}/${role}/${detail}${query ? `?${query}` : ""}`
+      if (isPublic) {
+        link = `${process.env.BASE_URL}/${detail}${query ? `?${query}` : ""}`;
+      } else {
+        link = `${process.env.BASE_URL}/${role}/${detail}${
+          query ? `?${query}` : ""
+        }`;
       }
       const response = await axios({
         method: "get",
@@ -126,14 +133,14 @@ const DataTable = ({
         <p>{title}</p>
 
         <div className="flex justify-center gap-2">
-          
-          {/* <form className="mt-3 " action="">
+          <form className="mt-3 " action="">
             <input
               className="w-96 h-12 rounded-md bg-slate-200 px-4 outline-none border-2 border-slate-400 "
               type="text"
               placeholder="Search"
+              onChange={searchByText}
             />
-          </form> */}
+          </form>
 
           <Link to={`/${parentLink}/add`} className="mt-2 translate-y-[0.2rem]">
             <button className="btn bg-blue-500 hover:bg-blue-700 text-white">

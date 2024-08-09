@@ -35,6 +35,7 @@ const Mapel = (isForm = false) => {
         isPublic={true}
         parentLink={"mapel"}
         title={"List of Lesson"}
+        searchDetail={'nama'}
       />
     </div>
   );
