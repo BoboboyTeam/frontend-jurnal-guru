@@ -73,7 +73,7 @@ const Login = () => {
                 srcSet=""
               />
               <h1 className="mb-2 text-md">
-                Islamic School of Ummusabri Kendari
+                Islamic School of Ummusshabri Kendari
               </h1>
               <span className="text-gray-300">Enter Login Details</span>
             </div>
