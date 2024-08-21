@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { bin } from "react-icons-kit/icomoon/bin";
 import { plus } from "react-icons-kit/fa/plus";
 import { pencilSquareO } from "react-icons-kit/fa/pencilSquareO";

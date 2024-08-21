@@ -10,6 +10,9 @@ import { fetchDataGuru } from "../redux/teacherRedux";
 
 const FormJurnalForGuru = ({id=null}) => {
   const role = localStorage.getItem("role").toLowerCase();
+
+  const [buttonLoad,setButtonLoad] = useState(false)
+
   const day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const teacher = useSelector(selectDataGuru)
   const kelas = ["VII", "VIII", "IX"];
@@ -55,6 +58,7 @@ const FormJurnalForGuru = ({id=null}) => {
     });
 
   const postJurnalGuru = useCallback(async (e) => {
+    setButtonLoad(true)
     e.preventDefault();
     const token = localStorage.getItem("access_token");
     const form = new FormData(e.target);
@@ -112,6 +116,7 @@ const FormJurnalForGuru = ({id=null}) => {
       navigate("/jurnal");
     } catch (error) {
       console.log(error);
+      setButtonLoad(false)
     }
   });
 
@@ -302,6 +307,8 @@ const FormJurnalForGuru = ({id=null}) => {
             </div>
             <div>
               <button
+                id="form-submit"
+                disabled={buttonLoad}
                 type="submit"
                 className="text-white rounded-md border-none hover:bg-green-600 bg-green-500  px-10 py-3 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
               >
