@@ -32,7 +32,6 @@ const JurnalGuru = ({ isProfile = false, id = false }) => {
   const [loading, setLoading] = useState(false);
 
   // Query
-
   const profile = useSelector(selectDataProfile);
   const dataJP = useSelector(selectDataJurnalGuru);
 
