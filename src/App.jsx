@@ -6,7 +6,7 @@ import {
 import Login from "./page/Login";
 import Register from "./page/Register";
 import Home from "./page/Home";
-import JurnalGuru from "./page/JurnalGuru";
+import JurnalGuru from "./page/JurnalGurucopy";
 import JadwalPelajaran from "./page/JadwalPelajaran";
 import DitailJurnalGuru from "./page/DitailJurnalGuru";
 import DitailJadwalPelajaran from "./page/DitailJadwalPelajaran";
